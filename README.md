@@ -7,3 +7,9 @@ This is a web scraping web application build by Zhi Xuan and Brendan Cheong for 
 ## Tech Stack used
 
 For this project, we used the MERN stack (MongoDB,Express,React and Node) together with complimentary frameworks and libraries like Tailwindcss and Puppeteer.js
+
+# Note on launching React app
+
+Before using `npm install` or `yarn add` to install all dependencies, make sure that `package_lock.json` and `node_modules` file has been deleted
+
+Once Installation is complete, run `npm start` or `yarn start`
