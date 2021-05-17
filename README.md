@@ -10,6 +10,6 @@ For this project, we used the MERN stack (MongoDB,Express,React and Node) togeth
 
 # Note on launching React app
 
-Before using `npm install` or `yarn add` to install all dependencies, make sure that `package_lock.json` and `node_modules` file has been deleted
+Before using `npm install` or `yarn add` to install all dependencies, make sure that `package_lock.json` and `node_modules` file have been deleted
 
 Once Installation is complete, run `npm start` or `yarn start`
