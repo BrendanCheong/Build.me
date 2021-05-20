@@ -9,6 +9,7 @@ const Builds = () => {
     whats being passed through as props?
     id: int -> unique id of each card
     addCards: func -> passed to unCards to add cards
+    addNewParts: func -> passed to Cards -> to unParts
     handleDelete: func -> passed to Cards to delete cards
     partsData: list => obj -> passed to Cards -> passed to Parts
     */
