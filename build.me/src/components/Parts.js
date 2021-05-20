@@ -1,9 +1,8 @@
 
-
-const Parts = ({name}) => {
+const Parts = ({name, id}) => {
     return (
-        <div className="p-2 bg-green-600 rounded-md shadow-md">
-            {name}
+        <div className="flex flex-col justify-between p-2 bg-gray-300 rounded-md ">
+            test
         </div>
     )
 }
