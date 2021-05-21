@@ -1,15 +1,21 @@
+import { ContextData } from "../pages/Builds";
+import { useContext } from 'react';
+import Parts from "./Parts";
 
-const unParts = ({name, id, addNewParts}) => {
+
+const UnParts = ({name, id,}) => {
     /*
-    name: string
-    id: int
+    name: string -> taken from Cards
+    id: int -> taken from Cards
     addNewParts: func -> taken from Cards => changes unParts to Parts
     */
+    const {changeNewParts} = useContext(ContextData)
+
     return (
         <div className="flex flex-col justify-between p-2 border-2 border-gray-400 border-dashed rounded-md shadow-inner">
             {name}
             <div className="flex justify-end">
-                <button onClick={() => addNewParts(name, id)} className="font-poppins">
+                <button onClick={() => changeNewParts(name, id, Parts)} className="font-poppins">
                     Add
                 </button>
             </div>
@@ -17,4 +23,4 @@ const unParts = ({name, id, addNewParts}) => {
     )
 }
 
-export default unParts
+export default UnParts

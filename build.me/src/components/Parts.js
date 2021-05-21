@@ -1,5 +1,11 @@
+import { ContextData } from "../pages/Builds";
+import { useContext } from 'react';
+import UnParts from "./unParts";
 
 const Parts = ({name, id}) => {
+
+    const {changeNewParts} = useContext(ContextData)
+
     return (
         <div className="grid grid-flow-col grid-cols-3 grid-rows-3 gap-2 bg-gray-100 rounded-md">
                 <div className="row-span-3">Image</div>
@@ -16,7 +22,8 @@ const Parts = ({name, id}) => {
                 <div className="static flex justify-around">
                     <div></div>
                     <div></div>
-                    <button className="static px-2 py-1 text-sm text-white duration-300 transform bg-indigo-400 rounded-full hover:scale-110 motion-reduce:transform-none">
+                    <button className="static px-2 py-1 text-sm text-white duration-300 transform bg-indigo-400 rounded-full hover:scale-110 motion-reduce:transform-none"
+                    onClick={() => changeNewParts(name, id, UnParts)}>
                         Remove
                     </button>
                 </div>

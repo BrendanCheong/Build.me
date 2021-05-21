@@ -1,8 +1,9 @@
 import Cards from "../components/Cards"
 import Uncard from "../components/Uncard"
-import {useState, useEffect} from 'react'
-import unParts from "../components/unParts"
-import Parts from "../components/Parts"
+import {useState, useEffect, createContext} from 'react'
+import UnParts from "../components/unParts"
+
+export const ContextData = createContext(null)
 
 const Builds = () => {
     /*
@@ -17,11 +18,11 @@ const Builds = () => {
     const uncardSchema = {id: 1, body: Uncard, isUncard: true, partsData:[]}
     const cardSchema = {id: Math.random(), body: Cards, isUncard: false,
     partsData: [
-    {name: 'CPU', body: unParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'Motherboard', body: unParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'GPU', body: unParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'Memory', body: unParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'PSU', body: unParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'CPU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'Motherboard', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'GPU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'Memory', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'PSU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
     ]};
     
     const [cards,setCards] = useState([
@@ -51,7 +52,7 @@ const Builds = () => {
         setCards(newCards);
     };
 
-    const addNewParts = (name, id) => {
+    const changeNewParts = (name, id, toChange) => {
         // run through cards to find the matching id
         // now run through cards.partsData to find the matching name
         // map function confuses me lmao
@@ -60,13 +61,14 @@ const Builds = () => {
             if (cards[i].id === id) {
                 for (let j = 0; j < cards[i].partsData.length; j++) {
                     if (cards[i].partsData[j].name === name) {
-                        cards[i].partsData[j].body = Parts
+                        cards[i].partsData[j].body = toChange
                     }
                 }
             }
         newData.push(cards[i])}
         setCards(newData) // outside the loop
     };
+
 
     // useEffect(() => {
     //     console.log(cards)
@@ -75,7 +77,9 @@ const Builds = () => {
     return (
         <div className="grid h-screen grid-cols-3 bg-gray-100 place-items-center">
             {cards.map((card) => ( // cant pass prop name 'key' to other components omegalul
-                <card.body id={card.id} addCards={addCards} handleDelete={handleDelete} key={card.id} partsData={card.partsData} addNewParts={addNewParts}/>
+            <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
+                <card.body key={card.id}/>
+            </ContextData.Provider>
             ))}
         </div>
     )
