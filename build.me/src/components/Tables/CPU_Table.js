@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useTable, usePagination } from "react-table";
+import { useTable, usePagination, useFilters } from "react-table";
 import MOCK_DATA_CPU from "../../MOCK_DATA/MOCK_DATA_CPU.json";
 import { CPU_COLUMNS } from "./CPU_Columns";
 
@@ -8,12 +8,13 @@ const CPUTable = () => {
 
     const columns = useMemo(() => CPU_COLUMNS, []);
     const data = useMemo(() => MOCK_DATA_CPU, []);
-
+    
     const tableInstance = useTable(
         {
             columns,
             data
-        },  usePagination,
+        },  useFilters,
+            usePagination,
         )
 
     const { getTableProps, 
@@ -45,6 +46,9 @@ const CPUTable = () => {
                                             <th {...column.getHeaderProps()}
                                             className="px-6 py-4 text-sm font-semibold uppercase font-poppins">
                                             {column.render('Header')}
+                                                <div>
+                                                    {column.canFilter ? column.render('Filter') : null}
+                                                </div>
                                             </th>
                                         ))}
                                 </tr>

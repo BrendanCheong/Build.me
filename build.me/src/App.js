@@ -7,6 +7,26 @@ import Builds from "./pages/Builds";
 import Compare_Builds from "./pages/Compare_Builds";
 import Dropdown from "./components/Dropdown";
 
+/** 
+
+TODO:
+do 70% of the Milestone 1 submission (EASY)
+
+TODO:
+Create the rest of the tables for GPU,MOTHERBOARD etc (EASY)
+
+TODO:
+Create a REST API using AXIOS and Express + Node (HARD)
+
+TODO:
+Create a POPUP Component that Shows Data based on what was clicked in the Table (HARD)
+
+TODO:
+Create a Puppeteer.js API to Amazon and Shopee based on a Query (HARD)
+
+*/
+
+
 function App() {
   // React Functions go here
   const [isOpen, setIsOpen] = useState(false) // to check if Dropdown is Open or not
