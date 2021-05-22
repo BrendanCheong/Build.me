@@ -1,10 +1,9 @@
+import CPUTable from "../components/Tables/CPU_Table";
 
 const Compare_Builds = () => {
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-4xl text-black uppercase font-poppins">
-                Coming Soon
-            </h1>
+        <div className="items-center py-16 bg-gray-100">
+            <CPUTable/> 
         </div>
     )
 }
