@@ -11,6 +11,10 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.10",
     "postcss": "^7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -25,7 +29,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "build-css": "tailwindcss build src/index.css -o public/styles.css"
+    "build-css": "tailwindcss build src/index.css -o public/styles.css",
+    "dev": "nodemon server"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
