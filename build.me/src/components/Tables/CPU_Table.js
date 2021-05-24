@@ -59,7 +59,7 @@ const CPUTable = () => {
                             page.map(row => {
                                 prepareRow(row)
                                 return (
-                                    <tr {...row.getRowProps()} onClick={() => console.log(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline ">
+                                    <tr {...row.getRowProps()} onClick={() => console.table(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline "> {/** Onclick this will log out the row infomation */}
                                         {
                                             row.cells.map( cell => {
                                                 return (

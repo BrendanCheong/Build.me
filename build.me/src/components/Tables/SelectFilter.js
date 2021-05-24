@@ -16,7 +16,7 @@ export const SelectFilter = ({column}) => {
             options.add(row.values[id])
         })
         return [...options.values()]
-    }, [id, preFilteredRows])
+    }, [id, preFilteredRows]) // options is a list of categories per column
     /** IMPORTANT NOTE:
     MaterialUI AutoComplete does not seem to work for INT, BOOL, FLOAT,
     It ONLY WORKS for STR values.
