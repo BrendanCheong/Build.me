@@ -1,3 +1,10 @@
+import axiosInstance from '../AxiosInstance';
+
+const getData = () => {
+    axiosInstance.get('/CPUs/')
+    .then(res => console.table(res.data)) // GET request to get an ARRAY of OBJECTS
+    .catch(err => console.log(err));
+}
 
 
 const User = () => {
@@ -9,6 +16,7 @@ const User = () => {
             <p className="text-xl text-black font-poppins">
             editable user settings
             </p>
+            <button onClick={getData}> Funny Button </button>
         </div>
     )
 }

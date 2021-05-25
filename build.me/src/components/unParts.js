@@ -1,6 +1,6 @@
 import { ContextData } from "../pages/Builds";
 import { useContext } from 'react';
-import Parts from "./Parts";
+
 
 
 const UnParts = ({name, id,}) => {
@@ -15,7 +15,7 @@ const UnParts = ({name, id,}) => {
         <div className="flex flex-col justify-between p-2 border-2 border-gray-400 border-dashed rounded-md shadow-inner">
             {name}
             <div className="flex justify-end">
-                <button onClick={() => changeNewParts(name, id, Parts)} className="font-poppins">
+                <button onClick={() => changeNewParts(name, id, false)} className="font-poppins">
                     Add
                 </button>
             </div>

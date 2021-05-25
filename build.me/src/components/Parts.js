@@ -1,6 +1,6 @@
 import { ContextData } from "../pages/Builds";
 import { useContext } from 'react';
-import UnParts from "./unParts";
+
 
 const Parts = ({name, id}) => {
 
@@ -23,7 +23,7 @@ const Parts = ({name, id}) => {
                     <div></div>
                     <div></div>
                     <button className="static px-2 py-1 text-sm text-white duration-300 transform bg-indigo-400 rounded-full hover:scale-110 motion-reduce:transform-none"
-                    onClick={() => changeNewParts(name, id, UnParts)}>
+                    onClick={() => changeNewParts(name, id, true)}>
                         Remove
                     </button>
                 </div>
