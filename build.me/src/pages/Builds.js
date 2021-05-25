@@ -1,7 +1,7 @@
 import Cards from "../components/Cards"
 import Uncard from "../components/Uncard"
 import {useState, useEffect, createContext} from 'react'
-import UnParts from "../components/unParts"
+
 
 export const ContextData = createContext(null)
 
@@ -15,14 +15,14 @@ const Builds = () => {
     partsData: list => obj -> passed to Cards -> passed to Parts
     */
 
-    const uncardSchema = {id: 1, body: Uncard, isUncard: true, partsData:[]}
-    const cardSchema = {id: Math.random(), body: Cards, isUncard: false,
+    const uncardSchema = {id: 1, isUncard: true, partsData:[]}
+    const cardSchema = {id: Math.random(), isUncard: false,
     partsData: [
-    {name: 'CPU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'Motherboard', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'GPU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'Memory', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
-    {name: 'PSU', body: UnParts, partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing",},
+    {name: 'CPU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
+    {name: 'Motherboard', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
+    {name: 'GPU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
+    {name: 'Memory', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
+    {name: 'PSU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
     ]};
     
     const [cards,setCards] = useState([
@@ -61,7 +61,7 @@ const Builds = () => {
             if (cards[i].id === id) {
                 for (let j = 0; j < cards[i].partsData.length; j++) {
                     if (cards[i].partsData[j].name === name) {
-                        cards[i].partsData[j].body = toChange
+                        cards[i].partsData[j].isUnPart = toChange
                     }
                 }
             }
@@ -76,10 +76,17 @@ const Builds = () => {
 
     return (
         <div className="grid h-screen grid-cols-3 bg-gray-100 place-items-center">
-            {cards.map((card) => ( // cant pass prop name 'key' to other components omegalul
+            {cards.map((card) => ( card.isUncard ?
+
             <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
-                <card.body key={card.id}/>
-            </ContextData.Provider>
+                <Uncard key={card.id}/>
+            </ContextData.Provider> // if render Uncard boolean
+
+            : 
+
+            <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
+                <Cards key={card.id}/> 
+            </ContextData.Provider> // render Card boolean
             ))}
         </div>
     )

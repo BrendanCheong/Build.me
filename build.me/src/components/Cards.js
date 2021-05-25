@@ -1,5 +1,7 @@
 import { ContextData } from "../pages/Builds";
 import { useContext } from 'react';
+import UnParts from "./unParts";
+import Parts from "./Parts";
 
 const Cards = () => {
     /**
@@ -21,9 +23,14 @@ const Cards = () => {
             </div>  {/** here is where the parts fit into the card */}
                     <div className="grid h-full grid-rows-5 gap-2 p-2">
                         {card.partsData.map((part) => (
-                        <part.body name={part.name} id={card.id} key={part.name}/>
-                        ))}
+                        part.isUnPart ?
 
+                        <UnParts name={part.name} id={card.id} key={part.name}/>
+
+                        :
+
+                        <Parts name={part.name} id={card.id} key={part.name}/>
+                        ))}
                     </div>
                 <h1 className="font-poppins">
                     Total Price:{card.id}
