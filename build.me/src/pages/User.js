@@ -1,13 +1,7 @@
-import axiosInstance from '../AxiosInstance';
-
-const getData = () => {
-    axiosInstance.get('/CPUs/')
-    .then(res => console.table(res.data)) // GET request to get an ARRAY of OBJECTS
-    .catch(err => console.log(err));
-}
-
 
 const User = () => {
+
+
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-4xl text-black uppercase font-poppins">
@@ -16,7 +10,6 @@ const User = () => {
             <p className="text-xl text-black font-poppins">
             editable user settings
             </p>
-            <button onClick={getData}> Funny Button </button>
         </div>
     )
 }

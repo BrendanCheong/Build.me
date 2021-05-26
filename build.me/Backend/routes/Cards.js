@@ -1,4 +1,5 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 let Card = require('../models/Card.model');
 
 router.route('/').get((req, res) => {
@@ -8,12 +9,16 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => { // POST a card
-    const isUncard = req.body.isUncard
-    const partsData = req.body.partsData
+    const isUncard = req.body.isUncard;
+    const partsData = req.body.partsData;
+    const CardName = req.body.CardName;
+    const id = req.body.id;
 
     const newCard = new Card({
         isUncard,
         partsData,
+        CardName,
+        id,
     });
 
     newCard.save()
@@ -33,11 +38,13 @@ router.route('/:id').delete((req, res) => { // DELETE SPECIFIC Card by id
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC CPU by id and ENTER ALL new values/ params ** Uses a POST request **
+router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC Card by id and ENTER ALL new values/ params ** Uses a POST request **
     Card.findById(req.params.id)
     .then(card => {
         card.isUncard = req.body.isUncard;
         card.partsData = req.body.partsData;
+        card.CardName = req.body.CardName;
+        card.id = req.body.id;
 
         card.save()
         .then(() => res.json('Card updated successfully'))
@@ -45,5 +52,21 @@ router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC CPU by id an
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+//  PATCH request
+// UPDATE SPECIFIC Card based on ID
+// enter a PORTION of the values/params needed
+router.patch('/:id', async (req, res) => {
+    try {
+        const card = await Card.findByIdAndUpdate(req.params.id, req.body);
+        if(!card) {
+            throw Error('Something went wrong when patching :(');
+
+        }   res.status(200).json('Specific Card patched successfully!')
+
+    } catch(err) {
+        res.status(400).json('Error: ' + err)
+    }
+})
 
 module.exports = router;

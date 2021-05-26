@@ -1,6 +1,7 @@
 import Cards from "../components/Cards"
 import Uncard from "../components/Uncard"
 import {useState, useEffect, createContext} from 'react'
+import axiosInstance from "../AxiosInstance";
 
 
 export const ContextData = createContext(null)
@@ -14,78 +15,122 @@ const Builds = () => {
     handleDelete: func -> passed to Cards to delete cards
     partsData: list => obj -> passed to Cards -> passed to Parts
     */
+    
 
-    const uncardSchema = {id: 1, isUncard: true, partsData:[]}
-    const cardSchema = {id: Math.random(), isUncard: false,
+    const uncardSchema = {CardName:"Enter Name Here" ,isUncard: true, partsData:[
+        {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+    ]}
+    const cardSchema = {CardName:"Enter Name Here", isUncard: false,
     partsData: [
-    {name: 'CPU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
-    {name: 'Motherboard', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
-    {name: 'GPU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
-    {name: 'Memory', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
-    {name: 'PSU', partPrice: 0, partName: "Nil",vendorName: "Joe Mama", imageLink: "nothing", isUnPart: true,},
+        {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
     ]};
     
+
     const [cards,setCards] = useState([
         uncardSchema,
     ]);
 
-    const handleDelete = (id) => {
-        const newCards = cards.filter(card => card.id !== id)
-        if (newCards[newCards.length - 1].isUncard === false ) {
-            newCards.push(uncardSchema)
+    // GET request ALL CARDS
+    const getAllCards = async () => {
+        try {
+            const response = await axiosInstance.get('/Cards/')
+            return response.data
+        } catch(err) {
+            return err
         }
-        setCards(newCards);
     };
 
-    const addCards = () => {
-        // check the length of cards, before changing the state of cards
-        // right now I only allow 3 cards, I pass the addCards func to the Uncard button
-        // right now the card id is random, while Uncard is fixed at 1
-        const newCards = [...cards]
-        let cardsLength = cards.length
-        if (cardsLength === 3) {
-            newCards.pop()
-            newCards.push(cardSchema)
-        } else {
-            newCards.unshift(cardSchema)
+    // POST request a CARD
+    const PostCard = async (postCardData) => {
+        try {
+            const response = await axiosInstance.post('/Cards/add', postCardData)
+            return response.data
+        } catch(err) {
+            return err
         }
-        setCards(newCards);
+    }
+    // DELETE request a CARD
+    const DeleteCard = async (id) => {
+        try {
+            const response = await axiosInstance.delete(`/Cards/${id}`)
+            return response.data
+        } catch(err) {
+            return err
+        }
+    }
+    // PATCH request for a CARD
+    const PatchCard = async (id, partData) => {
+        try {
+            const response = await axiosInstance.patch(`/Cards/${id}`,partData)
+            return response.data
+        } catch(err) {
+            return err
+        }
+    }
+
+    useEffect(() => { // updates the State after every render
+        const updateState = async () => {
+            const State = await getAllCards()
+            if (State.length <= 2) { // awlays have an Uncard at the end, uncard not in acutal DB
+                State.push(uncardSchema)
+            }
+            setCards(State);
+        }
+        updateState()
+    }, [cards])
+    
+
+    const handleDelete =  async (id) => {
+        const response = await DeleteCard(id)
+        console.log(response)
     };
 
-    const changeNewParts = (name, id, toChange) => {
+    const addCards = async () => {
+        const response = await PostCard(cardSchema);
+        console.log(response)
+    };
+
+    const changeNewParts = async (name, id, toChange) => {
         // run through cards to find the matching id
         // now run through cards.partsData to find the matching name
         // map function confuses me lmao
         const newData = []
         for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id === id) {
+            if (cards[i]._id === id) {
                 for (let j = 0; j < cards[i].partsData.length; j++) {
                     if (cards[i].partsData[j].name === name) {
                         cards[i].partsData[j].isUnPart = toChange
+                        
                     }
+                    newData.push(cards[i].partsData[j])
                 }
             }
-        newData.push(cards[i])}
-        setCards(newData) // outside the loop
+        }
+        const response = await PatchCard(id, {partsData: newData})
+        console.log(response)
     };
 
-
-    // useEffect(() => {
-    //     console.log(cards)
-    // })
 
     return (
         <div className="grid h-screen grid-cols-3 bg-gray-100 place-items-center">
             {cards.map((card) => ( card.isUncard ?
 
             <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
-                <Uncard key={card.id}/>
+                <Uncard key={card._id}/>
             </ContextData.Provider> // if render Uncard boolean
 
             : 
 
             <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
-                <Cards key={card.id}/> 
+                <Cards key={card._id}/> 
             </ContextData.Provider> // render Card boolean
             ))}
         </div>
