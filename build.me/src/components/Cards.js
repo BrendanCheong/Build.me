@@ -17,7 +17,7 @@ const Cards = () => {
                 <h1>Nameless Man With no Name is Long</h1>
                 <div></div>
                 <button className="px-3 py-1 text-black duration-300 transform bg-red-500 rounded-full shadow-md hover:text-white font-poppins hover:scale-110 motion-reduce:transform-none"
-                onClick={() => handleDelete(card.id)}>
+                onClick={() => handleDelete(card._id)}>
                     Remove
                 </button>
             </div>  {/** here is where the parts fit into the card */}
@@ -25,15 +25,15 @@ const Cards = () => {
                         {card.partsData.map((part) => (
                         part.isUnPart ?
 
-                        <UnParts name={part.name} id={card.id} key={part.name}/>
+                        <UnParts name={part.name} id={card._id} key={part.name + card._id}/>
 
                         :
 
-                        <Parts name={part.name} id={card.id} key={part.name}/>
+                        <Parts name={part.name} id={card._id} key={part.name + card._id}/>
                         ))}
                     </div>
                 <h1 className="font-poppins">
-                    Total Price:{card.id}
+                    Total Price:{card._id}
                 </h1>
         </div>
     )

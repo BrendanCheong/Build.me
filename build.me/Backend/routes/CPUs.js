@@ -1,13 +1,14 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 let CPU = require('../models/CPU.model');
 
-router.route('/').get((req, res) => {
+router.route('/').get((req, res) => { // GET ALL CPUs
     CPU.find()
         .then(CPUS => res.json(CPUS))
         .catch(err => res.status(400).json('Error' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/add').post((req, res) => { // POST new CPU eith exact specifications
     const Brand = req.body.Brand
     const Name = req.body.Name
     const Core_Count = req.body.Core_Count
@@ -66,5 +67,20 @@ router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC CPU by id an
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+//  PATCH request
+// UPDATE SPECIFIC CPU based on ID
+router.patch('/:id', async (req, res) => {
+    try {
+        const cpu = await CPU.findByIdAndUpdate(req.params.id, req.body);
+        if(!cpu) {
+            throw Error('Something went wrong when patching :(');
+
+        }   res.status(200).json('Specific CPU patched successfully!')
+
+    } catch(err) {
+        res.status(400).json('Error: ' + err)
+    }
+})
 
 module.exports = router;
