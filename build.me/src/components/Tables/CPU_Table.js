@@ -1,13 +1,25 @@
-import { useMemo } from "react";
+import { useState ,useMemo } from "react";
 import { useTable, usePagination, useFilters } from "react-table";
 import MOCK_DATA_CPU from "../../MOCK_DATA/MOCK_DATA_CPU.json";
 import { CPU_COLUMNS } from "./CPU_Columns";
+import Modal from "../Modal";
+import {TestFunction} from "../TestFunction";
 
 
-const CPUTable = () => {
+const CPUTable = (props) => {
+
+    const Name = "CPU" // change name accordingly for new Tables
 
     const columns = useMemo(() => CPU_COLUMNS, []);
     const data = useMemo(() => MOCK_DATA_CPU, []);
+    const [isOpenModal, setIsOpenModal] = useState(false)
+    const [infoState, setInfoState] = useState(null)
+
+    const Scrapper = (RowInfo) => { // acts as a web scrapper
+        const response = TestFunction(RowInfo) // TestFunction acts as a scrapper
+        setIsOpenModal(true) // as of now, TestFunction only shows .Brand of row
+        setInfoState(response)
+    }
     
     const tableInstance = useTable(
         {
@@ -30,23 +42,27 @@ const CPUTable = () => {
         state,
     } = tableInstance;
 
+    
+
     const { pageIndex } = state;
+    const propData = props.location.state;
 
     return ( 
         <div className ="flex items-center min-h-screen px-4">
             <div className="flex flex-col justify-center w-full overflow-x-auto">
+            <button onClick={() => console.log(propData.card)}>Gimme ID</button>
                 {/** Table Start */}
                 <table {...getTableProps()} className='w-full max-w-4xl mx-auto overflow-hidden bg-white divide-y divide-gray-300 rounded-lg shadow-md whitespace-nowrap'>
                     <thead className="bg-indigo-200">
                         {
                             headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600">
+                                <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600" key={Math.random()}>
                                     {
                                         headerGroup.headers.map( column => (
                                             <th {...column.getHeaderProps()}
-                                            className="px-6 py-4 text-sm font-semibold uppercase font-poppins">
+                                            className="px-6 py-4 text-sm font-semibold uppercase font-poppins" key={Math.random()}>
                                             {column.render('Header')}
-                                                <div>
+                                                <div key={Math.random()}>
                                                     {column.canFilter ? column.render('Filter') : null}
                                                 </div>
                                             </th>
@@ -59,7 +75,8 @@ const CPUTable = () => {
                             page.map(row => {
                                 prepareRow(row)
                                 return (
-                                    <tr {...row.getRowProps()} onClick={() => console.table(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline "> {/** Onclick this will log out the row infomation */}
+                                    <>
+                                    <tr {...row.getRowProps()} onClick={() => Scrapper(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={Math.random()}> {/** Onclick this will log out the row infomation */}
                                         {
                                             row.cells.map( cell => {
                                                 return (
@@ -68,7 +85,10 @@ const CPUTable = () => {
                                                 </td>)
                                             })
                                         }
+                                        
                                     </tr>
+                                    <Modal open={isOpenModal} onClose={() =>setIsOpenModal(false)} info={infoState} setInfoState={setInfoState} key={Math.random()} id={propData.id} card={propData.card} name={Name}/>
+                                    </>
                                 )
                             })
                         }

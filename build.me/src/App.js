@@ -6,11 +6,8 @@ import User from "./pages/User";
 import Builds from "./pages/Builds";
 import Compare_Builds from "./pages/Compare_Builds";
 import Dropdown from "./components/Dropdown";
-
+import CPU_Table from './components/Tables/CPU_Table';
 /** 
-
-TODO:
-do 70% of the Milestone 1 submission (EASY)
 
 TODO:
 Create the rest of the tables for GPU,MOTHERBOARD etc (EASY)
@@ -56,6 +53,7 @@ function App() {
         <Route path="/User" exact component={User}/>
         <Route path="/Builds" exact component={Builds}/>
         <Route path="/Compare_Builds" exact component={Compare_Builds}/>
+        <Route path="/CPU_Table" exact component={CPU_Table}/>
       </Switch>
     </>
   );
