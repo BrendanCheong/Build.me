@@ -2,7 +2,6 @@
   "name": "build.me",
   "version": "0.1.0",
   "private": true,
-   "type": "module",
   "dependencies": {
     "@craco/craco": "^6.1.2",
     "@material-ui/core": "^4.11.4",
