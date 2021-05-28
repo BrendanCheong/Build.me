@@ -25,11 +25,11 @@ const Cards = () => {
                         {card.partsData.map((part) => (
                         part.isUnPart ?
 
-                        <UnParts name={part.name} id={card._id} key={part.name + card._id}/>
+                        <UnParts name={part.name} id={card._id} key={part.name + card._id} card={card}/>
 
                         :
 
-                        <Parts name={part.name} id={card._id} key={part.name + card._id}/>
+                        <Parts name={part.name} id={card._id} key={part.name + card._id} card={card}/>
                         ))}
                     </div>
                 <h1 className="font-poppins">
