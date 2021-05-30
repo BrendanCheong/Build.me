@@ -12,7 +12,7 @@ router.route('/add').post((req, res) => { // POST a card
     const isUncard = req.body.isUncard;
     const partsData = req.body.partsData;
     const CardName = req.body.CardName;
-    const id = req.body.id;
+    const id = req.body.id; // delete id later?
 
     const newCard = new Card({
         isUncard,
