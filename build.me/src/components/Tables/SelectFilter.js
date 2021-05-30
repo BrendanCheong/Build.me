@@ -9,7 +9,7 @@ export const SelectFilter = ({column}) => {
      */
     const {filterValue, setFilter, preFilteredRows, id} = column
     const [value, setValue] = useState(filterValue)
-    const [inputValue, setInputValue] = useState(undefined)
+    const [inputValue, setInputValue] = useState(null)
     const options = useMemo(() => {
         const options = new Set()
         preFilteredRows.forEach(row => {
@@ -25,17 +25,17 @@ export const SelectFilter = ({column}) => {
     return (
         <>
             <Autocomplete
-                value={value || ''}
+                value={value ? value : null}
                 onChange={(event,newValue) => {
                     setValue(newValue);
-                    console.log(newValue);
+                    // console.log(newValue);
                     setFilter(newValue || undefined);
                 }}
                 inputValue={inputValue}
                 onInputChange={(event, newInputChange) => {
                     setInputValue(newInputChange);
-                    console.log(newInputChange);
-                    setFilter(newInputChange || undefined);
+                    // console.log(newInputChange);
+                    // setFilter(newInputChange || undefined);
                 }}
                 id="Select Filterer for Table"
                 options={options}

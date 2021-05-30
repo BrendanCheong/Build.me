@@ -1,124 +1,67 @@
-import { useState ,useMemo } from "react";
-import { useTable, usePagination, useFilters } from "react-table";
-import MOCK_DATA_CPU from "../../MOCK_DATA/MOCK_DATA_CPU.json";
+import { useState ,useMemo, useEffect} from "react";
 import { CPU_COLUMNS } from "./CPU_Columns";
-import Modal from "../Modal";
-import {TestFunction} from "../TestFunction";
+import Table from '../Table';
+import axiosInstance from "../../AxiosInstance";
+
 
 
 const CPUTable = (props) => {
 
     const Name = "CPU" // change name accordingly for new Tables
 
-    const columns = useMemo(() => CPU_COLUMNS, []);
-    const data = useMemo(() => MOCK_DATA_CPU, []);
-    const [isOpenModal, setIsOpenModal] = useState(false)
-    const [infoState, setInfoState] = useState(null)
+    const propData = props.location.data;    
+    const [TableData,setTableData] = useState([])
+    const [loadingTableData, setLoadingTableData] = useState(true)
 
-    const Scrapper = (RowInfo) => { // acts as a web scrapper
-        const response = TestFunction(RowInfo) // TestFunction acts as a scrapper
-        setIsOpenModal(true) // as of now, TestFunction only shows .Brand of row
-        setInfoState(response)
+    const data = useMemo(() => {
+        return TableData
+    }, [TableData]);
+
+    useEffect(() => {
+        async function getData() {
+            await axiosInstance
+                .get('/CPUs/')
+                .then((response) => {
+                    setTableData(response.data)
+                    setLoadingTableData(false) // swap this with true to see the loading skeleton 
+                });
+        }
+        if (loadingTableData) {
+            getData()
+        }
+    }, [])
+
+    const css = `
+    .loader {
+        border-top-color: #6366f1;
+        -webkit-animation: spinner 1.5s linear infinite;
+        animation: spinner 1.5s linear infinite;
     }
     
-    const tableInstance = useTable(
-        {
-            columns,
-            data
-        },  useFilters,
-            usePagination,
-        )
-
-    const { getTableProps, 
-        getTableBodyProps, 
-        headerGroups, 
-        page,
-        nextPage,
-        previousPage,
-        canNextPage,
-        canPreviousPage, 
-        prepareRow,
-        pageOptions,
-        state,
-    } = tableInstance;
-
+    @-webkit-keyframes spinner {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
     
-
-    const { pageIndex } = state;
-    const propData = props.location.state;
+    @keyframes spinner {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    `
 
     return ( 
-        <div className ="flex items-center min-h-screen px-4">
-            <div className="flex flex-col justify-center w-full overflow-x-auto">
-            <button onClick={() => console.log(propData.card)}>Gimme ID</button>
-                {/** Table Start */}
-                <table {...getTableProps()} className='w-full max-w-4xl mx-auto overflow-hidden bg-white divide-y divide-gray-300 rounded-lg shadow-md whitespace-nowrap'>
-                    <thead className="bg-indigo-200">
-                        {
-                            headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600" key={Math.random()}>
-                                    {
-                                        headerGroup.headers.map( column => (
-                                            <th {...column.getHeaderProps()}
-                                            className="px-6 py-4 text-sm font-semibold uppercase font-poppins" key={Math.random()}>
-                                            {column.render('Header')}
-                                                <div key={Math.random()}>
-                                                    {column.canFilter ? column.render('Filter') : null}
-                                                </div>
-                                            </th>
-                                        ))}
-                                </tr>
-                            ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()} className="divide-y divide-gray-200">
-                        {
-                            page.map(row => {
-                                prepareRow(row)
-                                return (
-                                    <>
-                                    <tr {...row.getRowProps()} onClick={() => Scrapper(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={Math.random()}> {/** Onclick this will log out the row infomation */}
-                                        {
-                                            row.cells.map( cell => {
-                                                return (
-                                                <td {...cell.getCellProps()} className="px-6 py-4">
-                                                    {cell.render('Cell')}
-                                                </td>)
-                                            })
-                                        }
-                                        
-                                    </tr>
-                                    <Modal open={isOpenModal} onClose={() =>setIsOpenModal(false)} info={infoState} setInfoState={setInfoState} key={Math.random()} id={propData.id} card={propData.card} name={Name}/>
-                                    </>
-                                )
-                            })
-                        }
-                        
-                    </tbody>
-                {/** Table end */}
-                </table>
-                {/** Pagination Buttons */}
-                <div className="flex items-center justify-center flex-1 p-8 space-x-3">
-                    <button className={canPreviousPage ? "flex items-center content-start px-6 py-4 mr-2 space-x-2 font-bold text-indigo-500 border border-indigo-500 rounded-md hover:bg-indigo-500 hover:text-white" : "flex items-center content-start px-6 py-4 mr-2 space-x-2 font-bold"}
-                    onClick={() => previousPage()} disabled={!canPreviousPage}>
-                        <svg className="flex w-5 h-5 ml-2 fill-current" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        <p>Previous page</p>
-                    </button>
-                    <span>
-                        Page{' '}
-                        <strong>
-                            {pageIndex + 1} of {pageOptions.length}
-                        </strong>{' '}
-                    </span>
-                    <button className={canNextPage ? "flex items-center px-10 py-4 ml-2 font-bold text-white bg-indigo-500 border rounded-md hover:bg-transparent hover:text-indigo-500 hover:border-indigo-500" : "flex items-center px-10 py-2 ml-2 font-bold"}
-                    onClick={() => nextPage()} disabled={!canNextPage}>
-                        <p>Next page</p>
-                        <svg className="w-5 h-5 ml-2 fill-current" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </button>
+        <div>
+            {loadingTableData ?
+                <div className="flex flex-col items-center justify-center pt-48">
+                    <style>{css}</style>
+                    <div className="w-64 h-64 ease-linear border-8 border-t-8 border-gray-200 rounded-full loader">
+                    </div>
                 </div>
-                {/** Pagination end */}
-            </div>
+
+                :
+                <div className="p-4 overflow-auto">
+                    <Table TableColumns={CPU_COLUMNS} Name={Name} data={data} propData={propData}/>
+                </div>}
         </div>
     )
 }

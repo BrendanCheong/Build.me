@@ -9,28 +9,28 @@ export const CPU_COLUMNS = [
     },
     {
         Header:"Model",
-        accessor: "Model Name",
+        accessor: "Name",
         Filter: SelectFilter,
     },
     {
         Header:"Cores",
-        accessor: "Core Count",
+        accessor: "Core_Count",
         Filter: SelectFilter,
     },
     {
         Header: 'Core Clock',
-        accessor: 'Core Clock',
+        accessor: 'Core_Clock',
         Filter: SelectFilter,
 
     },
     {
         Header: 'Boost Clock',
-        accessor: 'Boost Clock',
+        accessor: 'Boost_Clock',
         Filter: SelectFilter,
     },
     {
         Header: 'Integrated Graphics',
-        accessor: 'Integrated Graphics',
+        accessor: 'Integrated_Graphics',
         Filter: SelectFilter,
         
     }

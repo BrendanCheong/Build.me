@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 const UnParts = ({name, id, card}) => {
     /*
-    name: string -> taken from Cards
+    name: string -> taken from Cards -> Ex: name = CPU, Motherboard, GPU etc
     id: int -> taken from Cards
-    addNewParts: func -> taken from Cards => changes unParts to Parts
+    card: infomation of the current card its on, like: id, partsData, name etc
     */
 
     const newTo = {
         pathname: `/${name}_Table`,
-        state: {id : id, card: card, penis:"penis"}
+        data: {id : id, card: card}
     }
 
     return (
@@ -21,7 +21,6 @@ const UnParts = ({name, id, card}) => {
                     Add
                 </Link>
             </div>
-            <button onClick={()=>console.log(card)}>test</button>
         </div>
     )
 }
