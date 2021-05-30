@@ -1,21 +1,23 @@
 import axiosInstance from "../AxiosInstance";
+import { Link } from "react-router-dom";
 
-const ModalCard = ({ id, card, name, info }) => {
+const ModalCard = ({ id, card, name, info, rowOriginal }) => {
 
-    const partName = name
+    const partType = name // partType: CPU,Motherboard, GPU etc
+
+    const Name = info.itemName
+
+    const Price = info.itemPrice
+
+    const Rating = info.itemRating
+
+    const VendorName = info.vendorName
+
+    const itemURL = info.itemURL
+
+    const itemImage = info.itemImg
 
 
-    const Name = "AMD Ryzen 5 3600 AM4 DESKTOP CPU"
-
-    const Price = "S$126.95"
-
-    const Rating = "4.6 out of 5 stars"
-
-    const VendorName = "MadCowIT"
-
-    const itemURL = "https://www.amazon.sg/Corsair-Vengeance-3200MHz-PC4-25600-Memory/dp/B0143UM4TC/ref=sr_1_2?dchild=1&qid=1621869940&s=electronics&sr=1-2"
-
-    const itemImage = 'https://m.media-amazon.com/images/I/51kHiPeTSmL._AC_UL320_.jpg'
 
     function NameShortern (name) {
         if (name.length >= 27) {
@@ -36,11 +38,11 @@ const ModalCard = ({ id, card, name, info }) => {
         }
     }
 
-    const CleanData = async (card) => {
+    const CleanData = async (card) => { // adds to the Builds Page Part component
         const Data = [...card.partsData]
         for (let i = 0; i < Data.length; ++i) {
-            if(Data[i].name === partName) {
-                Data[i].itemName = info
+            if(Data[i].name === partType) {
+                Data[i].itemName = `${rowOriginal.Brand} ${rowOriginal.Name}` // I must have Brand + Name!
                 Data[i].itemPrice = Price
                 Data[i].itemImg = itemImage
                 Data[i].itemRating = Rating
@@ -57,7 +59,7 @@ const ModalCard = ({ id, card, name, info }) => {
                     <button className='bg-transparent hover:bg-gray-100 focus:outline-none' onClick={() => console.log(card)}>
                         {/** Image Block start */}
                             <div className='relative h-40'>
-                                <img className='absolute object-cover w-full h-full p-1 rounded-lg' src='https://m.media-amazon.com/images/I/51kHiPeTSmL._AC_UL320_.jpg' alt="Product Artistry" />
+                                <img className='absolute object-cover w-full h-full p-1 rounded-lg' src={itemImage} alt="Product Artistry" />
                             </div>
                         {/** Image Block end */}
                         {/** Grid Info Start */}
@@ -80,9 +82,9 @@ const ModalCard = ({ id, card, name, info }) => {
                     <a className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' href={itemURL} target="_blank" rel="noreferrer">
                         STORE PAGE
                     </a>
-                    <button className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' onClick={() => CleanData(card)}>
+                    <Link className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' to="/Builds" onClick={() => CleanData(card)}>
                         ADD TO BUILD
-                    </button>
+                    </Link>
                 </div>
             </div>
     )

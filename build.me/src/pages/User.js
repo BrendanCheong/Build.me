@@ -1,6 +1,9 @@
 import Modal from "../components/Modal";
 import {useState,} from "react";
 import {useSpring, animated} from 'react-spring';
+import axiosInstance from "../AxiosInstance";
+
+
 
 
 const User = () => {
@@ -14,6 +17,17 @@ const User = () => {
         opacity: isOpenModal ? 1 : 0,
         transform: isOpenModal ? `translateY(0%)` : `translateY(-100%)`,
     })
+
+    const AmazonScrapper = async (input) => {
+        try {
+            // process input to remove spaces
+            const Input = input.replace(" ", "%20")
+            const response = await axiosInstance.get(`/Ascrapper/${Input}`)
+            return response.data
+        } catch(err) {
+            return err
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -32,6 +46,7 @@ const User = () => {
                     Fancy Text
                 </Modal>
             {/** Modal Ends here */}
+            <button onClick={async () =>console.log( await AmazonScrapper("Ryzen 5 3600X"))}> Test Button</button>
         </div>
     )
 }
