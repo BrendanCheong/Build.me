@@ -70,6 +70,7 @@ const scrape = async (itemSearch, maxItems) => {
                 const itemName = itemListArr[ind1];
                 const itemRating = checkRating(itemListArr, ind2) ? itemListArr[ind2] : 'NA';
                 const itemPrice = getPrice(itemListArr, ind3, ind2);
+                const itemVendor = 'NA';
                 const itemURL = itemList[i].querySelector('a').href;
                 const itemImg = itemList[i].querySelector('img').src;
 
@@ -78,6 +79,7 @@ const scrape = async (itemSearch, maxItems) => {
                     itemName: itemName,
                     itemRating: itemRating,
                     itemPrice: itemPrice,
+                    itemVendor: itemVendor,
                     itemURL: itemURL,
                     itemImg: itemImg,
                 }; 
