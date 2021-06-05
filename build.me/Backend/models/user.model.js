@@ -6,9 +6,16 @@ const userSchema = new Schema({
     username: {
         type: String,
         require: true,
-        unique: true,
         trim: true,
-        minlength: 3
+    },
+    passwordHash: {
+        type: String,
+        required: true,
+    },
+    email:{
+        type: String, 
+        required: true, // can have multiple accounts under one email
+        sparse: true,
     },
 
 }, {

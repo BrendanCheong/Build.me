@@ -6,7 +6,7 @@ import SkeletonBox from "./SkeletonBox";
 
 const Modal = ({ onClose, animated, animation, id, card}) => {
 
-    const {isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading, rowOriginal, setRowOriginal} = useContext(TableDataContext);
+    const {isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading, rowOriginal,} = useContext(TableDataContext);
 
     if(!isOpenModal) return null // if not open, render nothing, else render below box
 

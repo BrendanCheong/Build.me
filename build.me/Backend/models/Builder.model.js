@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const CardSchema = new Schema({
@@ -8,5 +7,12 @@ const CardSchema = new Schema({
     CardName: {type: String, required: true},
 })
 
-const Card = mongoose.model('Card',CardSchema);
-module.exports = Card
+const BuilderSchema = new Schema({
+    _id: {type: String, required: true},
+    darkmode: {type: Boolean, required: true},
+    CardArray: [CardSchema]
+})
+
+const Builder = mongoose.model('Builder',BuilderSchema);
+
+module.exports = Builder;
