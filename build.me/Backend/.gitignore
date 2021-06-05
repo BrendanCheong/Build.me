@@ -1,2 +1,8 @@
-.env
+/.env
 /node_modules
+**/.env
+**/*.env
+Backend/*.env
+./env
+.env
+env
