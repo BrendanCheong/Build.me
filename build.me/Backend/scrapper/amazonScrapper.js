@@ -8,8 +8,6 @@ const scrape = async (itemSearch, maxItems) => {
     const page = await browser.newPage();
     await page.goto(URL);
 
-    let itemLimit = maxItems;
-
     // Searching for item on amazon
     await page.type('#twotabsearchtextbox', itemSearch);
     await page.click('#nav-search-submit-button');
@@ -18,7 +16,7 @@ const scrape = async (itemSearch, maxItems) => {
     const grabItem = await page.evaluate((maxItems) => {
 
         // Json object to hold all items
-        var itemArr = {};
+        var itemArr = [];
         
         // Get item containers
         let itemCon = document.getElementsByClassName('s-result-item');
@@ -105,7 +103,7 @@ const scrape = async (itemSearch, maxItems) => {
 async function scrapper(itemSearch, maxItems) {
     try {
         const response = await scrape(itemSearch, maxItems)
-        console.log(response)
+        //console.log(response)
         return response
     } catch(err) {
         return err

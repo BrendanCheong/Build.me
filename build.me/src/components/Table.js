@@ -28,7 +28,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
     // DataCleaners
     const AmazonDataCleaner = (info, partName) => {
         const ChosenArray = []
-        for (let i = 0 ; i < Object.keys(info).length; ++i) {
+        for (let i = 0 ; i < info.length; ++i) {
             const FullName = info[i].itemName
             const Price = info[i].itemPrice
             if ((FullName.includes(` ${partName} `) || (FullName.includes(`-${partName} `)) || (FullName.includes(` ${partName}-`)) || (FullName.includes(`-${partName}-`))) && Price !== "NA") {
