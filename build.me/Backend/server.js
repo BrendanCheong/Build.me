@@ -8,6 +8,7 @@ const UserRouter = require('./routes/Users');
 const CardRouter = require('./routes/Cards');
 const BuilderRouter = require('./routes/Builder');
 const AmazonScrapper = require('./scrapper/amazonScrapper');
+const LazadaScrapper = require('./scrapper/lazadaScrapper');
 
 
 const app = express();
@@ -55,6 +56,8 @@ app.get('/Ascrapper/:id', async (req, res) => { // scraper just for AMAZON
         'Content-Type': 'text/plain'
     })
     const answer = await AmazonScrapper.Ascrapper(input, 10) // fixed at 10 results
+    // let answer = await LazadaScrapper.LazScrapper(input, 10) // lazada scrapper
+    // answer = LazadaScrapper.lazExcludes(answer ,'itemName', 'Pre-Order') // excludes all items with pre order in name
     res.send(answer)
     
 })
