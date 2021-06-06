@@ -12,15 +12,6 @@ import CPU_Table from './components/Tables/CPU_Table';
 TODO:
 Create the rest of the tables for GPU,MOTHERBOARD etc (EASY)
 
-TODO:
-Create a REST API using AXIOS and Express + Node (HARD)
-
-TODO:
-Create a POPUP Component that Shows Data based on what was clicked in the Table (HARD)
-
-TODO:
-Create a Puppeteer.js API to Amazon and Shopee based on a Query (HARD)
-
 */
 
 

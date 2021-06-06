@@ -105,10 +105,13 @@ const scrape = async (itemSearch, maxItems) => {
 async function scrapper(itemSearch, maxItems) {
     try {
         const response = await scrape(itemSearch, maxItems)
+        console.log(response)
         return response
     } catch(err) {
         return err
     }
 }
 
+// console.log(scrapper("AMD Ryzen 5 3600", 10))
+// console.log("hello")
 module.exports.Ascrapper = scrapper;
