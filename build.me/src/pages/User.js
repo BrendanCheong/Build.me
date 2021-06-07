@@ -1,4 +1,6 @@
-import {useSpring, animated} from 'react-spring';
+// import {useSpring, animated} from 'react-spring';
+import Login from '../components/Authentication/Login';
+import LogoutButton from '../components/Authentication/LogoutButton';
 
 const User = () => {
 
@@ -15,9 +17,7 @@ const User = () => {
             <h1 className="text-4xl text-black uppercase font-poppins">
                 Coming Soon
             </h1>
-            <p className="text-xl text-black font-poppins">
-            editable user settings
-            </p>
+            <LogoutButton/>
         </div>
     )
 }

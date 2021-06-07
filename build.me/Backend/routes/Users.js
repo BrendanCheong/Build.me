@@ -9,18 +9,8 @@ router.route('/').get((req, res) => { // /users/ is for GET req
     .catch(err => res.status(400).json('Error: ' + err)); // spit out error if problem
 });
 
-router.get('/:id', async (req, res) => { // GET USER by specific ID
-    try {
-        const UserById = await User.findById(req.params.id)
 
-        res.json(UserById);
-    } catch(err) {
-        console.error(err)
-        res.status(400).json('Error' + err)
-    }
-})
-
-router.post('/add', async (req, res) => {
+router.post('/add', async (req, res) => { // Register User and Log in
     try {
         const {username, email, password, passwordVerify} = req.body;
         
@@ -84,7 +74,8 @@ router.post('/add', async (req, res) => {
             // secure: true,
             // sameSite: "none",
         })
-        .send()
+        .json("User Added Successfully")
+        
 
         
     } catch(err) {
@@ -142,7 +133,7 @@ router.post("/login",async (req, res) => {
             // secure: true,
             // sameSite: "none",
         })
-        .send()
+        .json("User logged in successfully")
         
     } catch(err) {
         console.error(err)
@@ -159,6 +150,35 @@ router.get('/logout', (req, res) => { // GET REQUEST
         // sameSite: "none",
     })
     .send();
+})
+
+router.get("/loggedIn", (req, res) => { // validates whether Im logged in or not
+    try { // requires CORs to accept origin, credentials true, and axios to send credentials true
+        const token = req.cookies.token;
+        if (!token) return res.json({status: false});
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        decoded["status"] = true;
+
+        res.status(200)
+        .json(decoded)
+
+    } catch (err) {
+        res.json(false);
+    }
+});
+
+
+router.get('/:id', async (req, res) => { // GET USER by specific ID 
+    /** IMPORTANT, PUT THIS FUNCTION AT THE BOTTOM if not everything else breaks */
+    try {
+        const UserById = await User.findById(req.params.id)
+
+        res.json(UserById);
+    } catch(err) {
+        console.error(err)
+        res.status(400).json('Error' + err)
+    }
 })
 
 module.exports = router; // now can be used

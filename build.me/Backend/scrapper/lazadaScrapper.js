@@ -22,7 +22,7 @@ let scrape = async (itemSearch, maxItems) => {
         let script = document.querySelectorAll('script');
 
         // Get array of items
-        for (i=0; i < script.length; i++ ) {
+        for (let i=0; i < script.length; ++i ) {
             // Find script with window.pageData
             if (script[i].text.includes('window.pageData')) {
                 
@@ -54,7 +54,7 @@ let scrape = async (itemSearch, maxItems) => {
             }
 
             // Parse array of items into array of desired JSON format
-            for (i=0; i < itemLimit; i++) {
+            for (let i=0; i < itemLimit; ++i) {
                 newArr.push({
                     itemName: itemArr[i].name,
                     itemRating: (itemArr[i].ratingScore === '0') ? 'NA' : itemArr[i].ratingScore,

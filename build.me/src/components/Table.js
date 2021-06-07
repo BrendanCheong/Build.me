@@ -18,8 +18,8 @@ const Table = ({TableColumns, Name, data, propData}) => {
         try {
             // process input to remove spaces
             const Input = input.replace(" ", "%20")
-            const response = await axiosInstance.get(`/Ascrapper/${Input}`)
-            return response.data
+            const response = await axiosInstance.get(`/Ascrapper/${Input}`,{withCredentials: false})
+            return response.data // remove withCredientals: false later once authentication complete
         } catch(err) {
             return err
         }

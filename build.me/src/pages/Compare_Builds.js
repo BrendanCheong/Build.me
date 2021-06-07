@@ -1,4 +1,4 @@
-// import CPUTable from "../components/Tables/CPU_Table";
+import Register from "../components/Authentication/Register";
 
 const Compare_Builds = () => {
     return (

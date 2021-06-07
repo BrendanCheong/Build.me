@@ -85,7 +85,7 @@ const Builds = () => {
             setCards(State);
         }
         updateState()
-    }, [cards])
+    }, []) // add cards in dependency?
     
 
     const handleDelete =  async (id) => {
