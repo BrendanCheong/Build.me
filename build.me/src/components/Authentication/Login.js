@@ -13,7 +13,7 @@ const Login = () => {
     const history = useHistory();
 
     const Login = async (event) => {
-        event.preventDefault(); // prevents the deafault loading when sending query strings
+        event.preventDefault(); // prevents the default loading when sending query strings
 
         try {
             const LoginData = {
@@ -26,7 +26,6 @@ const Login = () => {
             console.log(response.data)
             
             await getLoggedIn();
-            console.log(history)
             history.push('/')
             return response.data
         } catch(err) {

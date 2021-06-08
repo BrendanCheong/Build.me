@@ -47,12 +47,18 @@ function App() {
   // start of the styling of App.js
   return (
     <>
-      {loggedIn.status === true ? 
-        <Navbar toggle={toggle}/>
-        :<LoginNavbar toggle={toggle}/>}
-      {loggedIn.status === true ?
-        <Dropdown isOpen={isOpen} toggle={toggle}/>
-        : <LoginDropDown/>}
+      {
+        loggedIn.status === true ?
+        [
+          <Navbar toggle={toggle} key={1}/>,
+          <Dropdown isOpen={isOpen} toggle={toggle} key={2}/>
+        ]
+        :
+        [
+          <LoginNavbar toggle={toggle} key={3}/>,
+          <LoginDropDown isOpen={isOpen} toggle={toggle} key={4}/>
+        ]
+      }
       <Switch>
         <Route path="/User" exact component={User}/>
         <Route path="/Builds" exact component={Builds}/>

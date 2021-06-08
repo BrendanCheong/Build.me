@@ -95,7 +95,7 @@ router.post("/login",async (req, res) => {
         // validate that all fields are sent
         if ( !username || !password || !email) {
             return res
-            .status(400)
+            .status(401)
             .json({Error : "Please enter all required fields"})
         }
 

@@ -1,4 +1,4 @@
-import Register from "../components/Authentication/Register";
+
 
 const Compare_Builds = () => {
     return (

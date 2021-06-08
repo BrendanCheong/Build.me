@@ -1,5 +1,4 @@
 // import {useSpring, animated} from 'react-spring';
-import Login from '../components/Authentication/Login';
 import LogoutButton from '../components/Authentication/LogoutButton';
 
 const User = () => {
