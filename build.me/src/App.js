@@ -47,38 +47,44 @@ function App() {
   // start of the styling of App.js
   return (
     <>
-      {
-        loggedIn.status === true ?
-        [
-          <Navbar toggle={toggle} key={1}/>,
-          <Dropdown isOpen={isOpen} toggle={toggle} key={2}/>
-        ]
-        :
-        [
-          <LoginNavbar toggle={toggle} key={3}/>,
-          <LoginDropDown isOpen={isOpen} toggle={toggle} key={4}/>
-        ]
-      }
-      <Switch>
-        <Route path="/User" exact component={User}/>
-        <Route path="/Builds" exact component={Builds}/>
-        <Route path="/Compare_Builds" exact component={Compare_Builds}/>
-        <Route path="/CPU_Table" exact component={CPU_Table}/>
-        <Route path='/' exact component={Home}/>
-        <Route path="/Login" exact component={LoginPage}/>
-        <Route path="/Register" exact component={RegisterPage}/>
-        <Route path="/Public_Builds" exact component={Public_Builds}/>
-        <Route exact path="/" render={() => (
-          loggedIn.status === true ? (
-            <Redirect to="/"/>
-          ) : (
-            <Redirect to="/Login"/>
-          )
-
-        )}/> {/** exact path? */}
-      </Switch>
+  {loggedIn.status===false && (
+    <>
+      <LoginNavbar toggle={toggle}/>
+      <LoginDropDown isOpen={isOpen} toggle={toggle}/>
     </>
+  )}
+  {loggedIn.status === true && (
+    <>
+      <Navbar toggle={toggle} key={1}/>
+      <Dropdown isOpen={isOpen} toggle={toggle} key={2}/>
+    </>
+  )}
+    <Switch>
+      {loggedIn.status === false && (
+        <>
+          <Route path="/Login" exact component={LoginPage}/>
+          <Route path="/Register" exact component={RegisterPage}/>
+          <Route path="/Public_Builds" exact component={Public_Builds}/>
+          <Route exact path="/" render={() => (
+              loggedIn.status === true 
+              ? (<Redirect to="/"/>) 
+              : (<Redirect to="/Login"/>))}/>
+        </>
+      )}
+      {loggedIn.status === true && (
+        <>
+          <Route path="/User" exact component={User}/>
+          <Route path="/Builds" exact component={Builds}/>
+          <Route path="/Compare_Builds" exact component={Compare_Builds}/>
+          <Route path="/CPU_Table" exact component={CPU_Table}/>
+          <Route path='/' exact component={Home}/>
+        </>
+      )}
+    </Switch>
+  </>
   );
 }
 
 export default App;
+
+

@@ -17,7 +17,7 @@ router.post('/', auth, async (req, res) => { // POST NEW BUILDER
         res.json(savedBuilder);
     } catch(err) {
         console.error(err)
-        res.status(500).send()
+        res.status(500).send({Error:'Builder already exists'})
     }
 })
 
@@ -31,14 +31,14 @@ router.get('/',auth, async (req, res) => { // GET ALL Builders
     }
 })
 
-router.get('/:id', async (req, res) => { // GET SPECIFIC Builder
+router.get('/:id', auth, async (req, res) => { // GET SPECIFIC Builder
     try {
         const BuilderById = await Builder.findById(req.params.id)
 
         res.json(BuilderById);
     } catch(err) {
         console.error(err)
-        res.status(500).send()
+        res.status(500).send({Error:'Builder does not exist'})
     }
 })
 
