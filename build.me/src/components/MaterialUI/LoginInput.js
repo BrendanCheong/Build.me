@@ -1,5 +1,4 @@
 import TextField from '@material-ui/core/TextField';
-import { useEffect } from 'react';
 
 const LoginInput = ({label, setUsername, setEmail, setPassword, ErrorState, setPasswordVerify, width}) => {
 

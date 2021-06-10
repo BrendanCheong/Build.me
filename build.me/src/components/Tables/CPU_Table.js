@@ -29,7 +29,7 @@ const CPUTable = (props) => {
         if (loadingTableData) {
             getData()
         }
-    }, [])
+    }, [loadingTableData])
 
     const css = `
     .loader {

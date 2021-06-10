@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 router.route('/').get((req, res) => { // /users/ is for GET req
     User.find()                         // will get array of ALL users
@@ -149,7 +150,7 @@ router.get('/logout', (req, res) => { // GET REQUEST
         // secure: true,
         // sameSite: "none",
     })
-    .send();
+    .send("Logout Successful");
 })
 
 router.get("/loggedIn", (req, res) => { // validates whether Im logged in or not
@@ -168,6 +169,19 @@ router.get("/loggedIn", (req, res) => { // validates whether Im logged in or not
     }
 });
 
+router.delete('/delete', auth, async (req, res) => {// DELETE USER by removing from DB and delete cookie
+    try {
+        User.findByIdAndDelete(req.user)
+        res.cookie("token", "",{ // clear cookie or make the cookie empty
+            httpOnly:true,
+            expires: new Date(0), // completely remove cookie
+        })
+        .send("Deletion of User Complete");
+    } catch(err) {
+        console.error(err)
+        res.status(400).json("Error: " + err)
+    }
+})
 
 router.get('/:id', async (req, res) => { // GET USER by specific ID 
     /** IMPORTANT, PUT THIS FUNCTION AT THE BOTTOM if not everything else breaks */
@@ -177,7 +191,7 @@ router.get('/:id', async (req, res) => { // GET USER by specific ID
         res.json(UserById);
     } catch(err) {
         console.error(err)
-        res.status(400).json('Error' + err)
+        res.status(400).json('Error: ' + err)
     }
 })
 

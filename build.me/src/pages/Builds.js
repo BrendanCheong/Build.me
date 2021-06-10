@@ -17,7 +17,7 @@ const Builds = () => {
     */
     
 
-    const uncardSchema = {CardName:"Enter Name Here" ,isUncard: true, partsData:[
+    const uncardSchema = {CardName:"Enter Name Here" ,isUncard: true, _id: 1, partsData:[
         {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
@@ -37,40 +37,45 @@ const Builds = () => {
     const [cards,setCards] = useState([
         uncardSchema,
     ]);
-
+    const [submitting, setSubmitting] = useState(true);
     // GET request ALL CARDS
     const getAllCards = async () => {
         try {
-            const response = await axiosInstance.get('/Cards/')
-            return response.data
+
+            const response = await axiosInstance.get('/Builder/find')
+            // console.log(response.data.CardArray)
+            return response.data.CardArray
+
         } catch(err) {
             return err
         }
-    };
+    }
+    
 
-    // POST request a CARD
     const PostCard = async (postCardData) => {
         try {
-            const response = await axiosInstance.post('/Cards/add', postCardData)
+            const response = await axiosInstance.put('/Builder/addCard',postCardData)
+            
             return response.data
         } catch(err) {
             return err
         }
     }
-    // DELETE request a CARD
+
     const DeleteCard = async (id) => {
         try {
-            const response = await axiosInstance.delete(`/Cards/${id}`)
+            const response = await axiosInstance.delete(`/Builder/${id}`)
             return response.data
         } catch(err) {
             return err
         }
     }
-    // PATCH request for a CARD
+
     const PatchCard = async (id, partData) => {
         try {
-            const response = await axiosInstance.patch(`/Cards/${id}`,partData)
+            const response = await axiosInstance.patch(`/Builder/${id}`,partData)
             return response.data
+
         } catch(err) {
             return err
         }
@@ -83,19 +88,24 @@ const Builds = () => {
                 State.push(uncardSchema)
             }
             setCards(State);
+            setSubmitting(false)
         }
-        updateState()
-    }, []) // add cards in dependency?
+        if (submitting) {
+            updateState();
+        }
+    }, [submitting, uncardSchema])
     
 
     const handleDelete =  async (id) => {
         const response = await DeleteCard(id)
-        console.log(response)
+        setSubmitting(true)
+        // console.log(response)
     };
 
     const addCards = async () => {
         const response = await PostCard(cardSchema);
-        console.log(response)
+        setSubmitting(true)
+        // console.log(response)
     };
 
     const changeNewParts = async (name, id, toChange) => {
@@ -115,7 +125,8 @@ const Builds = () => {
             }
         }
         const response = await PatchCard(id, {partsData: newData})
-        console.log(response)
+        setSubmitting(true)
+        // console.log(response)
     };
 
 
