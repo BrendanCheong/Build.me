@@ -47,7 +47,7 @@ function App() {
   // start of the styling of App.js
   return (
     <>
-  {loggedIn.status===false && (
+  {loggedIn.status === false && (
     <>
       <LoginNavbar toggle={toggle}/>
       <LoginDropDown isOpen={isOpen} toggle={toggle}/>
@@ -55,8 +55,8 @@ function App() {
   )}
   {loggedIn.status === true && (
     <>
-      <Navbar toggle={toggle} key={1}/>
-      <Dropdown isOpen={isOpen} toggle={toggle} key={2}/>
+      <Navbar toggle={toggle}/>
+      <Dropdown isOpen={isOpen} toggle={toggle}/>
     </>
   )}
     <Switch>

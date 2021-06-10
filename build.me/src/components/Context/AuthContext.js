@@ -15,6 +15,9 @@ const AuthContextFunc = (props) => {
     useEffect(() => {
 
         getLoggedIn()
+        return () => {
+            setLoggedIn({status:undefined}) // or status undefined, basically set a default state while async is loading
+        }
 
     }, [])
 

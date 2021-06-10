@@ -30,6 +30,10 @@ const RegisterPage = () => {
 
             const response = await axiosInstance.post('/users/add',registerData)
             await getLoggedIn();
+			await axiosInstance.post('/Builder/',{
+				"darkmode":false,
+				"CardArray":[]
+			})
 
 			setMessage("")
             setErrorState(false)

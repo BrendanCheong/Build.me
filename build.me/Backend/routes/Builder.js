@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Builder = require('../models/Builder.model')
+const Card = require("../models/Card.model");
 const auth = require('../middleware/auth');
 
 router.post('/', auth, async (req, res) => { // POST NEW BUILDER
@@ -31,14 +32,74 @@ router.get('/',auth, async (req, res) => { // GET ALL Builders
     }
 })
 
-router.get('/:id', auth, async (req, res) => { // GET SPECIFIC Builder
+router.get('/find', auth, async (req, res) => { // GET SPECIFIC Builder
     try {
-        const BuilderById = await Builder.findById(req.params.id)
+        const BuilderById = await Builder.findById(req.user)
 
         res.json(BuilderById);
     } catch(err) {
         console.error(err)
         res.status(500).send({Error:'Builder does not exist'})
+    }
+})
+
+router.delete('/:id', auth, async (req, res) => { // DELETE specific card in CardArray from Builders
+    try {
+        const response = await Builder.findOneAndUpdate(
+            {_id:req.user},
+            {$pull:{CardArray:{_id:req.params.id}}})
+
+        if (response) res.json("Card Deleted successfully")
+    } catch(err) {
+        console.error(err)
+        res.status(500).send({Error: 'Failed to delete'})
+    }
+})
+
+router.delete('/delete', auth, (req, res) => { // DELETE BUILDER completely
+    Builder.findByIdAndDelete(req.user)
+    .then(() => res.json("Builder Deleted successfully"))
+    .catch((err) => res.status(500).json('Error: ' + err))
+})
+
+router.patch('/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card using Cookie and Card Id
+    try {
+        const BuilderById = await Builder.findById(req.user)
+        for (let Card of BuilderById.CardArray) {
+            if (Card._id.toString() === req.params.id) {
+                Card.partsData = req.body.partsData // payload must be in the {partsData: blah blah }
+                break;
+            }
+        }
+        BuilderById.save()
+        res.json("PartsData updated successfully")
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).send({Error: "Failed to update"})
+    }
+})
+
+router.put('/addCard', auth, async (req, res) => { // adds a Card to CardArray of particular Builder
+    try {
+        const BuilderById = await Builder.findById(req.user);
+        const isUncard = req.body.isUncard;
+        const partsData = req.body.partsData;
+        const CardName = req.body.CardName;
+
+        const newCard = new Card({
+            isUncard,
+            partsData,
+            CardName,
+        });
+
+        BuilderById.CardArray.push(newCard)
+        BuilderById.save()
+        res.json(BuilderById)
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).send({Error: "Failed to Post"})
     }
 })
 
