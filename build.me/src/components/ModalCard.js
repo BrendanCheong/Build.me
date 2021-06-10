@@ -31,8 +31,9 @@ const ModalCard = ({ id, card, name, info, rowOriginal }) => {
     // PATCH request for a CARD
     const PatchCard = async (id, partData) => {
         try {
-            const response = await axiosInstance.patch(`/Cards/${id}`,partData)
+            const response = await axiosInstance.patch(`/Builder/${id}`,partData)
             return response.data
+
         } catch(err) {
             return err
         }

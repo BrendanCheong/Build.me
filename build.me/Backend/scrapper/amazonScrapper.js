@@ -20,7 +20,7 @@ const scrape = async (itemSearch, maxItems) => {
         
         // Get item containers
         let itemCon = document.getElementsByClassName('s-result-item');
-
+        
         // Set max item limit, default to all items in page if pass in no argument
         let itemLimit = itemCon.length;
 
@@ -110,6 +110,6 @@ async function scrapper(itemSearch, maxItems) {
     }
 }
 
-console.log(scrapper("AMD Ryzen 5 3600", 10))
+scrapper("AMD Ryzen 5 3600", 10).then((res) => console.log(res))
 // console.log("hello")
 module.exports.Ascrapper = scrapper;
