@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const exphbs = require('express-handlebars');
+const path = require('path');
 // import router files
 const CPURouter = require('./routes/CPUs');
 const UserRouter = require('./routes/Users');
@@ -21,6 +23,9 @@ const PORT = process.env.PORT || 5000;
 app.get('/', (req, res) => { 
     res.send('Hello from node.js!');
 })
+// view engine set-up for express handlebars for html parsing
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
 
 //BodyParser Middleware
 app.use(cors({

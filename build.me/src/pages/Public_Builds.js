@@ -1,9 +1,9 @@
-import React from 'react'
+
 
 const Public_Builds = () => {
+
     return (
-        <div className="justify-center h-screen bg-gray-100 place-items-center">
-            <p>PENIS</p>
+        <div className="flex items-center justify-center h-screen text-center bg-gray-100">
         </div>
     )
 }

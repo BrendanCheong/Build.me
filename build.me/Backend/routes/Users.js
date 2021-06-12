@@ -3,6 +3,9 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+const handlebars = require('handlebars');
+const fs = require('fs');
 
 router.route('/').get((req, res) => { // /users/ is for GET req
     User.find()                         // will get array of ALL users
@@ -53,35 +56,64 @@ router.post('/add', async (req, res) => { // Register User and Log in
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt)
 
-        // save user to the MongoDB
 
-        const newUser = new User({
-            username,
-            email,
-            passwordHash
-        })
+        const readHTMLfile = function(path, callback) {
+            fs.readFile(path, {encoding: 'utf-8'}, function(err, html) {
+                if(err) {
+                    res.status(500).send(err)
+                } else {
+                    callback(null, html)
+                }
+            })
+        }
 
-        const savedUser = await newUser.save(); // after saving, this returns a new document/json of the user
-        
-        // log the user in after they have registered an account
-        // sign the token immediately after registering
         const token = jwt.sign({
-            user: savedUser._id // unique userid
-        },  process.env.JWT_SECRET); // secret decryption key we created used
-        // send the token in a cookie in HTTP-only
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
+            username: username,
+            email: email,
+            password: passwordHash,
+        },
+        process.env.EMAIL_SECRET,
+        {
+            expiresIn:'300s' // 5 minute email token expiry
         })
-        .json("User Added Successfully")
-        
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USERNAME,
+                pass: process.env.EMAIL_SECRET
+            },
+            from: process.env.EMAIL_USERNAME
+        });
+
+        const url = `http://localhost:3000/confirm/${token}`
+
+        readHTMLfile(__dirname + '/public/index.html', function(err, html) {
+            const template = handlebars.compile(html);
+            const replacements = {
+                url: url
+            }
+            const htmlToSend = template(replacements);
+            const mailOptions = {
+                from: process.env.EMAIL_USERNAME,
+                to: email,
+                subject: "Confirm Email for Build.me",
+                html: htmlToSend
+            }
+
+            transporter.sendMail(mailOptions, function(err, data) {
+                if(err) {
+                    res.status(500).json(err)
+                } else {
+                    res.status(200).json("Email sent!")
+                }
+            })
+        })
 
         
     } catch(err) {
         console.error(err)
-        res.status(400).json('Error' + err)
+        res.status(400).json({Error: err})
     }
 })
 
@@ -168,6 +200,53 @@ router.get("/loggedIn", (req, res) => { // validates whether Im logged in or not
         res.json(false);
     }
 });
+
+router.get('/verify/:token', async (req, res) => { // verify token, create user, send cookie
+    try {
+        const token = req.params.token;
+        const decoded = jwt.verify(token, process.env.EMAIL_SECRET);
+        const username = decoded.username;
+        const email = decoded.email;
+        const passwordHash = decoded.password;
+
+        const newUser = new User({
+            username,
+            email,
+            passwordHash
+        })
+
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res
+            .status(400)
+            .json({Error: "That user already exists!"})
+        }
+
+        const savedUser = await newUser.save(); // after saving, this returns a new document/json of the user
+
+        // log the user in after they have registered an account
+        // sign the token immediately after registering
+        const cookie = jwt.sign({
+            user: savedUser._id // unique userid
+        },  process.env.JWT_SECRET); // secret decryption key we created used
+        // send the token in a cookie in HTTP-only
+
+        res.cookie("token", cookie, {
+            httpOnly: true,
+            // secure: true,
+            // sameSite: "none",
+        })
+        .json("User Added Successfully")
+
+
+    } catch(err) {
+        res
+        .status(500)
+        .json({Error: err})
+    }
+
+    return res.redirect(`http://localhost:3000`)
+})
 
 router.delete('/delete', auth, async (req, res) => {// DELETE USER by removing from DB and delete cookie
     try {

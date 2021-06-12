@@ -1,9 +1,11 @@
 import { useState, useContext} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import PCPartsCartoon from '../images/CartoonPCparts.jpg';
+import { store } from 'react-notifications-component';
 import axiosInstance from '../AxiosInstance';
 import AuthContextData from '../components/Context/AuthContext';
 import LoginInput from '../components/MaterialUI/LoginInput';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const RegisterPage = () => {
 
@@ -13,12 +15,13 @@ const RegisterPage = () => {
     const [passwordVerify, setPasswordVerify] = useState("");
 	const [Message, setMessage] = useState("")
     const [ErrorState, setErrorState] = useState(false)
+	const [disableButton, setDisabledButton] = useState(false)
 
     const { getLoggedIn } = useContext(AuthContextData)
     const history = useHistory()
 
     const register = async (event) => {
-        event.preventDefault(); // prevents the deafault loading when sending query strings
+        event.preventDefault(); // prevents the default instant refresh when sending request
 
         try {
             const registerData = {
@@ -27,21 +30,33 @@ const RegisterPage = () => {
                 password,
                 passwordVerify,
             }
+			setDisabledButton(true)
 
-            const response = await axiosInstance.post('/users/add',registerData)
-            await getLoggedIn();
-			await axiosInstance.post('/Builder/',{
-				"darkmode":false,
-				"CardArray":[]
-			})
+            const response = await axiosInstance.post('/users/add',registerData) // user is created
+            
 
-			setMessage("")
-            setErrorState(false)
-            history.push('/')
+			store.addNotification({
+				title: "Verification Email Sent",
+				message:"Please check your email",
+				type: "success",
+				insert: "bottom",
+				container: "bottom-right",
+				animationIn: ["animate__animated animate__fadeIn"],
+				animationOut: ["animate__animated animate__fadeOut"],
+				dismiss: {
+				duration: 5000,
+				}
+			});
+
+			setDisabledButton(false)
+			setMessage("") // set Error message to false
+            setErrorState(false) // reset Errors if there is
+            
 			
             return response.data
         } catch(err) {
             const response = err.response.data.Error
+			setDisabledButton(false)
 			setErrorState(true)
 			setMessage(response)
         }
@@ -50,9 +65,9 @@ const RegisterPage = () => {
 
     return (
 		<div className="h-screen py-1 bg-gray-100 font-poppins">
-			<div className="flex justify-center px-6 pb-8 my-12 bg-gray-100">
+			<div className="flex justify-center flex-shrink-0 px-6 pb-8 my-12 bg-gray-100">
 				{/* <!-- Row --> */}
-				<div className="flex w-full xl:w-3/4 lg:w-11/12">
+				<div className="flex flex-shrink-0 w-full xl:w-3/4 lg:w-11/12">
 					{/* <!-- Col --> */}
 					<img className="hidden object-cover w-full h-auto bg-gray-400 bg-cover rounded-l-lg shadow-2xl lg:block lg:w-5/12" alt="PCparts pic" src={PCPartsCartoon}/>
 					{/* <!-- Col --> */}
@@ -76,13 +91,17 @@ const RegisterPage = () => {
 							<div className="items-center justify-center text-center">
 								<p className="pb-5 text-xs italic text-red-500">{Message}</p>
 							</div>
-							<div className="mb-6 text-center">
+							<div className="flex flex-shrink-0 mt-1 mb-6 text-center">
 								<button
-									className="w-full px-4 py-2 font-bold text-white duration-200 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 focus:outline-none focus:shadow-outline"
-									type="submit"
+									className="w-2/3 px-4 py-3 ml-20 font-bold text-white duration-200 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 focus:outline-none focus:shadow-outline"
+									type="submit" disabled={disableButton}
 								>
 									Register Account
 								</button>
+								<div className="ml-4">
+									{disableButton && 
+									<CircularProgress/>}
+								</div>
 							</div>
 							<hr className="mb-6 border-t" />
 							<div className="text-center">
@@ -93,7 +112,7 @@ const RegisterPage = () => {
 									Forgot Password?
 								</p>
 							</div>
-							<div className="text-center">
+							<div className="flex flex-col items-center flex-shrink-0 text-center">
 								<Link
 									className="inline-block text-sm text-blue-500 align-baseline duration-200 hover:text-indigo-800"
 									to="/Login"
@@ -101,6 +120,7 @@ const RegisterPage = () => {
 									Already have an account? Login!
 								</Link>
 							</div>
+							
 						</form>
 					</div>
 				</div>
@@ -109,8 +129,5 @@ const RegisterPage = () => {
     )
 }
 
-// <div className="h-screen bg-gray-100 place-items-center">
-    //     <Register/>
-// </div>
 
 export default RegisterPage

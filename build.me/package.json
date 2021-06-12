@@ -19,9 +19,9 @@
     "postcss": "^7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-notifications-component": "^3.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-spring": "^9.1.2",
     "react-table": "^7.7.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "web-vitals": "^1.0.1"

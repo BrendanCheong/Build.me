@@ -6,6 +6,7 @@ import LoginDropDown from './components/Authentication/LoginDropDown';
 import Compare_Builds from "./pages/Compare_Builds";
 import Dropdown from "./components/Dropdown";
 import CPU_Table from './components/Tables/CPU_Table';
+import Confirmation from './components/Authentication/Confirmation';
 import AuthContextData from './components/Context/AuthContext';
 import Home from "./pages";
 import User from "./pages/User";
@@ -62,9 +63,11 @@ function App() {
     <Switch>
       {loggedIn.status === false && (
         <>
+          
           <Route path="/Login" exact component={LoginPage}/>
           <Route path="/Register" exact component={RegisterPage}/>
           <Route path="/Public_Builds" exact component={Public_Builds}/>
+          <Route path="/confirm/:token" exact component={Confirmation}/>
           <Route exact path="/" render={() => (
               loggedIn.status === true 
               ? (<Redirect to="/"/>) 
@@ -73,6 +76,7 @@ function App() {
       )}
       {loggedIn.status === true && (
         <>
+          
           <Route path="/User" exact component={User}/>
           <Route path="/Builds" exact component={Builds}/>
           <Route path="/Compare_Builds" exact component={Compare_Builds}/>

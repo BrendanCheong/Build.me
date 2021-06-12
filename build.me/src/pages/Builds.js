@@ -1,6 +1,6 @@
 import Cards from "../components/Cards"
 import Uncard from "../components/Uncard"
-import {useState, useEffect, createContext} from 'react'
+import {useState, useEffect, createContext,} from 'react'
 import axiosInstance from "../AxiosInstance";
 
 
@@ -24,6 +24,7 @@ const Builds = () => {
         {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
     ]}
+    
     const cardSchema = {CardName:"Enter Name Here", isUncard: false,
     partsData: [
         {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
