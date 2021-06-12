@@ -1,6 +1,6 @@
 import AuthContextData from './AuthContext';
 import { useContext } from 'react';
-import {useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const RegisterSuccess = ({setLoading}) => {
 

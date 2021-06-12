@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance';
 import RegisterSuccess from '../Context/RegisterSuccess';
 import RegisterLoading from '../Context/RegisterLoading';
@@ -9,21 +10,30 @@ const Confirmation = (props) => {
 
     const MyToken = props.match.params.token;
     const [loading, setLoading] = useState(true);
-    const { getLoggedIn } = useContext(AuthContextData)
+    const { getLoggedIn } = useContext(AuthContextData);
+    const history = useHistory();
 
     useEffect(() => {
-        console.log(MyToken)
         const VerifyUser =  async () => {
-            const response = await axiosInstance.get(`/users/verify/${MyToken}`).catch(error => setLoading(error.response.data.Error)) // get cookie
-            if(response.data === "User Added Successfully") {
-                await axiosInstance.post('/Builder/',{  // add builder
-                    "darkmode":false,
-                    "CardArray":[]
-                }).catch(error => setLoading(error.response.data.Error))
-                setLoading(false)
+
+            try {
+                const response = await axiosInstance.get(`/users/verify/${MyToken}`)
+                if(response.data === "User Added Successfully") {
+                    try {
+                        await axiosInstance.post('/Builder/',{  // add builder
+                            "darkmode":false,
+                            "CardArray":[]
+                        })
+                        setLoading(false)
+                    } catch(err) {
+                        setLoading(err.response.data.Error)
+                    }
+                }
+            } catch(err) {
+                setLoading(err.response.data.Error.name)
             }
         }
-        if(loading) {
+        if(loading === true) {
             VerifyUser();
         }
     },[loading, MyToken, getLoggedIn])

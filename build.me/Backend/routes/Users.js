@@ -219,7 +219,7 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
         if (existingUser) {
             return res
             .status(400)
-            .json({Error: "That user already exists!"})
+            .json({Error: {name: "That user already exists!"}})
         }
 
         const savedUser = await newUser.save(); // after saving, this returns a new document/json of the user

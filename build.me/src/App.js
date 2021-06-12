@@ -68,10 +68,7 @@ function App() {
           <Route path="/Register" exact component={RegisterPage}/>
           <Route path="/Public_Builds" exact component={Public_Builds}/>
           <Route path="/confirm/:token" exact component={Confirmation}/>
-          <Route exact path="/" render={() => (
-              loggedIn.status === true 
-              ? (<Redirect to="/"/>) 
-              : (<Redirect to="/Login"/>))}/>
+          <Route exact path="/" render={() => <Redirect to="/Login"/>}/>
         </>
       )}
       {loggedIn.status === true && (
@@ -82,6 +79,10 @@ function App() {
           <Route path="/Compare_Builds" exact component={Compare_Builds}/>
           <Route path="/CPU_Table" exact component={CPU_Table}/>
           <Route path='/' exact component={Home}/>
+          <Route path="/confirm/:token" render={() => <Redirect to="/"/>}/>
+          <Route path="/Login" render={() => <Redirect to="/"/>}/>
+          <Route path="/Register" render={() => <Redirect to="/"/>}/>
+          <Route path="/Public_Builds" render={() => <Redirect to="/"/>}/>
         </>
       )}
     </Switch>
