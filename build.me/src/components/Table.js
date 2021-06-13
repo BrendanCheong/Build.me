@@ -12,7 +12,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
     const [isModalLoading, setIsModalLoading] = useState(true) // this is to see whether skeletal boxes are needed
     const [rowOriginal, setRowOriginal] = useState("")
 
-    const columns = useMemo(() => TableColumns, []); // columns
+    const columns = useMemo(() => TableColumns, [TableColumns]); // columns
 
     const AmazonScrapper = async (input) => {
         try {

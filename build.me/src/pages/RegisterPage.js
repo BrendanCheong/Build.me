@@ -1,9 +1,8 @@
-import { useState, useContext} from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useState,} from 'react';
+import { Link,} from 'react-router-dom';
 import PCPartsCartoon from '../images/CartoonPCparts.jpg';
 import { store } from 'react-notifications-component';
 import axiosInstance from '../AxiosInstance';
-import AuthContextData from '../components/Context/AuthContext';
 import LoginInput from '../components/MaterialUI/LoginInput';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -17,8 +16,6 @@ const RegisterPage = () => {
     const [ErrorState, setErrorState] = useState(false)
 	const [disableButton, setDisabledButton] = useState(false)
 
-    const { getLoggedIn } = useContext(AuthContextData)
-    const history = useHistory()
 
     const register = async (event) => {
         event.preventDefault(); // prevents the default instant refresh when sending request

@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance';
 import RegisterSuccess from '../Context/RegisterSuccess';
 import RegisterLoading from '../Context/RegisterLoading';
@@ -11,7 +10,6 @@ const Confirmation = (props) => {
     const MyToken = props.match.params.token;
     const [loading, setLoading] = useState(true);
     const { getLoggedIn } = useContext(AuthContextData);
-    const history = useHistory();
 
     useEffect(() => {
         const VerifyUser =  async () => {

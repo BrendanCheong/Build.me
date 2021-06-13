@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const scrollbar = require('tailwind-scrollbar');
 
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
@@ -23,20 +24,16 @@ module.exports = {
       blue: colors.blue,
       indigo: colors.indigo,
       purple:colors.purple,
-      pink:colors.pink,
       blueGray:colors.blueGray,
       coolGray:colors.coolGray,
       trueGray:colors.trueGray,
       warmGray:colors.warmGray,
       lime:colors.lime,
-      emerald:colors.emerald,
       teal:colors.teal,
-      orange:colors.orange,
-      amber:colors.amber,
     },
   }, 
   plugins: [
-    require('tailwind-scrollbar')
+    scrollbar
   ],
   variants: {
     scrollbar:['rounded', 'dark']

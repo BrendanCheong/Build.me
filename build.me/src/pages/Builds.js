@@ -1,6 +1,6 @@
 import Cards from "../components/Cards"
 import Uncard from "../components/Uncard"
-import {useState, useEffect, createContext,} from 'react'
+import {useState, useEffect, createContext, useMemo} from 'react'
 import axiosInstance from "../AxiosInstance";
 
 
@@ -16,14 +16,15 @@ const Builds = () => {
     partsData: list => obj -> passed to Cards -> passed to Parts
     */
     
-
-    const uncardSchema = {CardName:"Enter Name Here" ,isUncard: true, _id: 1, partsData:[
-        {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-    ]}
+    const uncardSchema = useMemo(() => {
+        return ({CardName:"Enter Name Here" ,isUncard: true, _id: 1, partsData:[
+            {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        ]})
+    },[])
     
     const cardSchema = {CardName:"Enter Name Here", isUncard: false,
     partsData: [
@@ -98,13 +99,13 @@ const Builds = () => {
     
 
     const handleDelete =  async (id) => {
-        const response = await DeleteCard(id)
+        await DeleteCard(id).catch(err =>console.error(err))
         setSubmitting(true)
         // console.log(response)
     };
 
     const addCards = async () => {
-        const response = await PostCard(cardSchema);
+        await PostCard(cardSchema).catch(err =>console.error(err))
         setSubmitting(true)
         // console.log(response)
     };
@@ -125,7 +126,7 @@ const Builds = () => {
                 }
             }
         }
-        const response = await PatchCard(id, {partsData: newData})
+        await PatchCard(id, {partsData: newData}).catch(err => console.error(err))
         setSubmitting(true)
         // console.log(response)
     };
