@@ -1,7 +1,8 @@
 import axiosInstance from "../AxiosInstance";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-const ModalCard = ({ id, card, name, info, rowOriginal }) => {
+const ModalCard = ({ id, card, name, info, rowOriginal}) => {
+
 
     const partType = name // partType: CPU,Motherboard, GPU etc
 
@@ -16,6 +17,8 @@ const ModalCard = ({ id, card, name, info, rowOriginal }) => {
     const itemURL = info.itemURL
 
     const itemImage = info.itemImg
+
+    const history = useHistory()
 
 
 
@@ -51,8 +54,8 @@ const ModalCard = ({ id, card, name, info, rowOriginal }) => {
             }
         }
         const answer = {partsData: Data}
-        const response = await PatchCard(id, answer)
-        console.log(response)
+        await PatchCard(id, answer).catch(err => console.error(err))
+        history.push('/Builds')
     }
     
     return (
@@ -83,9 +86,9 @@ const ModalCard = ({ id, card, name, info, rowOriginal }) => {
                     <a className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' href={itemURL} target="_blank" rel="noreferrer">
                         STORE PAGE
                     </a>
-                    <Link className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' to="/Builds" onClick={() => CleanData(card)}>
+                    <button className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' onClick={() => CleanData(card)}>
                         ADD TO BUILD
-                    </Link>
+                    </button>
                 </div>
             </div>
     )

@@ -15,16 +15,16 @@ const Navbar = ( {toggle} ) => {
                 </svg>
             </div>
             <div className="hidden p-2 space-x-5 md:block"> {/** this burger icon will be hidden on smaller screens*/}
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/">
                     Home 
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Builds">
                     Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/Compare_Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Compare_Builds">
                     Compare Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/User">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/User">
                     User
                 </Link>
             </div>

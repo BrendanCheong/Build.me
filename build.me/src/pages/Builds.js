@@ -1,5 +1,5 @@
-import Cards from "../components/Cards"
-import Uncard from "../components/Uncard"
+import BuildCard from '../components/BuildPageComp/BuildCard';
+import BuildUnCard from "../components/BuildPageComp/BuildUnCard";
 import {useState, useEffect, createContext, useMemo} from 'react'
 import axiosInstance from "../AxiosInstance";
 
@@ -23,6 +23,7 @@ const Builds = () => {
             {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
             {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
             {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         ]})
     },[])
     
@@ -33,6 +34,7 @@ const Builds = () => {
         {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
     ]};
     
 
@@ -91,6 +93,7 @@ const Builds = () => {
             }
             setCards(State);
             setSubmitting(false)
+            
         }
         if (submitting) {
             updateState();
@@ -128,22 +131,21 @@ const Builds = () => {
         }
         await PatchCard(id, {partsData: newData}).catch(err => console.error(err))
         setSubmitting(true)
-        // console.log(response)
     };
 
 
     return (
-        <div className="grid h-screen grid-cols-3 bg-gray-100 place-items-center">
+        <div className="flex flex-row items-start h-screen p-2 space-x-3 overflow-hidden overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
             {cards.map((card) => ( card.isUncard ?
 
-            <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
-                <Uncard key={card._id}/>
+            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}}>
+                <BuildUnCard key={card._id}/>
             </ContextData.Provider> // if render Uncard boolean
 
             : 
 
-            <ContextData.Provider value={{addCards, handleDelete,changeNewParts,card}}>
-                <Cards key={card._id}/> 
+            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}}>
+                <BuildCard key={card._id}/> 
             </ContextData.Provider> // render Card boolean
             ))}
         </div>

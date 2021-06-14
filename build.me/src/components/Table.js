@@ -43,10 +43,10 @@ const Table = ({TableColumns, Name, data, propData}) => {
         setIsOpenModal(true)
         const ScrapperInput = `${RowInfo.Brand} ${RowInfo.Name}`
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
-        console.log(ScrapperInput)
-        console.log(ScrapperOutput) // I MUST HAVE RowInfo.Name like 'Ryzen 5 3600' seperated from 'Brand' IT CAN BE DONE, theres only 2 Brands out there for CPU
-        console.log(RowInfo)
-        console.log(AmazonDataCleaner(ScrapperOutput, RowInfo.Name)) 
+        // console.log(ScrapperInput)
+        // console.log(ScrapperOutput) // I MUST HAVE RowInfo.Name like 'Ryzen 5 3600' seperated from 'Brand' IT CAN BE DONE, theres only 2 Brands out there for CPU
+        // console.log(RowInfo)
+        // console.log(AmazonDataCleaner(ScrapperOutput, RowInfo.Name)) 
         const response = AmazonDataCleaner(ScrapperOutput, RowInfo.Name) // TestFunction acts as a scrapper
         setInfoState(response)
         setRowOriginal(RowInfo)

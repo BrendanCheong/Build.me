@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
-
 const UnParts = ({name, id, card}) => {
     /*
     name: string -> taken from Cards -> Ex: name = CPU, Motherboard, GPU etc
     id: int -> taken from Cards
     card: infomation of the current card its on, like: id, partsData, name etc
     */
+
 
     const newTo = {
         pathname: `/${name}_Table`,

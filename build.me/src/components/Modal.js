@@ -4,7 +4,7 @@ import { TableDataContext } from './Table';
 import { useContext } from 'react';
 import SkeletonBox from "./SkeletonBox";
 
-const Modal = ({ onClose, animated, animation, id, card}) => {
+const Modal = ({ onClose, id, card}) => {
 
     const {isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading, rowOriginal,} = useContext(TableDataContext);
 
@@ -56,6 +56,7 @@ const Modal = ({ onClose, animated, animation, id, card}) => {
                             :
                             /** ModalCard Block start */
                             <div>
+                            
                                 <h1 className="py-6 pl-10 font-semibold lg:text-2xl">Amazon</h1>
                                 <div className="flex items-start px-8 pb-8 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
                                         { infoState.map((product) => (

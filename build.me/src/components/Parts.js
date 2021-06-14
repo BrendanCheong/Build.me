@@ -9,13 +9,12 @@ const Parts = ({name, id, card}) => {
     id: int -> taken from Cards
     addNewParts: func -> taken from Cards => changes unParts to Parts
     */
+    const {changeNewParts} = useContext(ContextData)
 
     const newTo = {
         pathname: `/${name}_Table`,
-        data: {id : id, card: card}
+        data: {id : id, card: card,}
     }
-
-    const {changeNewParts} = useContext(ContextData)
 
     var index
     switch(name) {
@@ -35,7 +34,7 @@ const Parts = ({name, id, card}) => {
             index = 4
             break;
         default:
-            index = 0
+            index = 5
             break;
     }
 
@@ -48,7 +47,7 @@ const Parts = ({name, id, card}) => {
                 <div className="static flex justify-around">
                     <div></div>
                     <div></div>
-                    <Link className="static px-2 py-1 text-sm text-white duration-300 transform bg-indigo-400 rounded-full hover:scale-110 motion-reduce:transform-none" to={newTo}>
+                    <Link className="static px-2 py-1 text-sm text-white duration-300 transform bg-indigo-400 rounded-full hover:scale-110 motion-reduce:transform-none" to={{newTo}}>
                         Change
                     </Link>
                 </div>
