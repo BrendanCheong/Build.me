@@ -62,7 +62,7 @@ router.delete('/delete', auth, (req, res) => { // DELETE BUILDER completely
     .catch((err) => res.status(500).json('Error: ' + err))
 })
 
-router.patch('/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card using Cookie and Card Id
+router.patch('/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card's partsData using Cookie and Card Id
     try {
         const BuilderById = await Builder.findById(req.user)
         for (let Card of BuilderById.CardArray) {
@@ -73,6 +73,24 @@ router.patch('/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card using C
         }
         BuilderById.save()
         res.json("PartsData updated successfully")
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).send({Error: "Failed to update"})
+    }
+})
+
+router.patch('/CardName/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card's CardName using Cookie and Card Id
+    try {
+        const BuilderById = await Builder.findById(req.user)
+        for (let Card of BuilderById.CardArray) {
+            if (Card._id.toString() === req.params.id) {
+                Card.CardName = req.body.CardName // payload must be in the "string"
+                break;
+            }
+        }
+        BuilderById.save()
+        res.json("CardName updated successfully")
 
     } catch(err) {
         console.error(err)

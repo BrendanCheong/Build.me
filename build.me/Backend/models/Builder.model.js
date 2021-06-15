@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const CardSchema = new Schema({
     isUncard: {type: Boolean, required: true},
     partsData: {type: Array, required: true},
-    CardName: {type: String, required: true},
+    CardName: {type: String, unique:true},
 })
 
 const BuilderSchema = new Schema({

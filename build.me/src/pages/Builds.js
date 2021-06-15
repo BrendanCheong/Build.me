@@ -17,7 +17,7 @@ const Builds = () => {
     */
     
     const uncardSchema = useMemo(() => {
-        return ({CardName:"Enter Name Here" ,isUncard: true, _id: 1, partsData:[
+        return ({CardName:"" ,isUncard: true, _id: 1, partsData:[
             {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
             {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
             {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
@@ -27,7 +27,7 @@ const Builds = () => {
         ]})
     },[])
     
-    const cardSchema = {CardName:"Enter Name Here", isUncard: false,
+    const cardSchema = {CardName:"", isUncard: false,
     partsData: [
         {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
         {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
@@ -42,6 +42,7 @@ const Builds = () => {
         uncardSchema,
     ]);
     const [submitting, setSubmitting] = useState(true);
+    
     // GET request ALL CARDS
     const getAllCards = async () => {
         try {
@@ -93,7 +94,7 @@ const Builds = () => {
             }
             setCards(State);
             setSubmitting(false)
-            
+            console.log('updated!')
         }
         if (submitting) {
             updateState();
@@ -104,7 +105,6 @@ const Builds = () => {
     const handleDelete =  async (id) => {
         await DeleteCard(id).catch(err =>console.error(err))
         setSubmitting(true)
-        // console.log(response)
     };
 
     const addCards = async () => {
@@ -116,12 +116,17 @@ const Builds = () => {
     const changeNewParts = async (name, id, toChange) => {
         // run through cards to find the matching id
         // now run through cards.partsData to find the matching name
-        // map function confuses me lmao
+        
         const newData = []
         for (let i = 0; i < cards.length; i++) {
             if (cards[i]._id === id) {
                 for (let j = 0; j < cards[i].partsData.length; j++) {
                     if (cards[i].partsData[j].name === name) {
+                        cards[i].partsData[j].itemName = ""
+                        cards[i].partsData[j].itemPrice = ""
+                        cards[i].partsData[j].itemImg = ""
+                        cards[i].partsData[j].itemRating = ""
+                        cards[i].partsData[j].vendorName = ""
                         cards[i].partsData[j].isUnPart = toChange
                         
                     }
@@ -144,7 +149,7 @@ const Builds = () => {
 
             : 
 
-            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}}>
+            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}}>
                 <BuildCard key={card._id}/> 
             </ContextData.Provider> // render Card boolean
             ))}
