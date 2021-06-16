@@ -28,16 +28,14 @@ export const SelectFilter = ({column}) => {
                 value={value ? value : null}
                 onChange={(event,newValue) => {
                     setValue(newValue);
-                    // console.log(newValue);
                     setFilter(newValue || undefined);
                 }}
+                key={id}
                 inputValue={inputValue}
                 onInputChange={(event, newInputChange) => {
                     setInputValue(newInputChange);
-                    // console.log(newInputChange);
-                    // setFilter(newInputChange || undefined);
                 }}
-                id="Select Filterer for Table"
+                id={`Select Filterer for ${id}`}
                 options={options}
                 style={{ width: 200 }}
                 renderInput={(params) => <TextField {...params} label="" variant="outlined"/>}

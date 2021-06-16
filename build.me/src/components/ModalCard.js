@@ -60,7 +60,7 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
     
     return (
             <div className='flex-shrink-0 w-3/12 overflow-hidden bg-white rounded-md shadow-lg'>
-                    <button className='bg-transparent hover:bg-gray-100 focus:outline-none' onClick={() => console.log(card)}>
+                    <button className='bg-transparent hover:bg-gray-100 focus:outline-none'>
                         {/** Image Block start */}
                             <div className='relative h-40'>
                                 <img className='absolute object-cover w-full h-full p-1 rounded-lg' src={itemImage} alt="Product Artistry" />

@@ -89,12 +89,12 @@ const Builds = () => {
     useEffect(() => { // updates the State after every render
         const updateState = async () => {
             const State = await getAllCards()
-            if (State.length <= 2) { // awlays have an Uncard at the end, uncard not in acutal DB
+            if (State.length <= 3) { // awlays have an Uncard at the end, uncard not in acutal DB, also sets max number of Builds on Page
                 State.push(uncardSchema)
             }
             setCards(State);
             setSubmitting(false)
-            console.log('updated!')
+            
         }
         if (submitting) {
             updateState();

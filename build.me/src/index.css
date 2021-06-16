@@ -6,3 +6,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .w-custom {
+        width: 32rem;
+    }
+
+    .h-custom {
+        height: 32rem;
+    }
+}
