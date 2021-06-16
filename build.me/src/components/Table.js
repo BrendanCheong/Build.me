@@ -86,15 +86,14 @@ const Table = ({TableColumns, Name, data, propData}) => {
                         {
                             headerGroups.map((headerGroup) => (
                                 <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600" >
-                                    {
-                                        headerGroup.headers.map( column => (
-                                            <th {...column.getHeaderProps()}
-                                            className="px-6 py-4 text-sm font-semibold uppercase font-poppins" >
-                                            {column.render('Header')}
-                                                <div>
-                                                    {column.canFilter ? column.render('Filter') : null}
-                                                </div>
-                                            </th>
+                                    { headerGroup.headers.map( column => (
+                                        <th {...column.getHeaderProps()}
+                                        className="px-6 py-4 text-sm font-semibold uppercase font-poppins" >
+                                        {column.render('Header')}
+                                            <div>
+                                                {column.canFilter ? column.render('Filter') : null}
+                                            </div>
+                                        </th>
                                     ))}
                                 </tr>
                             ))}

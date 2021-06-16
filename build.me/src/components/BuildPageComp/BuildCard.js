@@ -2,7 +2,7 @@ import BuildUnpart from "./BuildUnpart";
 import BuildPart from './BuildPart';
 import LoadingSVG from '../../images/svg/LoadingSVG';
 import { ContextData } from '../../pages/Builds';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { store } from 'react-notifications-component';
 import axiosInstance from "../../AxiosInstance";
 
@@ -29,7 +29,9 @@ const BuildCard = () => {
         }
     }
 
-    const TotalPriceCalculator = () => {
+
+
+    const TotalPriceCalculator = useCallback(() => {
         let Total = 0
         for (let item of card.partsData) {
             
@@ -38,9 +40,9 @@ const BuildCard = () => {
                 Total += numberPrice
             }
         }
-        console.log(Total.toFixed(2))
+        
         setTotalPrice(Total.toFixed(2));
-    }
+    },[card.partsData])
 
     const SubmitBuildName = async (event) => {
         event.preventDefault();
@@ -93,8 +95,8 @@ const BuildCard = () => {
     },[card.CardName, setBuildName])
 
     useEffect(() => {
-
         TotalPriceCalculator()
+        
     },[submitting, TotalPriceCalculator])
     return (
             <div className="relative flex flex-shrink-0 w-6/12 h-full p-5 pb-20 bg-white border-2 shadow-lg rounded-xl">
