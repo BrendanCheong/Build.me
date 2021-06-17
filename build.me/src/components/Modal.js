@@ -60,7 +60,7 @@ const Modal = ({ onClose, id, card}) => {
                                 <h1 className="py-6 pl-10 font-semibold lg:text-2xl">Amazon</h1>
                                 <div className="flex items-start px-8 pb-8 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
                                         { infoState.map((product) => (
-                                            <ModalCard id={id} card={card} name={Name} info={product} rowOriginal={rowOriginal}/>
+                                            <ModalCard id={id} card={card} name={Name} info={product} rowOriginal={rowOriginal} key={product.itemName}/>
                                         ))}  
                                 </div>
                             </div>

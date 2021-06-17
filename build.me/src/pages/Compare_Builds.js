@@ -28,7 +28,7 @@ const Compare_Builds = () => {
                 setAutoCompleteData(newData)
                 setLoadingData(false)
                 
-
+                    console.log('test')
                 return [response.data.CardArray, null]
             } catch(err) {
                 
@@ -58,8 +58,8 @@ const Compare_Builds = () => {
             </div>
             <div className="flex flex-row flex-shrink-0 w-11/12 h-full p-5 space-x-5 justify-evenly">
                 {/** Tabs go here */}
-                <Tabs/>
-                <Tabs/>
+                <Tabs id={0}/>
+                <Tabs id={1}/>
             </div>
             <div className="flex flex-row flex-shrink-0 w-11/12 px-4 py-3 space-x-3 h-5/6">
                 {/** Here goes the Price bar Graph comparison  */}

@@ -9,10 +9,10 @@
 
 @layer utilities {
     .w-custom {
-        width: 32rem;
+        width: 30rem;
     }
 
     .h-custom {
-        height: 32rem;
+        height: 30rem;
     }
 }

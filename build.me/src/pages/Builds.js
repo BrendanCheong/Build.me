@@ -18,23 +18,23 @@ const Builds = () => {
     
     const uncardSchema = useMemo(() => {
         return ({CardName:"" ,isUncard: true, _id: 1, partsData:[
-            {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-            {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-            {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-            {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-            {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-            {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+            {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+            {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+            {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+            {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+            {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+            {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
         ]})
     },[])
     
     const cardSchema = {CardName:"", isUncard: false,
     partsData: [
-        {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
-        {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true},
+        {name:"CPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+        {name:"Motherboard",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+        {name:"GPU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+        {name:"Memory",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+        {name:"PSU",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
+        {name:"Storage",itemName:"",itemPrice:"",itemImg:"",itemRating:"",vendorName:"", isUnPart: true, itemURL:""},
     ]};
     
 
@@ -127,6 +127,7 @@ const Builds = () => {
                         cards[i].partsData[j].itemImg = ""
                         cards[i].partsData[j].itemRating = ""
                         cards[i].partsData[j].vendorName = ""
+                        cards[i].partsData[j].itemURL = ""
                         cards[i].partsData[j].isUnPart = toChange
                         
                     }

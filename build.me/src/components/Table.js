@@ -43,11 +43,8 @@ const Table = ({TableColumns, Name, data, propData}) => {
         setIsOpenModal(true)
         const ScrapperInput = `${RowInfo.Brand} ${RowInfo.Name}`
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
-        // console.log(ScrapperInput)
-        // console.log(ScrapperOutput) // I MUST HAVE RowInfo.Name like 'Ryzen 5 3600' seperated from 'Brand' IT CAN BE DONE, theres only 2 Brands out there for CPU
-        // console.log(RowInfo)
-        // console.log(AmazonDataCleaner(ScrapperOutput, RowInfo.Name)) 
         const response = AmazonDataCleaner(ScrapperOutput, RowInfo.Name) // TestFunction acts as a scrapper
+        
         setInfoState(response)
         setRowOriginal(RowInfo)
         setIsModalLoading(false)         
@@ -83,19 +80,17 @@ const Table = ({TableColumns, Name, data, propData}) => {
                 {/** Table Start */}
                 <table {...getTableProps()} className='w-full max-w-4xl mx-auto overflow-hidden bg-white divide-y divide-gray-300 rounded-lg shadow-md whitespace-nowrap'>
                     <thead className="bg-indigo-200">
-                        {
-                            headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600" >
-                                    { headerGroup.headers.map( column => (
-                                        <th {...column.getHeaderProps()}
-                                        className="px-6 py-4 text-sm font-semibold uppercase font-poppins" >
-                                        {column.render('Header')}
-                                            <div>
-                                                {column.canFilter ? column.render('Filter') : null}
-                                            </div>
-                                        </th>
-                                    ))}
-                                </tr>
+                        {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()} className="text-left text-gray-600" key={69}>
+                                { headerGroup.headers.map( column => (
+                                    <th {...column.getHeaderProps()} className="px-6 py-4 text-sm font-semibold uppercase font-poppins" key={column.Header} >
+                                    {column.render('Header')}
+                                        <div key={column.Header}>
+                                            {column.canFilter ? column.render('Filter') : null}
+                                        </div>
+                                    </th>
+                                ))}
+                            </tr>
                             ))}
                     </thead>
                     <tbody {...getTableBodyProps()} className="divide-y divide-gray-200">
@@ -104,17 +99,15 @@ const Table = ({TableColumns, Name, data, propData}) => {
                                 prepareRow(row)
                                 return (
                                     <>
-                                    <tr {...row.getRowProps()} onClick={() => Scrapper(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline"> {/** Onclick this will log out the row infomation */}
-                                        {
-                                            row.cells.map( cell => {
+                                        <tr {...row.getRowProps()} onClick={() => Scrapper(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={row.id}>
+                                            { row.cells.map( cell => {
                                                 return (
-                                                <td {...cell.getCellProps()} className="px-6 py-4">
-                                                    {cell.render('Cell')}
-                                                </td>)
+                                                    <td {...cell.getCellProps()} className="px-6 py-4" key={cell.value}>
+                                                        {cell.render('Cell')}
+                                                    </td>)
                                             })
-                                        }
-                                    </tr>
-                                        
+                                            }
+                                        </tr>
                                     </>
                                 )
                             })
@@ -131,11 +124,9 @@ const Table = ({TableColumns, Name, data, propData}) => {
                         </svg>
                         <p>Previous page</p>
                     </button>
-                    <span>
-                        Page{' '}
-                        <strong>
-                            {pageIndex + 1} of {pageOptions.length}
-                        </strong>{' '}
+                    <span className="flex flex-row space-x-2">
+                        <p>{'Page'}</p>
+                        <p className="font-bold">{`${pageIndex + 1} of ${pageOptions.length}`}</p>
                     </span>
                     <button className={canNextPage ? "flex items-center px-10 py-4 ml-2 font-bold text-white bg-indigo-500 border rounded-md hover:bg-transparent hover:text-indigo-500 hover:border-indigo-500" : "flex items-center px-10 py-2 ml-2 font-bold"}
                     onClick={() => nextPage()} disabled={!canNextPage}>
