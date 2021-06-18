@@ -12,7 +12,7 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
 
     const Rating = info.itemRating
 
-    const VendorName = info.vendorName
+    const VendorName = info.itemVendor
 
     const itemURL = info.itemURL
 
@@ -50,6 +50,8 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
                 Data[i].itemPrice = Price
                 Data[i].itemImg = itemImage
                 Data[i].itemRating = Rating
+                Data[i].itemURL = itemURL
+                Data[i].vendorName = VendorName
                 Data[i].isUnPart = false
             }
         }

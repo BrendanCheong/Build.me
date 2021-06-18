@@ -14,6 +14,10 @@ const Compare_Builds = () => {
     const [autoCompleteState0, setAutoCompleteState0] = useState(null) // Trigger BarGraphTab on every render and if theres 2 builds selected
     const [autoCompleteState1, setAutoCompleteState1] = useState(null) // Trigger BarGraphTab on every render and if theres 2 builds selected
     const [loadingData, setLoadingData] = useState(true)
+    const [BarGraphData, setBarGraphData] = useState({
+        first:[0,0,0,0,0,0],
+        second:[0,0,0,0,0,0]
+    })
 
     useEffect(() => {
         async function getAllCards() {
@@ -28,7 +32,6 @@ const Compare_Builds = () => {
                 setAutoCompleteData(newData)
                 setLoadingData(false)
                 
-
                 return [response.data.CardArray, null]
             } catch(err) {
                 
@@ -50,6 +53,7 @@ const Compare_Builds = () => {
                 autoCompletedata, 
                 setAutoCompleteState0, autoCompleteState0,
                 autoCompleteState1,setAutoCompleteState1,
+                BarGraphData, setBarGraphData,
             }}>
             <div className="flex flex-row justify-between flex-shrink-0 w-11/12 px-5 mt-5 space-x-5">
                 {/** AutoComplete go here */}
@@ -58,8 +62,8 @@ const Compare_Builds = () => {
             </div>
             <div className="flex flex-row flex-shrink-0 w-11/12 h-full p-5 space-x-5 justify-evenly">
                 {/** Tabs go here */}
-                <Tabs/>
-                <Tabs/>
+                <Tabs id={0}/>
+                <Tabs id={1}/>
             </div>
             <div className="flex flex-row flex-shrink-0 w-11/12 px-4 py-3 space-x-3 h-5/6">
                 {/** Here goes the Price bar Graph comparison  */}
