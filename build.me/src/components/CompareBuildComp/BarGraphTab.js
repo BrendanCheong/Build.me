@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { CompBuildPageData } from '../../pages/Compare_Builds';
+import PriceBarChart from '../Charts/PriceBarChart';
 
 const BarGraphTab = () => {
 
-    const { toggleBarGraph, setToggleBarGraph } = useContext(CompBuildPageData);
+    const { toggleBarGraph, setToggleBarGraph, BarGraphData } = useContext(CompBuildPageData);
 
     const Toggler = (index) => {
         setToggleBarGraph(index);
@@ -33,14 +34,14 @@ const BarGraphTab = () => {
                     FPS Comparison
                 </button>
             </div>
-            <div id="tab-contents">
+            <div id="tab-contents" className="w-full h-5/6">
                 <div id="first" 
                 className={toggleBarGraph === 1 ?
-                    "block p-4"
+                    "flex flex-col items-center pt-5 w-full h-full "
                     :
                     "hidden p-4"}
                 >
-                    First tab
+                    <PriceBarChart BarGraphData={BarGraphData}/>
                 </div>
                 <div id="second" 
                 className={toggleBarGraph === 2 ?

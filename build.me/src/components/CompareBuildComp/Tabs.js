@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { CompBuildPageData } from '../../pages/Compare_Builds';
 import axiosInstance from '../../AxiosInstance';
 import { ErrorHandlingNotif } from '../Misc/Error';
@@ -8,30 +8,107 @@ import BudgetBar from './BudgetBar';
 
 const Tabs = ({ id }) => {
 
+
     const [toggleTabs, setToggleTabs] = useState(1);
-    const [submitting, setSubmitting] = useState(true);
+    const [submitting, setSubmitting] = useState(true); // this is for loading screen for async
     const [currentCardName, setCurrentCardName] = useState(null)
     const [currentPartsData, setCurrentPartsData] = useState(null)
+    const [DonutAppear, setDonutAppear] = useState(false)
+    const [dataSetArray, setDataSetArray] = useState([])
+    const [labelArray, setLabelArray] = useState([])
+    const [ColorArray, setColorArray] = useState([])
+    const [values, setValues] = useState({
+        textmask: '(1  )    -    ',
+        numberformat: '',
+        });
 
-    const { autoCompleteState0 , autoCompleteState1, } = useContext(CompBuildPageData)
+    const { autoCompleteState0 , autoCompleteState1, BarGraphData, setBarGraphData } = useContext(CompBuildPageData)
 
+    function CalculateRemainingAmt(arr) {
+        const total = arr.reduce((a, b) => a + b)
+        return (100 - total)
+    }
+
+    function LabelListCalc(arr) {
+        let NewLabelArr = []
+        let NewColorArr = []
+        const labelArr = ['CPU','Motherboard','GPU','Memory','PSU','Storage','Remaining Budget']
+        const ColorArr = ['#159dfb', '#c83955', '#FFD166', '#17d993', '#9CFFFA', '#2BD9FE', '#623CEA', '#DFB2F4', '#D36135', '#EF476F ']
+        for (let i = 0; i < arr.length; ++i) {
+            if( arr[i] ) {
+                NewLabelArr.push(labelArr[i])
+                NewColorArr.push(ColorArr[i])
+            }
+        }
+        setLabelArray(NewLabelArr)
+        setColorArray(NewColorArr)
+    }
+
+    const PercentageCalculator = useCallback((data) => {
+        const CurrentBudget = parseFloat(values.numberformat)
+        const itemPriceArray = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
+        const SumPriceArray = itemPriceArray.reduce((a,b) => a + b)
+        if (SumPriceArray > CurrentBudget) {
+            console.log('Budget is too low!') 
+            return 'Budget is too low!'
+            // error handling
+        }
+        let PercentageArray = itemPriceArray.map((item) => item ? parseFloat(((item / CurrentBudget) * 100).toFixed(2)) : 0 )
+        const RemainingAmt = CalculateRemainingAmt(PercentageArray)
+        PercentageArray.push(RemainingAmt)
+        const FilterPercentageArr = PercentageArray.filter((item) => item > 0)
+        setDataSetArray(FilterPercentageArr)
+        LabelListCalc(PercentageArray)
+
+    },[values.numberformat])
 
     const Toggler = (index) => {
         setToggleTabs(index);
     };
 
-    useEffect(() => {
+    const SubmitBudget = (event) => {
+        event.preventDefault();
+        if (values.numberformat.length > 0) {
+            setDonutAppear(true)
+            PercentageCalculator(currentPartsData)
+        } else {
+            setDonutAppear(false)
+        }
+        
+    }
+
+    const itemPriceParser = useCallback((data) => {
+        const Prices = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
+        let current = BarGraphData
+        switch(id) {
+            case 0:
+                current.first = Prices
+                break;
+            default:
+                current.second = Prices
+                break;
+        }
+        setBarGraphData(current)
+    }, [BarGraphData, id, setBarGraphData])
+    // const TestFunc = (event) => {
+    //     event.preventDefault();
+    //     console.log("PENUS")
+    // }
+
+    useEffect(() => { // decide which tab gets which appropiate state
         switch(id) {
             case 0:
                 setCurrentCardName(autoCompleteState0)
+                setSubmitting(true)
                 break;
             default:
                 setCurrentCardName(autoCompleteState1)
+                setSubmitting(true)
                 break;
         }
     },[autoCompleteState0, autoCompleteState1, id])
 
-    useEffect(() => {
+    useEffect(() => { // when currentCardName for tab is selected, auto search for that unique name Card's partsData
         const getPartsData = async () => {
             try {
                 const response = await axiosInstance.get('/Builder/find')
@@ -39,19 +116,24 @@ const Tabs = ({ id }) => {
                 const selectedCard = response.data.CardArray.filter((card) => card.CardName === currentCardName)
                 if (selectedCard.length > 0) {
                     setCurrentPartsData(selectedCard[0].partsData)
-                    setSubmitting(false)
+                    setSubmitting(false) // *** might cause bugs ***
+                    PercentageCalculator(currentPartsData)
+                    itemPriceParser(currentPartsData)
                 }
                 
             } catch(err) {
-                console.log(err)
-                ErrorHandlingNotif()
+                console.log(err.message)
+                if (err.message !=="Cannot read property 'map' of null") {
+                    ErrorHandlingNotif()
+                }
+                
             }
         }
 
         if(submitting) {
             getPartsData()
         }
-    },[currentCardName, submitting])
+    },[currentCardName, submitting,PercentageCalculator,currentPartsData,itemPriceParser])
 
 
     return (
@@ -166,13 +248,14 @@ const Tabs = ({ id }) => {
                 >
                 Sixth tab
                 </div>
-                <form id={`Budget ${id}`} className={ toggleTabs === 7 ? "flex flex-col items-center p-4 w-full h-full "
+                <form id={`Budget ${id}`} className={ toggleTabs === 7 ? "flex flex-col items-center p-4 w-full h-full"
                     :
                     "hidden p-4"
                     }
+                onSubmit={SubmitBudget}
                 >
-                <BudgetBar id={id}/>
-                <BudgetDonut/>
+                {currentPartsData && <BudgetBar id={id} values={values} setValues={setValues}/>}
+                {DonutAppear && <BudgetDonut dataSetArray={dataSetArray} labelArray={labelArray} ColorArray={ColorArray}/>}
                 </form>
             </div>
         </div>
