@@ -22,7 +22,7 @@ const Tabs = ({ id }) => {
         numberformat: '',
         });
 
-    const { autoCompleteState0 , autoCompleteState1, BarGraphData, setBarGraphData } = useContext(CompBuildPageData)
+    const { autoCompleteState0 , autoCompleteState1, setLoadingData} = useContext(CompBuildPageData)
 
     function CalculateRemainingAmt(arr) {
         const total = arr.reduce((a, b) => a + b)
@@ -77,19 +77,20 @@ const Tabs = ({ id }) => {
         
     }
 
-    const itemPriceParser = useCallback((data) => {
-        const Prices = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
-        let current = BarGraphData
-        switch(id) {
-            case 0:
-                current.first = Prices
-                break;
-            default:
-                current.second = Prices
-                break;
-        }
-        setBarGraphData(current)
-    }, [BarGraphData, id, setBarGraphData])
+    // const itemPriceParser = (data) => {
+    //     const Prices = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
+    //     let current = BarGraphData
+    //     switch(id) {
+    //         case 0:
+    //             current.first = Prices
+    //             break;
+    //         default:
+    //             current.second = Prices
+    //             break;
+    //     }
+    //     setBarGraphData(current)
+    //     console.log(BarGraphData)
+    // }
     // const TestFunc = (event) => {
     //     event.preventDefault();
     //     console.log("PENUS")
@@ -100,13 +101,15 @@ const Tabs = ({ id }) => {
             case 0:
                 setCurrentCardName(autoCompleteState0)
                 setSubmitting(true)
+                setLoadingData(true)
                 break;
             default:
                 setCurrentCardName(autoCompleteState1)
                 setSubmitting(true)
+                setLoadingData(true)
                 break;
         }
-    },[autoCompleteState0, autoCompleteState1, id])
+    },[autoCompleteState0, autoCompleteState1, id, setLoadingData])
 
     useEffect(() => { // when currentCardName for tab is selected, auto search for that unique name Card's partsData
         const getPartsData = async () => {
@@ -118,7 +121,7 @@ const Tabs = ({ id }) => {
                     setCurrentPartsData(selectedCard[0].partsData)
                     setSubmitting(false) // *** might cause bugs ***
                     PercentageCalculator(currentPartsData)
-                    itemPriceParser(currentPartsData)
+                    // itemPriceParser(currentPartsData)
                 }
                 
             } catch(err) {
@@ -133,7 +136,7 @@ const Tabs = ({ id }) => {
         if(submitting) {
             getPartsData()
         }
-    },[currentCardName, submitting,PercentageCalculator,currentPartsData,itemPriceParser])
+    },[currentCardName, submitting,PercentageCalculator,currentPartsData,])
 
 
     return (

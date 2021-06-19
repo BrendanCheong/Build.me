@@ -1,37 +1,33 @@
-import {useState, useEffect, useCallback} from 'react';
-import { Bar } from 'react-chartjs-2'; //there is also pie and bar
+import {useState, useEffect, useContext} from 'react';
+import { Bar } from 'react-chartjs-2'; 
+import { CompBuildPageData } from '../../pages/Compare_Builds';
 
+const PriceBarChart = () => {
 
-const PriceBarChart = (props) => {
-
+    const {BarGraphZero, BarGraphOne, autoCompleteState0, autoCompleteState1} = useContext(CompBuildPageData)
     const [barChartData, setBarChartData] = useState({});
 
-    const chart = useCallback(() => {
+
+    useEffect(() => {
         setBarChartData({
             labels: ['CPU','Motherboard','GPU','Memory','PSU','Storage'],
             datasets: [
                 {
-                    label:'Number 1',
+                    label:autoCompleteState0,
                     backgroundColor: ['#6366F1'],
-                    data: props.BarGraphData.first
+                    data: BarGraphZero
 
                 },
                 {   
-                    label:'Number 2',
+                    label:autoCompleteState1,
                     backgroundColor: ['#2DD4BF'],
-                    data: props.BarGraphData.second
+                    data: BarGraphOne
                     
                 }]
         })
 
-    },[props])
 
-    useEffect(() => {
-        chart()
-        console.log('re-rendering!')
-        console.log(barChartData)
-
-    }, [props,chart])
+    }, [BarGraphZero, BarGraphOne,autoCompleteState1,autoCompleteState0])
 
     return (
         <div className="relative w-8/12 h-full">
@@ -90,7 +86,7 @@ const PriceBarChart = (props) => {
                         },
                         xAxes:{
                             ticks:{
-                                beginAtZero: false,
+                                beginAtZero: true,
                                 font: {
                                     family: 'Arial',
                                     size: 14
