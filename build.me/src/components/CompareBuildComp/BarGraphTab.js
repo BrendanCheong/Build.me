@@ -4,7 +4,7 @@ import PriceBarChart from '../Charts/PriceBarChart';
 
 const BarGraphTab = () => {
 
-    const { toggleBarGraph, setToggleBarGraph, BarGraphData } = useContext(CompBuildPageData);
+    const { toggleBarGraph, setToggleBarGraph } = useContext(CompBuildPageData);
 
     const Toggler = (index) => {
         setToggleBarGraph(index);
@@ -41,7 +41,7 @@ const BarGraphTab = () => {
                     :
                     "hidden p-4"}
                 >
-                    <PriceBarChart BarGraphData={BarGraphData}/>
+                    <PriceBarChart/>
                 </div>
                 <div id="second" 
                 className={toggleBarGraph === 2 ?
