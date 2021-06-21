@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 // import router files
 const CPURouter = require('./routes/CPUs');
+const GPURouter = require('./routes/GPU');
 const UserRouter = require('./routes/Users');
 const CardRouter = require('./routes/Cards');
 const BuilderRouter = require('./routes/Builder');
@@ -49,13 +50,14 @@ connection.once('open', () => {
 
 // these are my API end points in URLS
 app.use('/CPUs', CPURouter); 
+app.use('/GPUs', GPURouter); 
 app.use('/users', UserRouter);
 app.use('/Cards', CardRouter);
 app.use('/Builder',BuilderRouter)
 
 // these are for ALL the SCRAPPERS
 app.get('/Ascrapper/:id', async (req, res) => { // scraper just for AMAZON
-    const input = (req.params.id).replace("%20", " ");
+    const input = decodeURIComponent(req.params.id)
     res.set({
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,

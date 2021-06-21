@@ -4,7 +4,14 @@ const URL = 'https://www.amazon.sg';
 
 const scrape = async (itemSearch, maxItems) => {
     // Launch puppeteer headless browser
-    const browser = await puppeteer.launch({headless:true, defaultViewport: null,});
+    const browser = await puppeteer.launch({
+        headless:true, 
+        defaultViewport: null,
+        'args' : [
+            '--no-sandbox',
+            '--disable-setuid-sandbox'
+        ]
+    });
     const page = await browser.newPage();
     await page.goto(URL);
 
