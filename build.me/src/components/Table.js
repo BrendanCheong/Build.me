@@ -17,7 +17,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
     const AmazonScrapper = async (input) => {
         try {
             // process input to remove spaces
-            const Input = input.replace(" ", "%20")
+            const Input = encodeURIComponent(input)
             const response = await axiosInstance.get(`/Ascrapper/${Input}`,{withCredentials: false})
             return response.data // remove withCredientals: false later once authentication complete
         } catch(err) {
