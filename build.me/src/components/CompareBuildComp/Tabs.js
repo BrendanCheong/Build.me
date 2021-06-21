@@ -77,24 +77,6 @@ const Tabs = ({ id }) => {
         
     }
 
-    // const itemPriceParser = (data) => {
-    //     const Prices = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
-    //     let current = BarGraphData
-    //     switch(id) {
-    //         case 0:
-    //             current.first = Prices
-    //             break;
-    //         default:
-    //             current.second = Prices
-    //             break;
-    //     }
-    //     setBarGraphData(current)
-    //     console.log(BarGraphData)
-    // }
-    // const TestFunc = (event) => {
-    //     event.preventDefault();
-    //     console.log("PENUS")
-    // }
 
     useEffect(() => { // decide which tab gets which appropiate state
         switch(id) {
@@ -121,7 +103,7 @@ const Tabs = ({ id }) => {
                     setCurrentPartsData(selectedCard[0].partsData)
                     setSubmitting(false) // *** might cause bugs ***
                     PercentageCalculator(currentPartsData)
-                    // itemPriceParser(currentPartsData)
+                    
                 }
                 
             } catch(err) {
