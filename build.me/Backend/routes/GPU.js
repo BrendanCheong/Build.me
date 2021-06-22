@@ -38,6 +38,7 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
 router.post('/add/all', (req, res) => {
     try {
         const payLoad = req.body
+        
         GPU.collection.insertMany(payLoad, function(err, reply) {
             if(err) {
                 throw new Error("Adding GPU Error")
@@ -51,6 +52,24 @@ router.post('/add/all', (req, res) => {
         res
         .status(500)
         .json({Error: err})
+    }
+})
+
+// GET ALL GPUS
+router.get('/', async (req, res) => {
+    try {
+
+        const response = await GPU.find()
+        res
+        .status(200)
+        .send(response)
+
+    } catch(err) {
+
+        res
+        .status(500)
+        .json({Error : err})
+
     }
 })
 
