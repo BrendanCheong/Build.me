@@ -9,9 +9,10 @@ const CPURouter = require('./routes/CPUs');
 const GPURouter = require('./routes/GPU');
 const UserRouter = require('./routes/Users');
 const CardRouter = require('./routes/Cards');
+const RAMRouter = require('./routes/RAM');
 const BuilderRouter = require('./routes/Builder');
-const AmazonScrapper = require('./scrapper/amazonScrapper');
-const LazadaScrapper = require('./scrapper/lazadaScrapper');
+const AmazonRouter = require('./routes/Scraper/amazonScrapper');
+const LazadaRouter = require('./routes/Scraper/LazadaScrapper')
 
 
 const app = express();
@@ -54,22 +55,10 @@ app.use('/GPUs', GPURouter);
 app.use('/users', UserRouter);
 app.use('/Cards', CardRouter);
 app.use('/Builder',BuilderRouter)
+app.use('/RAMs', RAMRouter);
+app.use('/Ascrapper',AmazonRouter);
+app.use('/LazadaScrapper', LazadaRouter);
 
-// these are for ALL the SCRAPPERS
-app.get('/Ascrapper/:id', async (req, res) => { // scraper just for AMAZON
-    const input = decodeURIComponent(req.params.id)
-    res.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'text/plain'
-    })
-    const answer = await AmazonScrapper.Ascrapper(input, 10) // fixed at 10 results
-    // let answer = await LazadaScrapper.LazScrapper(input, 10) // lazada scrapper
-    // answer = LazadaScrapper.lazExcludes(answer ,'itemName', 'Pre-Order') // excludes all items with pre order in name
-    res.send(answer)
-    
-})
+
 
 app.listen(PORT, () => console.log(`Server Running at ${PORT}, Awesome!`))

@@ -15,7 +15,9 @@ export const SelectFilter = ({column}) => {
         preFilteredRows.forEach(row => {
             options.add(row.values[id])
         })
-        return [...options.values()]
+        const inputArr = [...options.values()]
+        const sortedArr = inputArr.sort((a,b) => a.normalize().localeCompare(b.normalize()))
+        return sortedArr
     }, [id, preFilteredRows]) // options is a list of categories per column
     /** IMPORTANT NOTE:
     MaterialUI AutoComplete does not seem to work for INT, BOOL, FLOAT,
@@ -39,6 +41,7 @@ export const SelectFilter = ({column}) => {
                 options={options}
                 style={{ width: 200 }}
                 renderInput={(params) => <TextField {...params} label="" variant="outlined"/>}
+                getOptionSelected={(option, value) => option === value}
             /> 
         </>
     )

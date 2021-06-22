@@ -1,4 +1,4 @@
-import { useState ,useMemo, useEffect} from "react";
+import { useState ,useMemo, useEffect,} from "react";
 import { CPU_COLUMNS } from "./CPU_Columns";
 import Table from '../Table';
 import axiosInstance from "../../AxiosInstance";
@@ -9,10 +9,10 @@ const CPUTable = (props) => {
 
     const Name = "CPU" // change name accordingly for new Tables
 
-    const propData = props.location.data;    
+
+    const [propData, setPropData] = useState(props.location.data)
     const [TableData,setTableData] = useState([])
     const [loadingTableData, setLoadingTableData] = useState(true)
-
     const data = useMemo(() => {
         return TableData
     }, [TableData]);
@@ -30,6 +30,16 @@ const CPUTable = (props) => {
             getData()
         }
     }, [loadingTableData])
+
+    
+
+    useEffect(()=>{
+        if (!propData) {
+            setPropData(JSON.parse(localStorage.getItem('propData')))
+        } else {
+            localStorage.setItem('propData', JSON.stringify(props.location.data))
+        }
+    },[]);
 
     const css = `
     .loader {
@@ -60,7 +70,7 @@ const CPUTable = (props) => {
 
                 :
                 <div className="p-4 overflow-auto">
-                    <Table TableColumns={CPU_COLUMNS} Name={Name} data={data} propData={propData}/>
+                    <Table TableColumns={CPU_COLUMNS} Name={Name} data={data} propData={propData} key={Name}/>
                 </div>}
         </div>
     )

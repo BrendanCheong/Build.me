@@ -143,9 +143,9 @@ const BuildCard = () => {
                     {/** Map the parts and unparts here */}
                     {card.partsData.map((part) => (
                         part.isUnPart ?
-                        <BuildUnpart name={part.name} id={card._id} key={part.name + card._id} card={card}/>
+                        <BuildUnpart name={part.name} id={card._id} key={part.name + card._id + "UNPART"} card={card}/>
                         :
-                        <BuildPart name={part.name} id={card._id} key={part.name + card._id} card={card}/>
+                        <BuildPart name={part.name} id={card._id} key={part.name + card._id + "PART"} card={card}/>
                     ))}
                 </div>
                 <h1 className="absolute bottom-0 left-0 py-1 pl-4 mb-2 bg-white rounded-lg shadow-md w-52 ml-7 text-md font-roboto">

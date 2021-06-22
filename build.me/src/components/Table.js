@@ -1,4 +1,4 @@
-import { useState ,useMemo, createContext} from "react";
+import { useState ,useMemo, createContext, useEffect} from "react";
 import { useTable, usePagination, useFilters } from "react-table";
 import Modal from "./Modal";
 import axiosInstance from '../AxiosInstance';
@@ -12,7 +12,9 @@ const Table = ({TableColumns, Name, data, propData}) => {
     const [isModalLoading, setIsModalLoading] = useState(true) // this is to see whether skeletal boxes are needed
     const [rowOriginal, setRowOriginal] = useState("")
 
+
     const columns = useMemo(() => TableColumns, [TableColumns]); // columns
+
 
     const AmazonScrapper = async (input) => {
         try {
@@ -25,26 +27,39 @@ const Table = ({TableColumns, Name, data, propData}) => {
         }
     };
 
+    //Evaluate Input based on Name
+    const Evaluate = (RowInfo) => {
+        switch(Name) {
+            case 'GPU':
+                return `${RowInfo.itemBrand} ${RowInfo.itemChipSet}`
+            default:
+                return `${RowInfo.itemBrand} ${RowInfo.itemName}`
+        }
+    }
+
     // DataCleaners
     const AmazonDataCleaner = (info, partName) => {
         const ChosenArray = []
         for (let i = 0 ; i < info.length; ++i) {
-            const FullName = info[i].itemName
+            
             const Price = info[i].itemPrice
-            if ((FullName.includes(` ${partName} `) || (FullName.includes(`-${partName} `)) || (FullName.includes(` ${partName}-`)) || (FullName.includes(`-${partName}-`))) && Price !== "NA") {
+            if (Price !== "NA") {
                 ChosenArray.push(info[i])
             }
         }
         return ChosenArray
     }
 
-    const Scrapper = async (RowInfo) => {  // acts as a web scrapper
-        
+    const Scrapper = async (RowInfo) => {  // need the switch statement here
+
+        // evaluate the technique to input into the Scrappers
         setIsOpenModal(true)
-        const ScrapperInput = `${RowInfo.Brand} ${RowInfo.Name}`
+        const ScrapperInput = Evaluate(RowInfo)
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
-        const response = AmazonDataCleaner(ScrapperOutput, RowInfo.Name) // TestFunction acts as a scrapper
-        
+        // console.log(ScrapperOutput);
+        // return ScrapperOutput
+        const response = AmazonDataCleaner(ScrapperOutput, RowInfo.itemName) // T** CHANGE ItemNAme
+        console.log(response)
         setInfoState(response)
         setRowOriginal(RowInfo)
         setIsModalLoading(false)         

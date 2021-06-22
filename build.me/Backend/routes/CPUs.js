@@ -2,16 +2,35 @@ const express = require('express');
 const router = express.Router();
 let CPU = require('../models/CPU.model');
 
-router.route('/').get((req, res) => { // GET ALL CPUs
-    CPU.find()
-        .then(CPUS => res.json(CPUS))
-        .catch(err => res.status(400).json('Error' + err));
+function parser (item) {
+    item.maxSupMem = parseFloat(item.maxSupMem.replace(' GB', ''))
+    return item
+}
+
+router.get('/', async (req, res) => { // GET ALL CPUs
+    try {
+
+        const data = await CPU.find()
+        const response = (data.map((item) => parser(item))).filter((item) => parseInt(item.maxSupMem) <= 128)
+
+        res
+        .status(200)
+        .send(response)
+
+    } catch(err) {
+        res
+        .status(500)
+        .json({Error: err})
+    }
 });
 
 router.post('/add/all', (req, res) => {
     try {
         const payLoad = req.body
-        CPU.collection.insertMany(payLoad, function(err, reply) {
+        const sortedArr = payLoad.sort(function(a,b) {
+            return parseFloat(b.ratingScore) - parseFloat(a.ratingScore)  
+        })
+        CPU.collection.insertMany(sortedArr, function(err, reply) {
             if(err) {
                 throw new Error("Adding CPU Error")
             } else {
@@ -25,6 +44,13 @@ router.post('/add/all', (req, res) => {
         .status(500)
         .json({Error: err})
     }
+})
+
+router.get('/getBool', async (req, res) => {
+    const response = await CPU.find({ maxSupMem: { $lt: "256 GB", $ne: 'NA'}})
+    res
+    .status(200)
+    .send(response)
 })
 
 router.route('/add').post((req, res) => { // POST 1 new CPU with exact specifications

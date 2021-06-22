@@ -3,34 +3,34 @@ import { SelectFilter } from "./SelectFilter";
 export const CPU_COLUMNS = [
     {
         Header: 'Brand',
-        accessor: 'Brand',
+        accessor: 'itemBrand',
         Filter: SelectFilter,
         
     },
     {
         Header:"Model",
-        accessor: "Name",
+        accessor: "itemName",
         Filter: SelectFilter,
     },
     {
         Header:"Cores",
-        accessor: "Core_Count",
+        accessor: "coreCount",
         Filter: SelectFilter,
     },
     {
         Header: 'Core Clock',
-        accessor: 'Core_Clock',
+        accessor: 'coreClock',
         Filter: SelectFilter,
 
     },
     {
         Header: 'Boost Clock',
-        accessor: 'Boost_Clock',
+        accessor: 'boostClock',
         Filter: SelectFilter,
     },
     {
         Header: 'Integrated Graphics',
-        accessor: 'Integrated_Graphics',
+        accessor: 'integratedGraphics',
         Filter: SelectFilter,
         
     }
