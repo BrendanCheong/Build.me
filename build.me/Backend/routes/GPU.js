@@ -73,4 +73,10 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/:id', (req, res) => { // GET SPEICIFC GPU by id
+    GPU.findById(req.params.id)
+    .then(gpu => res.json(gpu))
+    .catch(err => res.status(400).json({Error : err}));
+});
+
 module.exports = router;

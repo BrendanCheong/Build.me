@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
-const path = require('path');
 // import router files
 const CPURouter = require('./routes/CPUs');
 const GPURouter = require('./routes/GPU');
 const UserRouter = require('./routes/Users');
 const CardRouter = require('./routes/Cards');
 const RAMRouter = require('./routes/RAM');
+const MoboRouter = require('./routes/Mobo');
 const BuilderRouter = require('./routes/Builder');
 const AmazonRouter = require('./routes/Scraper/amazonScrapper');
 const LazadaRouter = require('./routes/Scraper/LazadaScrapper')
@@ -32,7 +32,7 @@ app.set('view engine', 'handlebars');
 //BodyParser Middleware
 app.use(cors({
     credentials: true, 
-    origin: ['http://localhost:3000'], // only localhost 3000 can have cookies
+    origin: ['http://localhost:3000'], // only localhost 3000 can have cookies !!! REMEMBER TO REPLACE with Hosted Service!!!
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -56,6 +56,7 @@ app.use('/users', UserRouter);
 app.use('/Cards', CardRouter);
 app.use('/Builder',BuilderRouter)
 app.use('/RAMs', RAMRouter);
+app.use('/Mobos', MoboRouter);
 app.use('/Ascrapper',AmazonRouter);
 app.use('/LazadaScrapper', LazadaRouter);
 

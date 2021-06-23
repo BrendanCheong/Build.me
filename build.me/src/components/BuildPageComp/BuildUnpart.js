@@ -25,17 +25,17 @@ const BuildUnpart = ({name, id, card}) => {
             {(()=> {
                 switch(name) {
                     case "CPU":
-                        return (<CPUsvg/>)
+                        return (<CPUsvg key={id + name}/>)
                     case "Motherboard":
-                        return (<Motherboardsvg/>)
+                        return (<Motherboardsvg key={id + name}/>)
                     case "GPU":
-                        return (<GraphicCardsvg/>)
+                        return (<GraphicCardsvg key={id + name}/>)
                     case "Memory":
-                        return (<RAMsvg/>)
+                        return (<RAMsvg key={id + name}/>)
                     case "PSU":
-                        return (<PSUsvg/>)
+                        return (<PSUsvg key={id + name}/>)
                     default:
-                        return (<Storagesvg/>)
+                        return (<Storagesvg key={id + name}/>)
                 }
             })()}
             <div className=" font-poppins">{name}</div>

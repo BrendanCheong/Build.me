@@ -20,7 +20,15 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
 
     const history = useHistory()
 
-
+    // include part type switch statement here
+    function WhatIsItemName (partType) {
+        switch(partType) {
+            case 'GPU':
+                return (`${rowOriginal.itemBrand} ${rowOriginal.itemChipSet}`)
+            default:
+                return (`${rowOriginal.itemBrand} ${rowOriginal.itemName}`)
+        }
+    }
 
     function NameShortern (name) {
         if (name.length >= 27) {
@@ -46,12 +54,13 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
         const Data = [...card.partsData]
         for (let i = 0; i < Data.length; ++i) {
             if(Data[i].name === partType) {
-                Data[i].itemName = `${rowOriginal.Brand} ${rowOriginal.Name}` // I must have Brand + Name!
+                Data[i].itemName = WhatIsItemName(partType) // I must have Brand + Name! // changes according to partType
                 Data[i].itemPrice = Price
                 Data[i].itemImg = itemImage
                 Data[i].itemRating = Rating
                 Data[i].itemURL = itemURL
                 Data[i].vendorName = VendorName
+                Data[i].itemID = rowOriginal._id
                 Data[i].isUnPart = false
             }
         }
@@ -62,6 +71,7 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
     
     return (
             <div className='flex-shrink-0 w-3/12 overflow-hidden bg-white rounded-md shadow-lg'>
+            <button onClick={() => console.log(partType)}>test</button>
                     <button className='bg-transparent hover:bg-gray-100 focus:outline-none'>
                         {/** Image Block start */}
                             <div className='relative h-40'>

@@ -48,7 +48,7 @@ const Builds = () => {
         try {
 
             const response = await axiosInstance.get('/Builder/find')
-            // console.log(response.data.CardArray)
+            
             return response.data.CardArray
 
         } catch(err) {
@@ -129,6 +129,7 @@ const Builds = () => {
                         cards[i].partsData[j].vendorName = ""
                         cards[i].partsData[j].itemURL = ""
                         cards[i].partsData[j].isUnPart = toChange
+                        delete cards[i].partsData[j].itemID
                         
                     }
                     newData.push(cards[i].partsData[j])
@@ -144,13 +145,13 @@ const Builds = () => {
         <div className="flex flex-row items-start h-screen p-2 space-x-3 overflow-hidden overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
             {cards.map((card) => ( card.isUncard ?
 
-            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}}>
+            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}} key={card._id}>
                 <BuildUnCard key={card._id}/>
             </ContextData.Provider> // if render Uncard boolean
 
             : 
 
-            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}}>
+            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}} key={card._id}>
                 <BuildCard key={card._id}/> 
             </ContextData.Provider> // render Card boolean
             ))}

@@ -1,13 +1,13 @@
 import { useState ,useMemo, useEffect, useCallback} from "react";
-import { CPU_COLUMNS } from "./Columns/CPU_Columns";
+import { RAM_Columns } from "./Columns/RAM_Columns";
 import Table from '../Table';
 import axiosInstance from "../../AxiosInstance";
 
 
 
-const CPUTable = (props) => {
+const RAMTable = (props) => {
 
-    const Name = "CPU" // change name accordingly for new Tables
+    const Name = "Memory" // change name accordingly for new Tables
 
 
     const [propData, setPropData] = useState(props.location.data)
@@ -29,40 +29,39 @@ const CPUTable = (props) => {
     },[]);
 
 
-    const PayloadAlgo = async () => {
+    // const PayloadAlgo = async () => {
         
-        let payload = {
-            'maxSupMem' : 0,
-            'itemSocket': ''
-        }
+    //     let payload = {
+    //         'maxSupMem' : 0,
+    //         'itemSocket': ''
+    //     }
         
-        const propData = JSON.parse(localStorage.getItem('propData'))
-        const card = propData.card.partsData
-        const MotherboardID = card[1].itemID
-        const MemoryID = card[3].itemID
-        if (MotherboardID) {
+    //     const propData = JSON.parse(localStorage.getItem('propData'))
+    //     const card = propData.card.partsData
+    //     const MotherboardID = card[1].itemID
+    //     const MemoryID = card[3].itemID
+    //     if (MotherboardID) {
 
-            const response = await axiosInstance.get(`/Mobo/${MotherboardID}`)
-            const MotherboardSocket = response.data.itemSocket
-            payload['itemSocket'] = MotherboardSocket
-        }
+    //         const MotherboardSocket = await axiosInstance.get(`/Mobo/${MotherboardID}`).data.itemSocket
+    //         payload['itemSocket'] = MotherboardSocket
+    //     }
 
-        if (MemoryID) {
+    //     if (MemoryID) {
 
-            const response = await axiosInstance.get(`/RAMs/${MemoryID}`)
-            const MemoryTotalMem = response.data.totalMem
-            payload['maxSupMem'] = MemoryTotalMem
-        }
+    //         const MemoryTotalMem = await axiosInstance.get(`/RAMs/${MemoryID}`).data.totalMem
+    //         payload['maxSupMem'] = MemoryTotalMem
+    //     }
         
-        return payload
+    //     return payload
         
-    }
+    // }
     
     useEffect(() => {
         async function getData() {
-            const payload = await PayloadAlgo()
+            // const payload = await PayloadAlgo()
+            // console.log(payload)
             await axiosInstance
-                .post('/CPUs/',payload)
+                .get('/RAMs/')
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
@@ -107,10 +106,10 @@ const CPUTable = (props) => {
 
                 :
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Table TableColumns={CPU_COLUMNS} Name={Name} data={data} propData={propData} key={Name + " Larry the First"}/>
+                    <Table TableColumns={RAM_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the RAM"}/>
                 </div>}
         </div>
     )
 }
 
-export default CPUTable
+export default RAMTable
