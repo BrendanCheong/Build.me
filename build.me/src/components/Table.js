@@ -41,24 +41,35 @@ const Table = ({TableColumns, Name, data, propData}) => {
     const AmazonDataCleaner = (info, partName) => {
         const ChosenArray = []
         for (let i = 0 ; i < info.length; ++i) {
-            
-            const Price = info[i].itemPrice
-            if (Price !== "NA") {
-                ChosenArray.push(info[i])
+            if (!info[i]) {
+
+                continue
+                
+            } else {
+
+                const Price = info[i].itemPrice
+                if (Price !== "NA") {
+
+                    ChosenArray.push(info[i])
+                    
+                }
             }
+            
         }
         return ChosenArray
     }
 
     const Scrapper = async (RowInfo) => {  // need the switch statement here
 
+        console.log(RowInfo)
         // evaluate the technique to input into the Scrappers
         setIsOpenModal(true)
         const ScrapperInput = Evaluate(RowInfo)
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
-        // console.log(ScrapperOutput);
+        console.log(ScrapperOutput);
         // return ScrapperOutput
-        const response = AmazonDataCleaner(ScrapperOutput, RowInfo.itemName) // T** CHANGE ItemNAme
+        const partName =  RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
+        const response = AmazonDataCleaner(ScrapperOutput, partName) // T** CHANGE ItemNAme
         console.log(response)
         setInfoState(response)
         setRowOriginal(RowInfo)
@@ -90,7 +101,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
     const { pageIndex } = state;
 
     return ( 
-        <div className ="flex items-center min-h-screen px-4">
+        <div className ="flex items-start min-h-screen px-4 py-4">
             <div className="flex flex-col justify-center w-full">
                 {/** Table Start */}
                 <table {...getTableProps()} className='w-full max-w-4xl mx-auto overflow-hidden bg-white divide-y divide-gray-300 rounded-lg shadow-md whitespace-nowrap'>

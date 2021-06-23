@@ -7,15 +7,25 @@ function parser (item) {
     return item
 }
 
-router.get('/', async (req, res) => { // GET ALL CPUs
+router.post('/', async (req, res) => { // GET ALL CPUs
     try {
-
-        const data = await CPU.find()
-        const response = (data.map((item) => parser(item))).filter((item) => parseInt(item.maxSupMem) <= 128)
+        const { maxSupMem, itemSocket } = req.body
+        let query = {}
+        if (!itemSocket) {
+            query['$nin'] = []
+        } else {
+            query['$in'] = [itemSocket]
+        }
+        const data = await CPU.find({"itemSocket": query})
+        const processed = ((data.map((item) => parser(item))).filter((item) => parseInt(item.maxSupMem) >= maxSupMem))
+        const response = processed.map((item) => {
+            item.maxSupMem = item.maxSupMem + ' GB'
+            return item
+        })
 
         res
         .status(200)
-        .send(response)
+        .json(response)
 
     } catch(err) {
         res
@@ -46,12 +56,6 @@ router.post('/add/all', (req, res) => {
     }
 })
 
-router.get('/getBool', async (req, res) => {
-    const response = await CPU.find({ maxSupMem: { $lt: "256 GB", $ne: 'NA'}})
-    res
-    .status(200)
-    .send(response)
-})
 
 router.route('/add').post((req, res) => { // POST 1 new CPU with exact specifications
     const itemName = req.body.itemName
@@ -81,10 +85,10 @@ router.route('/add').post((req, res) => { // POST 1 new CPU with exact specifica
         .catch(err => res.status(400).json('Error' + err));
 });
 
-router.route('/:id').get((req, res) => { // GET SPEICIFC CPU by id
+router.get('/:id', (req, res) => { // GET SPEICIFC CPU by id
     CPU.findById(req.params.id)
     .then(cpu => res.json(cpu))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json({Error : err}));
 });
 
 router.route('/:id').delete((req, res) => { // DELETE SPECIFIC CPU by id

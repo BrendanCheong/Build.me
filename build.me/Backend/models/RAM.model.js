@@ -8,6 +8,8 @@ const RAMSchema = new Schema({
     itemBrand: {type: String, required: true},
     ratingScore: {type: String, required: true}, // assuming the data scraped is all in strings
     memModule: {type: String, required: true},
+    totalMem: {type: Number, required: true },
+    moduleNum: {type: Number, required: true},
     memSpeed: {type: String, required: true},
     itemTiming: {type: String, required: true},
     itemEccRegistered: {type: String, required: true},

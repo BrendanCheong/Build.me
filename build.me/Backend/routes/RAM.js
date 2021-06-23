@@ -36,6 +36,8 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
         const itemEccRegistered = req.body.itemEccRegistered;
         const itemCasLatency = req.body.itemCasLatency;
         const firstWordLatency = req.body.firstWordLatency;
+        const totalMem = req.body.totalMem;
+        const moduleNum = req.body.moduleNum;
 
         const newRAM = new RAM({
             
@@ -48,6 +50,8 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
         itemEccRegistered,
         itemCasLatency,
         firstWordLatency,
+        totalMem,
+        moduleNum,
 
         })
 
@@ -61,4 +65,15 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
     }
 })
 
+router.get('/', (req, res) => { // GET SPEICIFC RAM by id
+    RAM.find(req.params.id)
+    .then(ram => res.json(ram))
+    .catch(err => res.status(400).json({Error : err}));
+});
+
+router.get('/:id', (req, res) => { // GET SPEICIFC RAM by id
+    RAM.findById(req.params.id)
+    .then(ram => res.json(ram))
+    .catch(err => res.status(400).json({Error : err}));
+});
 module.exports = router;

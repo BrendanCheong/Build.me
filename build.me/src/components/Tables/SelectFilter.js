@@ -40,8 +40,8 @@ export const SelectFilter = ({column}) => {
                 id={`Select Filterer for ${id}`}
                 options={options}
                 style={{ width: 200 }}
-                renderInput={(params) => <TextField {...params} label="" variant="outlined"/>}
-                getOptionSelected={(option, value) => option === value}
+                renderInput={(params) => <TextField {...params} label="" variant="outlined" key={id + " I am a TextField"}/>}
+                getOptionSelected={(option, value) => option === value & option !== null}
             /> 
         </>
     )
