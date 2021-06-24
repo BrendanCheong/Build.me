@@ -1,4 +1,4 @@
-import { useState ,useMemo, useEffect, useCallback} from "react";
+import { useState ,useMemo, useEffect,} from "react";
 import { RAM_Columns } from "./Columns/RAM_Columns";
 import Table from '../Table';
 import axiosInstance from "../../AxiosInstance";
@@ -28,33 +28,6 @@ const RAMTable = (props) => {
         }
     },[]);
 
-
-    // const PayloadAlgo = async () => {
-        
-    //     let payload = {
-    //         'maxSupMem' : 0,
-    //         'itemSocket': ''
-    //     }
-        
-    //     const propData = JSON.parse(localStorage.getItem('propData'))
-    //     const card = propData.card.partsData
-    //     const MotherboardID = card[1].itemID
-    //     const MemoryID = card[3].itemID
-    //     if (MotherboardID) {
-
-    //         const MotherboardSocket = await axiosInstance.get(`/Mobo/${MotherboardID}`).data.itemSocket
-    //         payload['itemSocket'] = MotherboardSocket
-    //     }
-
-    //     if (MemoryID) {
-
-    //         const MemoryTotalMem = await axiosInstance.get(`/RAMs/${MemoryID}`).data.totalMem
-    //         payload['maxSupMem'] = MemoryTotalMem
-    //     }
-        
-    //     return payload
-        
-    // }
     
     useEffect(() => {
         async function getData() {
@@ -96,7 +69,6 @@ const RAMTable = (props) => {
 
     return ( 
         <div>
-        {/* <button onClick={() => console.log(propData.card)}>test</button> */}
             {loadingTableData ?
                 <div className="flex flex-col items-center justify-center pt-48">
                     <style>{css}</style>

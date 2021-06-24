@@ -21,7 +21,7 @@ const BuildUnpart = ({name, id, card}) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center border-2 border-dotted rounded shadow-md border-coolGray-300 bg-trueGray-100 h-60 w-52">
+        <div className="flex flex-col items-center justify-center h-64 border-2 border-dotted rounded shadow-md border-coolGray-300 bg-trueGray-100 w-52">
             {(()=> {
                 switch(name) {
                     case "CPU":

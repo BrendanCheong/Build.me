@@ -1,13 +1,13 @@
-import { useState ,useMemo, useEffect} from "react";
-import { CPU_COLUMNS } from "./Columns/CPU_Columns";
+import { useState ,useMemo, useEffect,} from "react";
+import { PSU_Columns } from './Columns/PSU_Columns';
 import Table from '../Table';
 import axiosInstance from "../../AxiosInstance";
 
 
 
-const CPUTable = (props) => {
+const PSUTable = (props) => {
 
-    const Name = "CPU" // change name accordingly for new Tables
+    const Name = "PSU" // change name accordingly for new Tables
 
 
     const [propData, setPropData] = useState(props.location.data)
@@ -28,41 +28,13 @@ const CPUTable = (props) => {
         }
     },[]);
 
-
-    const PayloadAlgo = async () => {
-        
-        let payload = {
-            'maxSupMem' : 0,
-            'itemSocket': ''
-        }
-        
-        const propData = JSON.parse(localStorage.getItem('propData'))
-        const card = propData.card.partsData
-        const MotherboardID = card[1].itemID
-        const MemoryID = card[3].itemID
-        if (MotherboardID) {
-
-            const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
-            const MotherboardSocket = response.data.itemSocket
-            payload['itemSocket'] = MotherboardSocket
-        }
-
-        if (MemoryID) {
-
-            const response = await axiosInstance.get(`/RAMs/${MemoryID}`)
-            const MemoryTotalMem = response.data.totalMem
-            payload['maxSupMem'] = MemoryTotalMem
-        }
-        
-        return payload
-        
-    }
     
     useEffect(() => {
         async function getData() {
-            const payload = await PayloadAlgo()
+            // const payload = await PayloadAlgo()
+            // console.log(payload)
             await axiosInstance
-                .post('/CPUs/',payload)
+                .get('/PSUs/')
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
@@ -97,7 +69,6 @@ const CPUTable = (props) => {
 
     return ( 
         <div>
-        {/* <button onClick={() => console.log(propData.card)}>test</button> */}
             {loadingTableData ?
                 <div className="flex flex-col items-center justify-center pt-48">
                     <style>{css}</style>
@@ -107,10 +78,10 @@ const CPUTable = (props) => {
 
                 :
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Table TableColumns={CPU_COLUMNS} Name={Name} data={data} propData={propData} key={Name + " Larry the First"}/>
+                    <Table TableColumns={PSU_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the GPU"}/>
                 </div>}
         </div>
     )
 }
 
-export default CPUTable
+export default PSUTable

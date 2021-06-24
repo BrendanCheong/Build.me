@@ -71,7 +71,6 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
     
     return (
             <div className='flex-shrink-0 w-3/12 overflow-hidden bg-white rounded-md shadow-lg'>
-            <button onClick={() => console.log(partType)}>test</button>
                     <button className='bg-transparent hover:bg-gray-100 focus:outline-none'>
                         {/** Image Block start */}
                             <div className='relative h-40'>

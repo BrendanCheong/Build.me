@@ -13,6 +13,8 @@ const BuildPart = ({name, id, card}) => {
 
     const {changeNewParts} = useContext(ContextData)
 
+    
+
     const newTo = {
         pathname: `/${name}_Table`,
         data: {id : id, card: card,}
@@ -39,15 +41,19 @@ const BuildPart = ({name, id, card}) => {
             index = 5
             break;
     }
+    let NewItemName = card.partsData[index].itemName
+    if(NewItemName.length > 44) {
+        NewItemName = `${card.partsData[index].itemName.slice(0,44)}..`
+    }
 
     return (
-        <div className="relative flex flex-col bg-white rounded shadow-md h-60 w-52">
+        <div className="relative flex flex-col h-64 bg-white rounded shadow-md w-52">
             <div className="relative h-32 bg-gray-200 rounded-tl-md rounded-tr-md">
                 <img alt="product artistry" src={card.partsData[index].itemImg} 
                 className="absolute object-cover object-center w-full h-full rounded-tl-md rounded-tr-md"/>
             </div>
             <div className="flex flex-col items-start justify-between p-2 space-y-1 font-roboto">
-                <h1 className="text-sm">{card.partsData[index].itemName}</h1>
+                <h1 className="text-sm">{NewItemName}</h1>
                 <h1 className="text-sm">{`Vendor: ${card.partsData[index].vendorName}`}</h1>
                 <h1 className="px-3 py-1 text-xs text-left bg-white rounded-lg shadow-md">{card.partsData[index].itemPrice}</h1>
             </div>

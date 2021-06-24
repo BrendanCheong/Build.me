@@ -1,4 +1,4 @@
-import { useState ,useMemo, createContext, useEffect} from "react";
+import { useState ,useMemo, createContext,} from "react";
 import { useTable, usePagination, useFilters } from "react-table";
 import Modal from "./Modal";
 import axiosInstance from '../AxiosInstance';
@@ -65,6 +65,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
         // evaluate the technique to input into the Scrappers
         setIsOpenModal(true)
         const ScrapperInput = Evaluate(RowInfo)
+        console.log(ScrapperInput)
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
         console.log(ScrapperOutput);
         // return ScrapperOutput
@@ -163,8 +164,8 @@ const Table = ({TableColumns, Name, data, propData}) => {
                 </div>
                 {/** Pagination end */}
             </div>
-            <TableDataContext.Provider value={{isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading,rowOriginal, setRowOriginal}}>  
-                <Modal onClose={() =>setIsOpenModal(false)} id={propData.id} card={propData.card}/>
+            <TableDataContext.Provider value={{isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading,rowOriginal, setRowOriginal}} key={propData.id + JSON.stringify(propData.card)}>  
+                <Modal onClose={() =>setIsOpenModal(false)} id={propData.id} card={propData.card} key={propData.id + JSON.stringify(propData.card)}/>
             </TableDataContext.Provider>
         </div>
     )

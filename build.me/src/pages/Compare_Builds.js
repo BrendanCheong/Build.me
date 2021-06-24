@@ -9,7 +9,7 @@ export const CompBuildPageData = createContext(null)
 
 const Compare_Builds = () => { 
 
-    const [toggleBarGraph, setToggleBarGraph] = useState(1) // NOTE: put this in BarGraphTab.js if needed
+    const [toggleBarGraph, setToggleBarGraph] = useState(1) 
     const [autoCompletedata, setAutoCompleteData] = useState([])
     const [autoCompleteState0, setAutoCompleteState0] = useState(null) 
     const [autoCompleteState1, setAutoCompleteState1] = useState(null) 
@@ -23,12 +23,13 @@ const Compare_Builds = () => {
             try {
                 const response = await axiosInstance.get('/Builder/find')
                 const selectedCardZero = response.data.CardArray.filter((card) => card.CardName === autoCompleteState0)
-                // const selectedCardOne = response.data.CardArray.filter((card) => card.CardName === autoCompleteState1)
+                
                 if (selectedCardZero.length > 0) {
-                    const priceArrZero = selectedCardZero[0].partsData.map((parts) => ( parts.itemPrice ? parseFloat(parts.itemPrice.replace('S$','')) : 0))
-                    
+                    const priceArr = selectedCardZero[0].partsData.map((parts) => ( parts.itemPrice ? parts.itemPrice.replace('S$','') : 0))
+                    const priceArrZero = priceArr.map((parts) => typeof parts === 'string' ? parseFloat(parts.replace(',', '')) : 0)
+
                     setBarGraphZero(priceArrZero);
-                    // setBarGraphOne(priceArrOne);
+                    
 
                     setLoadingData(false)
                 }
@@ -53,8 +54,9 @@ const Compare_Builds = () => {
                 const response = await axiosInstance.get('/Builder/find')
                 const selectedCardOne = response.data.CardArray.filter((card) => card.CardName === autoCompleteState1)
                 if (selectedCardOne.length > 0) {
-                    const priceArrOne = selectedCardOne[0].partsData.map((parts) => ( parts.itemPrice ? parseFloat(parts.itemPrice.replace('S$','')) : 0))
-                    
+                    const priceArr = selectedCardOne[0].partsData.map((parts) => ( parts.itemPrice ? parts.itemPrice.replace('S$','') : 0))
+                    const priceArrOne = priceArr.map((parts) => typeof parts === 'string' ? parseFloat(parts.replace(',', '')) : 0)
+
                     setBarGraphOne(priceArrOne);
 
                     setLoadingData(false)

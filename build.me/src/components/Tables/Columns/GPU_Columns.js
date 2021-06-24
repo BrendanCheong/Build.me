@@ -1,6 +1,6 @@
 import { SelectFilter } from "../SelectFilter";
 
-export const GPU_COLUMNS = [
+export const GPU_Columns = [
     {
         Header:'Brand',
         accessor: 'itemBrand',
