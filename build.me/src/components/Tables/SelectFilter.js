@@ -9,14 +9,15 @@ export const SelectFilter = ({column}) => {
      */
     const {filterValue, setFilter, preFilteredRows, id} = column
     const [value, setValue] = useState(filterValue)
-    const [inputValue, setInputValue] = useState(null)
+    const [inputValue, setInputValue] = useState("")
     const options = useMemo(() => {
         const options = new Set()
         preFilteredRows.forEach(row => {
             options.add(row.values[id])
         })
         const inputArr = [...options.values()]
-        const sortedArr = inputArr.sort((a,b) => a.normalize().localeCompare(b.normalize()))
+        const StringedArr = inputArr.map((item) => item.toString())
+        const sortedArr = StringedArr.sort((a,b) => a.normalize().localeCompare(b.normalize()))
         return sortedArr
     }, [id, preFilteredRows]) // options is a list of categories per column
     /** IMPORTANT NOTE:
@@ -25,12 +26,12 @@ export const SelectFilter = ({column}) => {
     I have to filter the data either server side before extracting to local side
     */
     return (
-        <>
+        <div key={id}>
             <Autocomplete
-                value={value ? value : null}
+                value={value ? value : " "}
                 onChange={(event,newValue) => {
                     setValue(newValue);
-                    setFilter(newValue || undefined);
+                    setFilter(newValue || "");
                 }}
                 key={id}
                 inputValue={inputValue}
@@ -41,9 +42,9 @@ export const SelectFilter = ({column}) => {
                 options={options}
                 style={{ width: 200 }}
                 renderInput={(params) => <TextField {...params} label="" variant="outlined" key={id + " I am a TextField"}/>}
-                getOptionSelected={(option, value) => option === value & option !== null}
+                getOptionSelected={(option, value) => option === value || " "}
             /> 
-        </>
+        </div>
     )
 }
 

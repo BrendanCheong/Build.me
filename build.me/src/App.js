@@ -8,6 +8,9 @@ import Dropdown from "./components/Dropdown";
 import CPU_Table from './components/Tables/CPU_Table';
 import GPU_Table from './components/Tables/GPU_Table';
 import RAM_Table from './components/Tables/RAM_Table';
+import Mobo_Table from './components/Tables/Mobo_Table';
+import PSU_Table from './components/Tables/PSU_Table';
+import Storage_Table from './components/Tables/Storage_Table';
 import Confirmation from './components/Authentication/Confirmation';
 import AuthContextData from './components/Context/AuthContext';
 import Home from "./pages";
@@ -82,6 +85,9 @@ function App() {
           <Route path="/CPU_Table" exact component={CPU_Table}/>
           <Route path="/GPU_Table" exact component={GPU_Table}/>
           <Route path="/Memory_Table" exact component={RAM_Table}/>
+          <Route path="/Motherboard_Table" exact component={Mobo_Table}/>
+          <Route path="/PSU_Table" exact component={PSU_Table}/>
+          <Route path="/Storage_Table" exact component={Storage_Table}/>
           <Route path='/' exact component={Home}/>
           <Route path="/confirm/:token" render={() => <Redirect to="/"/>}/>
           <Route path="/Login" render={() => <Redirect to="/"/>}/>

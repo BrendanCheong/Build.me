@@ -46,7 +46,10 @@ const Tabs = ({ id }) => {
 
     const PercentageCalculator = useCallback((data) => {
         const CurrentBudget = parseFloat(values.numberformat)
-        const itemPriceArray = data.map((item) => item.itemPrice ? parseFloat(item.itemPrice.replace('S$',"")) : 0)
+        const itemArray = data.map((item) => item.itemPrice ? item.itemPrice.replace('S$',"") : 0)
+        
+        const itemPriceArray = itemArray.map((item) => typeof item === 'string' ? parseFloat(item.replace(',', '')) : 0)
+        
         const SumPriceArray = itemPriceArray.reduce((a,b) => a + b)
         if (SumPriceArray > CurrentBudget) {
             console.log('Budget is too low!') 

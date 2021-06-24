@@ -17,6 +17,11 @@ router.route('/').get((req, res) => { // /users/ is for GET req
 router.post('/add', async (req, res) => { // Register User and Log in
     try {
         const {username, email, password, passwordVerify} = req.body;
+        const validateEmail = (email) => {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+            
+        }
         
         // the following if statements are for validation, the user must have these conditions to create an account
         
@@ -25,6 +30,13 @@ router.post('/add', async (req, res) => { // Register User and Log in
             return res
             .status(400)
             .json({Error : "Please enter all required fields"})
+        }
+
+        // user email must be valid
+        if (!validateEmail(email)) {
+            return res
+            .status(400)
+            .json({Error: "Please enter a valid email"})
         }
 
         // user password must be 8 characters long

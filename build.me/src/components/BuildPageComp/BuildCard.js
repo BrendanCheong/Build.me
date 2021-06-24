@@ -36,7 +36,8 @@ const BuildCard = () => {
         for (let item of card.partsData) {
             
             if (item.itemPrice) {
-                const numberPrice = parseFloat(item.itemPrice.replace('S$', ''))
+                const number = item.itemPrice.replace('S$', '')
+                const numberPrice = parseFloat(number.replace(',',''))
                 Total += numberPrice
             }
         }
