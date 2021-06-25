@@ -18,19 +18,19 @@ router.post('/', async (req, res) => { // GET all Mobo
             m2Slots: {$nin: []}
         }
         
-        if (itemSocket) {
+        if (itemSocket) { // CPU
             query.itemSocket = {$in: [itemSocket]}
         }
-        if (memSpeed) {
+        if (memSpeed) { // Memory
             query.memSpeed = {$in: [memSpeed]}
         }
-        if (ramSlots) {
+        if (ramSlots) { // Memory
             query.ramSlots = {$gte: ramSlots}
         }
-        if (itemECC === 'Yes') {
+        if (itemECC === 'Yes') { // Memory
             query.itemECC = {$in : [itemECC]}
         }
-        if (itemInterface === "SATA 6 Gb/s") {
+        if (itemInterface === "SATA 6 Gb/s") { // Storage
             query.sata6Gb = {$gte: 0}
         } 
         else if (itemInterface.slice(0,3) === "M.2") {
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => { // GET all Mobo
         }
 
         const data = await Mobo.find(query)
-        const processed = ((data.map((item) => parser(item))).filter((item) => parseInt(item.maxSupMem) >= maxSupMem))
+        const processed = ((data.map((item) => parser(item))).filter((item) => parseInt(item.maxSupMem) >= maxSupMem)) // Memory
         const response = processed.map((item) => {
             item.maxSupMem = item.maxSupMem + ' GB'
             return item

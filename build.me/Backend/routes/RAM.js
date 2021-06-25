@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 let RAM = require('../models/RAM.model');
 
+
 router.post('/add/all', (req, res) => {
     try {
         const payLoad = req.body;
@@ -23,6 +24,47 @@ router.post('/add/all', (req, res) => {
         .json({Error: err})
     }
 })
+
+router.post('/', async (req, res) => { 
+    try {
+        const {memSpeed, totalMem, moduleNum, itemEccRegistered} = req.body
+        let query = {
+
+            itemEccRegistered: {$nin: []},
+            moduleNum: {$nin: []},
+            memSpeed: {$nin: []},
+            totalMem: {$nin: []},
+
+        }
+
+        if (memSpeed) {
+            query.memSpeed = {$in: memSpeed}
+        }
+
+        if (totalMem) {
+            query.totalMem = {$lte: totalMem}
+        }
+
+        if (moduleNum) {
+            query.moduleNum = {$lte: moduleNum}
+        }
+
+        if (itemEccRegistered) {
+            query.itemEccRegistered = {$in: itemEccRegistered}
+        }
+
+        const response = await RAM.find(query)
+        res
+        .status(200)
+        .json(response)
+
+    } catch(err) {
+
+        res
+        .status(500)
+        .json({Error: err})
+    }
+});
 
 router.post('/add', async (req, res) => { // adds 1 item at a time
     try {
@@ -65,7 +107,7 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
     }
 })
 
-router.get('/', (req, res) => { // GET SPEICIFC RAM by id
+router.get('/', (req, res) => { 
     RAM.find(req.params.id)
     .then(ram => res.json(ram))
     .catch(err => res.status(400).json({Error : err}));

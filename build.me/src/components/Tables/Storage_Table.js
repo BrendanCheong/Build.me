@@ -28,13 +28,31 @@ const StorageTable = (props) => {
         }
     },[]);
 
+    const PayloadAlgo = async () => {
+        let payload = {
+
+            "sata6Gb":1
+
+        }
+        const propData = JSON.parse(localStorage.getItem('propData'))
+        const card = propData.card.partsData
+        const MotherboardID = card[1].itemID
+
+        if (MotherboardID) {
+            const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
+            const Motherboardsata6Gb = response.data.sata6Gb;
+            payload["sata6Gb"] = Motherboardsata6Gb;
+        }
+
+        return payload
+    }
     
     useEffect(() => {
         async function getData() {
-            // const payload = await PayloadAlgo()
-            // console.log(payload)
+            const payload = await PayloadAlgo()
+            
             await axiosInstance
-                .get('/Storage/')
+                .post('/Storage/', payload)
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
