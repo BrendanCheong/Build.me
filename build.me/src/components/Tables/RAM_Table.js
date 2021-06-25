@@ -28,13 +28,58 @@ const RAMTable = (props) => {
         }
     },[]);
 
-    
+    const PayloadAlgo = async () => {
+
+        let payload = {
+
+            "itemEccRegistered": "",
+            "moduleNum": 0,
+            "memSpeed": "",
+            "totalMem": 0,
+        }
+
+        const propData = JSON.parse(localStorage.getItem('propData'))
+        const card = propData.card.partsData
+        const MotherboardID = card[1].itemID;
+        const CPUID = card[0].itemID;
+
+        let totalMem = 0
+        if (MotherboardID) {
+            const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
+            
+            const MotherboardItemEccRegistered = response.data.itemECC;
+            if (MotherboardItemEccRegistered === 'No') {
+                payload["itemEccRegistered"] = ['Non-ECC / Unbuffered','Non-ECC / Registered']
+            } else {
+                payload["itemEccRegistered"] = ['ECC / Unbuffered','ECC / Registered']
+            }
+            const UnproccessedMem = response.data.maxSupMem
+            totalMem = parseInt(UnproccessedMem.replace(' GB', ''))
+            const MotherboardModuleNum = response.data.ramSlots;
+            payload["moduleNum"] = MotherboardModuleNum;
+            const MotherboardMemSpeedArray = response.data.memSpeed;
+            payload["memSpeed"] = MotherboardMemSpeedArray;
+        }
+
+        if (CPUID) {
+            const response  = await axiosInstance.get(`/CPUs/${CPUID}`)
+            const UnproccessedMem = response.data.maxSupMem
+            const CPUtotalMem = parseInt(UnproccessedMem.replace(' GB', ''))
+            if (CPUtotalMem < totalMem) {
+                totalMem = CPUtotalMem;
+            }
+        }
+        payload["totalMem"] = totalMem
+
+        return payload
+
+    }
     useEffect(() => {
         async function getData() {
-            // const payload = await PayloadAlgo()
-            // console.log(payload)
+            const payload = await PayloadAlgo()
+            
             await axiosInstance
-                .get('/RAMs/')
+                .post('/RAMs/', payload)
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
@@ -77,6 +122,7 @@ const RAMTable = (props) => {
                 </div>
 
                 :
+                
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
                     <Table TableColumns={RAM_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the RAM"}/>
                 </div>}

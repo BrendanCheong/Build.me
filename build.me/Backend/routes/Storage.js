@@ -2,6 +2,25 @@ const express = require('express');
 const router = express.Router();
 let Storage = require('../models/Storage.model');
 
+
+router.post('/', async (req, res) => { 
+
+    const {sata6Gb} = req.body
+    let query = {
+
+        "itemInterface" : {$nin: []},
+
+    }
+    if (sata6Gb === 0) {
+        query["itemInterface"] = {$nin: ["SATA 6 Gb/s", "SATA 3 Gb/s"]}
+    } 
+    
+    const response = await Storage.find(query)
+    res
+    .status(200)
+    .json(response)
+});
+
 router.post('/add/all', (req, res) => {
     try {
         const payLoad = req.body;
@@ -23,12 +42,6 @@ router.post('/add/all', (req, res) => {
         .json({Error: err})
     }
 })
-
-router.get('/', (req, res) => { // GET all Storage
-    Storage.find()
-    .then(storage => res.json(storage))
-    .catch(err => res.status(400).json({Error : err}));
-});
 
 router.get('/:id', (req, res) => { // GET SPEICIFC Storage by id
     Storage.findById(req.params.id)

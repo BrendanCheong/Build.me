@@ -61,17 +61,17 @@ const Table = ({TableColumns, Name, data, propData}) => {
 
     const Scrapper = async (RowInfo) => {  // need the switch statement here
 
-        console.log(RowInfo)
+        // console.log(RowInfo)
         // evaluate the technique to input into the Scrappers
         setIsOpenModal(true)
         const ScrapperInput = Evaluate(RowInfo)
         console.log(ScrapperInput)
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
-        console.log(ScrapperOutput);
-        // return ScrapperOutput
+        // console.log(ScrapperOutput);
+        
         const partName =  RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
         const response = AmazonDataCleaner(ScrapperOutput, partName) // T** CHANGE ItemNAme
-        console.log(response)
+        // console.log(response)
         setInfoState(response)
         setRowOriginal(RowInfo)
         setIsModalLoading(false)         

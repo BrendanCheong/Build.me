@@ -43,6 +43,7 @@ const CPUTable = (props) => {
         if (MotherboardID) {
 
             const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
+            console.log(response)
             const MotherboardSocket = response.data.itemSocket
             payload['itemSocket'] = MotherboardSocket
         }
@@ -67,9 +68,12 @@ const CPUTable = (props) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
                 });
+            
+    
         }
         if (loadingTableData) {
             getData()
+            
         }
     }, [loadingTableData])
 
