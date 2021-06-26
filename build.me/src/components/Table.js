@@ -65,7 +65,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
         // evaluate the technique to input into the Scrappers
         setIsOpenModal(true)
         const ScrapperInput = Evaluate(RowInfo)
-        console.log(ScrapperInput)
+        // console.log(ScrapperInput)
         const ScrapperOutput = await AmazonScrapper(ScrapperInput)
         // console.log(ScrapperOutput);
         

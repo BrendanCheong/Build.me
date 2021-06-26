@@ -32,7 +32,7 @@ const LoginPage = () => {
             console.log(response.data)
             
             await getLoggedIn();
-
+            console.log(history)
             setMessage("")
             setErrorState(false)
             history.push('/')

@@ -1,10 +1,18 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
+import { useState, useContext, useEffect, useCallback, createContext } from 'react';
 import { CompBuildPageData } from '../../pages/Compare_Builds';
+import Filler from './Build Tabs/Filler';
+import CPUcontent from './Build Tabs/CPUcontent';
+import GPUcontent from './Build Tabs/GPUcontent';
+import MemoryContent from './Build Tabs/MemoryContent';
+import PSUcontent from './Build Tabs/PSUcontent';
+import StorageContent from './Build Tabs/StorageContent';
+import MotherboardContent from './Build Tabs/MotherboardContent';
 import axiosInstance from '../../AxiosInstance';
 import { ErrorHandlingNotif } from '../Misc/Error';
 import BudgetDonut from '../Charts/BudgetDonut';
 import BudgetBar from './BudgetBar';
 
+export const TabsData = createContext(null)
 
 const Tabs = ({ id }) => {
 
@@ -13,7 +21,9 @@ const Tabs = ({ id }) => {
     const [submitting, setSubmitting] = useState(true); // this is for loading screen for async
     const [currentCardName, setCurrentCardName] = useState(null)
     const [currentPartsData, setCurrentPartsData] = useState(null)
+    const [totalWattage, setTotalWattage] = useState(null);
     const [DonutAppear, setDonutAppear] = useState(false)
+    const [tabsLoading, setTabsLoading] = useState(true)
     const [dataSetArray, setDataSetArray] = useState([])
     const [labelArray, setLabelArray] = useState([])
     const [ColorArray, setColorArray] = useState([])
@@ -55,6 +65,7 @@ const Tabs = ({ id }) => {
             console.log('Budget is too low!') 
             return 'Budget is too low!'
             // error handling
+            // add some error handling here
         }
         let PercentageArray = itemPriceArray.map((item) => item ? parseFloat(((item / CurrentBudget) * 100).toFixed(2)) : 0 )
         const RemainingAmt = CalculateRemainingAmt(PercentageArray)
@@ -80,6 +91,70 @@ const Tabs = ({ id }) => {
         
     }
 
+    const CheckOutParts = () => {
+        if (currentPartsData) {
+            currentPartsData.forEach((item) => {
+                if (item.itemID) {
+                    window.open(item.itemURL)
+                }
+            })
+        }
+    }
+
+    const TotalWattageCalculator = async () => {
+        let Total = []
+        try {
+            const CPUID = currentPartsData[0].itemID;
+            const GPUID = currentPartsData[2].itemID
+            const MoboID = currentPartsData[1].itemID;
+            const MemoryID = currentPartsData[3].itemID;
+            const StorageID = currentPartsData[5].itemID;
+            if (CPUID) {
+                const CPUresponse = await axiosInstance.get(`/CPUs/${CPUID}`);
+                const data = CPUresponse.data;
+                Total.push(parseInt(data.itemTDP.replace(' W','')))
+            }
+            if (GPUID) {
+                const GPUresponse = await axiosInstance.get(`/GPUs/${GPUID}`);
+                const data = GPUresponse.data;
+                Total.push(parseInt(data.itemTDP.replace(' W','')))
+            }
+            if (MoboID) {
+                Total.push(70)
+            }
+            if (MemoryID) {
+                const MemoryResponse = await axiosInstance.get(`/RAMs/${MemoryID}`);
+                const data = MemoryResponse.data;
+                const actualSpeed = parseInt(data.memSpeed.replace('DDR4-',''));
+                if (actualSpeed < 3000) {
+                    const amt = Math.round((data.totalMem) * (0.71875));
+                    Total.push(amt)
+                } else if (actualSpeed < 2000) {
+                    const amt = Math.round((data.totalMem) * (1.125)); 
+                    Total.push(amt)
+                } else {
+                    const amt = Math.round((data.totalMem) * (0.90625))
+                    Total.push(amt)
+                }
+            }
+            if (StorageID) {
+                const StorageResponse = await axiosInstance.get(`/Storage/${StorageID}`);
+                const data =StorageResponse.data;
+                if (!data.itemType === 'SSD') {
+                    Total.push(10)
+                } else {
+                    Total.push(20)
+                }
+            }
+            const TotalWattage = Total.reduce((a,b) => a + b, 0)
+            return TotalWattage
+            
+        } catch(err) {
+            console.error(err)
+            ErrorHandlingNotif()
+        }
+        
+    }
 
     useEffect(() => { // decide which tab gets which appropiate state
         switch(id) {
@@ -105,6 +180,7 @@ const Tabs = ({ id }) => {
                 if (selectedCard.length > 0) {
                     setCurrentPartsData(selectedCard[0].partsData)
                     setSubmitting(false) // *** might cause bugs ***
+                    setTabsLoading(true) // ** might cause bugs **
                     PercentageCalculator(currentPartsData)
                     
                 }
@@ -192,49 +268,82 @@ const Tabs = ({ id }) => {
                 </button>
             </div>
 
+            {/** Tab Content */}
+            
             <div id="tab-contents">
+            <TabsData.Provider value={{currentPartsData, tabsLoading, setTabsLoading}}>
                 <div id={`first ${id}`} 
-                className={ toggleTabs === 1 ? "block p-4"
+                className={ toggleTabs === 1 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                First tab
+                { currentPartsData ?
+                    <CPUcontent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <div id={`second ${id}`} className={ toggleTabs === 2 ? "block p-4"
                     :
                     "hidden p-4"
                     }
                 >
-                Second tab
+                { currentPartsData ?
+                    <MotherboardContent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <div id={`third ${id}`} className={ toggleTabs === 3 ? "block p-4"
                     :
                     "hidden p-4"
                     }
                 >
-                Third tab
+                { currentPartsData ?
+                    <GPUcontent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <div id={`fourth ${id}`} className={ toggleTabs === 4 ? "block p-4"
                     :
                     "hidden p-4"
                     }
                 >
-                Fourth tab
+                { currentPartsData ?
+                    <MemoryContent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <div id={`fifth ${id}`} className={ toggleTabs === 5 ? "block p-4"
                     :
                     "hidden p-4"
                     }
                 >
-                Fifth tab
+                { currentPartsData ?
+                    <PSUcontent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <div id={`sixth ${id}`} className={ toggleTabs === 6 ? "block p-4"
                     :
                     "hidden p-4"
                     }
                 >
-                Sixth tab
+                { currentPartsData ?
+                    <StorageContent CheckOutParts={CheckOutParts}/> // swap this later
+                :
+                    <Filler/>
+                    
+                }
                 </div>
                 <form id={`Budget ${id}`} className={ toggleTabs === 7 ? "flex flex-col items-center p-4 w-full h-full"
                     :
@@ -245,7 +354,9 @@ const Tabs = ({ id }) => {
                 {currentPartsData && <BudgetBar id={id} values={values} setValues={setValues}/>}
                 {DonutAppear && <BudgetDonut dataSetArray={dataSetArray} labelArray={labelArray} ColorArray={ColorArray}/>}
                 </form>
+            </TabsData.Provider>
             </div>
+            
         </div>
     )
 }

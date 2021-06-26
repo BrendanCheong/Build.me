@@ -121,7 +121,7 @@ const Compare_Builds = () => {
                 <AutoComplete id={0}/>
                 <AutoComplete id={1}/>
             </div>
-            <div className="flex flex-row flex-shrink-0 w-11/12 h-full p-5 space-x-5 justify-evenly">
+            <div className="flex flex-row flex-shrink-0 w-11/12 p-5 space-x-5 h-really-tall justify-evenly">
                 {/** Tabs go here */}
                 <Tabs id={0}/>
                 <Tabs id={1}/>
