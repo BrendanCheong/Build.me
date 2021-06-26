@@ -15,4 +15,10 @@
     .h-custom {
         height: 30rem;
     }
+    .w-really-tall {
+        width: 40rem;
+    }
+    .h-really-tall {
+        height: 60rem;
+    }
 }

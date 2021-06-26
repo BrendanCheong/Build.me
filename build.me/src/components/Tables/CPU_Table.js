@@ -1,5 +1,6 @@
 import { useState ,useMemo, useEffect} from "react";
 import { CPU_COLUMNS } from "./Columns/CPU_Columns";
+import { ErrorHandlingNotif } from '../Misc/Error';
 import Table from '../Table';
 import axiosInstance from "../../AxiosInstance";
 
@@ -67,7 +68,8 @@ const CPUTable = (props) => {
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
-                });
+                })
+                .catch((err) => ErrorHandlingNotif())
             
     
         }
