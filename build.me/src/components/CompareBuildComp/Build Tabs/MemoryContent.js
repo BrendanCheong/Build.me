@@ -3,11 +3,20 @@ import { ErrorHandlingNotif } from '../../Misc/Error';
 import { TabsData } from '../Tabs';
 import axiosInstance from '../../../AxiosInstance';
 import TeamGroup from '../../../images/svg/Memory/TeamGroup';
+import Corsair from '../../../images/svg/Memory/Corsair';
+import GSKill from '../../../images/svg/Memory/GSkill';
+import Kingston from '../../../images/svg/Memory/Kingston';
+import Crucial from '../../../images/svg/Memory/Crucial';
+import Patriot from '../../../images/svg/Memory/Patriot';
+import ADATA from '../../../images/svg/Memory/ADATA';
+import GIgabyte from '../../../images/svg/Motherboard/GIgabyte';
+import SiliconPower from '../../../images/svg/Memory/SiliconPower';
+
 
 const MemoryContent = () => {
 
     const [RAMSpecs, setRAMSpecs] = useState('')
-    const { currentPartsData, tabsLoading, setTabsLoading } = useContext(TabsData)
+    const { currentPartsData, tabsLoading, setTabsLoading, totalWattage } = useContext(TabsData)
     const RAM = currentPartsData[3]
 
     const itemName = RAM.itemName;
@@ -61,7 +70,30 @@ const MemoryContent = () => {
                 <section className="items-center text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Brand</h1>
                     {/* <h1 className="mt-2 text-2xl font-poppins">Default</h1> */}
-                    <TeamGroup/>
+                    {(() => {
+                        switch (RAMSpecs.itemBrand) {
+                            case 'Corsair':
+                                return <Corsair/>
+                            case 'G.Skill':
+                                return <GSKill/>
+                            case 'Kingston':
+                                return <Kingston/>
+                            case 'Crucial':
+                                return <Crucial/>
+                            case 'Gigabyte':
+                                return <GIgabyte/>
+                            case 'Patriot':
+                                return <Patriot/>
+                            case 'Silicon Power':
+                                return <SiliconPower/>
+                            case 'Team':
+                                return <TeamGroup/>
+                            case 'ADATA':
+                                return <ADATA/>
+                            default:
+                                return (<h1 className="mt-6 text-3xl font-roboto">{RAMSpecs.itemBrand}</h1>)
+                        }
+                    })()}
                 </section>
                 <section className="text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Memory Speed</h1>
@@ -93,7 +125,7 @@ const MemoryContent = () => {
                 </section>
             </div>
             <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-24">
-                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">Total Wattage: 650W</section>
+                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL}
                 target="_blank"

@@ -101,7 +101,7 @@ const Tabs = ({ id }) => {
         }
     }
 
-    const TotalWattageCalculator = async () => {
+    const TotalWattageCalculator = useCallback(async () => {
         let Total = []
         try {
             const CPUID = currentPartsData[0].itemID;
@@ -150,11 +150,12 @@ const Tabs = ({ id }) => {
             return TotalWattage
             
         } catch(err) {
-            console.error(err)
-            ErrorHandlingNotif()
+            if (!err.message === "Cannot read property '0' of null") {
+                ErrorHandlingNotif()
+            }
         }
         
-    }
+    },[currentPartsData])
 
     useEffect(() => { // decide which tab gets which appropiate state
         switch(id) {
@@ -179,6 +180,8 @@ const Tabs = ({ id }) => {
                 const selectedCard = response.data.CardArray.filter((card) => card.CardName === currentCardName)
                 if (selectedCard.length > 0) {
                     setCurrentPartsData(selectedCard[0].partsData)
+                    const totalWattage = await TotalWattageCalculator()
+                    setTotalWattage(totalWattage)
                     setSubmitting(false) // *** might cause bugs ***
                     setTabsLoading(true) // ** might cause bugs **
                     PercentageCalculator(currentPartsData)
@@ -186,8 +189,8 @@ const Tabs = ({ id }) => {
                 }
                 
             } catch(err) {
-                console.log(err.message)
-                if (err.message !=="Cannot read property 'map' of null") {
+                
+                if (!err.message === "Cannot read property 'map' of null" || !err.message === "Cannot read property '0' of null") {
                     ErrorHandlingNotif()
                 }
                 
@@ -197,7 +200,7 @@ const Tabs = ({ id }) => {
         if(submitting) {
             getPartsData()
         }
-    },[currentCardName, submitting,PercentageCalculator,currentPartsData,])
+    },[currentCardName, submitting,PercentageCalculator,currentPartsData, TotalWattageCalculator])
 
 
     return (
@@ -271,7 +274,7 @@ const Tabs = ({ id }) => {
             {/** Tab Content */}
             
             <div id="tab-contents">
-            <TabsData.Provider value={{currentPartsData, tabsLoading, setTabsLoading}}>
+            <TabsData.Provider value={{currentPartsData, tabsLoading, setTabsLoading, totalWattage}}>
                 <div id={`first ${id}`} 
                 className={ toggleTabs === 1 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
