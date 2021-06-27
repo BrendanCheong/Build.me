@@ -40,14 +40,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// serve up static assets
-// if (process.env.NODE_ENV === 'production') {
-//     app.use(express.static('build')); // hopefully this works
-// }
-// app.get('*', function (req, res) {
-//     res.sendFile(path.join(__dirname, '../build/index.html')); // hopefully this is the right directionary
-// })
-
 // Mongoose Middleware
 const uri = process.env.ATLAS_URI; // uses the .env file for password and link to MongdDB
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true,  useFindAndModify: false, },
@@ -73,6 +65,14 @@ app.use('/Storage',StorageRouter);
 app.use('/Ascrapper',AmazonRouter);
 app.use('/LazadaScrapper', LazadaRouter);
 
+// serve up static assets
+if (process.env.NODE_ENV === 'production') {
+    app.use('/static',express.static(path.join(__dirname, '../build'))); // hopefully this works
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../build/index.html')); // hopefully this is the right directionary
+})
+}
 
 
 app.listen(PORT, () => console.log(`Server Running at ${PORT}, Awesome!`))
