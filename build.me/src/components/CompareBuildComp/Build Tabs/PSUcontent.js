@@ -3,11 +3,21 @@ import { ErrorHandlingNotif } from '../../Misc/Error';
 import { TabsData } from '../Tabs';
 import axiosInstance from '../../../AxiosInstance';
 import Seasonic from '../../../images/svg/PSU/Seasonic';
+import CoolerMaster from '../../../images/svg/PSU/CoolerMaster';
+import BeQuiet from '../../../images/svg/PSU/BeQuiet';
+import Silverstone from '../../../images/svg/PSU/Silverstone';
+import ThermalTake from '../../../images/svg/PSU/ThermalTake';
+import EVGA from '../../../images/svg/GPU/EVGA';
+import Corsair from '../../../images/svg/Memory/Corsair';
+import NZXT from '../../../images/svg/Motherboard/NZXT';
+import Asus from '../../../images/svg/Motherboard/Asus';
+import GIgabyte from '../../../images/svg/Motherboard/GIgabyte';
+import MSI from '../../../images/svg/Motherboard/MSI';
 
 const PSUcontent = () => {
 
     const [PSUSpecs, setPSUSpecs] = useState('')
-    const { currentPartsData, tabsLoading, setTabsLoading } = useContext(TabsData)
+    const { currentPartsData, tabsLoading, setTabsLoading, totalWattage } = useContext(TabsData)
     const PSU = currentPartsData[4]
 
     const itemName = PSU.itemName;
@@ -60,8 +70,34 @@ const PSUcontent = () => {
             <div className="flex flex-row justify-center space-x-2">
                 <section className="items-center text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Brand</h1>
-                    {/* <h1 className="mt-2 text-2xl font-poppins">Default</h1> */}
-                    <Seasonic/>
+                    {(() => {
+                        switch(PSUSpecs.itemBrand) {
+                            case 'Corsair':
+                                return <Corsair/>
+                            case'EVGA':
+                                return <EVGA/>
+                            case 'SeaSonic':
+                                return <Seasonic/>
+                            case 'Cooler Master':
+                                return <CoolerMaster/>
+                            case 'be quiet!':
+                                return <BeQuiet/>
+                            case 'Silverstone':
+                                return <Silverstone/>
+                            case 'Thermaltake':
+                                return <ThermalTake/>
+                            case 'NZXT':
+                                return <NZXT/>
+                            case 'MSI':
+                                return <MSI/>
+                            case 'Asus':
+                                return <Asus/>
+                            case 'Gigabyte':
+                                return <GIgabyte/>
+                            default:
+                                return (<h1 className="mt-6 text-3xl font-roboto">{PSUSpecs.itemBrand}</h1>)
+                        }
+                    })()}
                 </section>
                 <section className="text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Wattage</h1>
@@ -83,7 +119,7 @@ const PSUcontent = () => {
                 </section>
             </div>
             <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-64">
-                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">Total Wattage: 650W</section>
+                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL}
                 target="_blank"

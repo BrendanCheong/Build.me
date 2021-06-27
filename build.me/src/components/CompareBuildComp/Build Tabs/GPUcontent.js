@@ -3,11 +3,21 @@ import { ErrorHandlingNotif } from '../../Misc/Error';
 import { TabsData } from '../Tabs';
 import axiosInstance from '../../../AxiosInstance';
 import XFX from '../../../images/svg/GPU/XFX';
+import Zotac from '../../../images/svg/GPU/Zotac';
+import NVIDIA from '../../../images/svg/GPU/NVIDIA';
+import EVGA from '../../../images/svg/GPU/EVGA';
+import PNY from '../../../images/svg/GPU/PNY';
+import Sapphire from '../../../images/svg/GPU/Sapphire';
+import PowerColor from '../../../images/svg/GPU/PowerColor';
+import Asrock from '../../../images/svg/Motherboard/Asrock';
+import GIgabyte from '../../../images/svg/Motherboard/GIgabyte';
+import MSI from '../../../images/svg/Motherboard/MSI';
+import Asus from '../../../images/svg/Motherboard/Asus';
 
 const GPUcontent = () => {
 
     const [GPUSpecs, setGPUSpecs] = useState('')
-    const { currentPartsData, tabsLoading, setTabsLoading } = useContext(TabsData)
+    const { currentPartsData, tabsLoading, setTabsLoading, totalWattage } = useContext(TabsData)
     const GPU = currentPartsData[2]
 
     const itemName = GPU.itemName;
@@ -60,7 +70,34 @@ const GPUcontent = () => {
                 <section className="items-center text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Brand</h1>
                     {/* <h1 className="mt-2 text-2xl font-poppins">Default</h1> */}
-                    <XFX/>
+                    {(() => {
+                        switch (GPUSpecs.itemBrand) {
+                            case 'Gigabyte':
+                                return (<GIgabyte/>)
+                            case 'PNY':
+                                return <PNY/>
+                            case 'MSI':
+                                return <MSI/>
+                            case 'EVGA':
+                                return <EVGA/>
+                            case 'PowerColor':
+                                return <PowerColor/>
+                            case 'Sapphire':
+                                return <Sapphire/>
+                            case 'ASRock':
+                                return <Asrock/>
+                            case 'NVIDIA':
+                                return <NVIDIA/>
+                            case 'Asus':
+                                return <Asus/>
+                            case 'XFX':
+                                return <XFX/>
+                            case 'Zotac':
+                                return <Zotac/>
+                            default:
+                                return (<h1 className="mt-6 text-3xl font-roboto">{GPUSpecs.itemBrand}</h1>)
+                        }
+                    })()}
                 </section>
                 <section className="text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">ChipSet</h1>
@@ -92,7 +129,7 @@ const GPUcontent = () => {
                 </section>
             </div>
             <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-24">
-                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">Total Wattage: 650W</section>
+                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL} target="_blank" rel="noreferrer">
                     Store Page

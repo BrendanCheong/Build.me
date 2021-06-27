@@ -4,11 +4,22 @@ import { TabsData } from '../Tabs';
 import axiosInstance from '../../../AxiosInstance';
 
 import Sabrent from '../../../images/svg/Storage/Sabrent';
+import Samsung from '../../../images/svg/Storage/Samsung';
+import WesternDigital from '../../../images/svg/Storage/WesternDigital';
+import Seagate from '../../../images/svg/Storage/Seagate';
+import SKHynix from '../../../images/svg/Storage/SKHynix';
+import Intel from '../../../images/svg/CPU/Intel';
+import Kingston from '../../../images/svg/Memory/Kingston';
+import Crucial from '../../../images/svg/Memory/Crucial';
+import SiliconPower from '../../../images/svg/Memory/SiliconPower';
+import ADATA from '../../../images/svg/Memory/ADATA';
+import Corsair from '../../../images/svg/Memory/Corsair';
+
 
 const StorageContent = () => {
 
     const [StorageSpecs, setStorageSpecs] = useState('')
-    const { currentPartsData, tabsLoading, setTabsLoading } = useContext(TabsData)
+    const { currentPartsData, tabsLoading, setTabsLoading, totalWattage } = useContext(TabsData)
     const Storage = currentPartsData[5]
 
     const itemName = Storage.itemName;
@@ -61,8 +72,34 @@ const StorageContent = () => {
             <div className="flex flex-row justify-center space-x-2">
                 <section className="items-center text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Brand</h1>
-                    {/* <h1 className="mt-2 text-2xl font-poppins">Default</h1> */}
-                    <Sabrent/>
+                    {(() => {
+                        switch(StorageSpecs.itemBrand) {
+                            case 'Sabrent':
+                                return <Sabrent/>
+                            case 'Samsung':
+                                return <Samsung/>
+                            case 'Western Digital':
+                                return <WesternDigital/>
+                            case 'Seagate':
+                                return <Seagate/>
+                            case 'Intel':
+                                return <Intel/>
+                            case 'SK hynix':
+                                return <SKHynix/>
+                            case 'Silicon Power':
+                                return <SiliconPower/>
+                            case 'Kingston':
+                                return <Kingston/>
+                            case 'ADATA':
+                                return <ADATA/>
+                            case 'Crucial':
+                                return <Crucial/>
+                            case 'Corsair':
+                                return <Corsair/> 
+                            default:
+                                return (<h1 className="mt-6 text-3xl font-roboto">{StorageSpecs.itemBrand}</h1>)
+                        }
+                    })()}
                 </section>
                 <section className="text-center shadow-md bg-warmGray-100 w-72 h-36 rounded-2xl">
                     <h1 className="mt-2 text-2xl font-poppins">Capacity</h1>
@@ -84,7 +121,7 @@ const StorageContent = () => {
                 </section>
             </div>
             <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-64">
-                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">Total Wattage: 650W</section>
+                <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL}
                 target="_blank"

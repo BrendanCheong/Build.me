@@ -1,7 +1,8 @@
 {
   "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
+  "description": "REST API for build.me, includes scrapers",
+  "version": "1.2.0",
+  "main": "server.js",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
