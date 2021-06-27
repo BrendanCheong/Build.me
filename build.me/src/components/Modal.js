@@ -6,13 +6,24 @@ import SkeletonBox from "./SkeletonBox";
 
 const Modal = ({ onClose, id, card}) => {
 
-    const {isOpenModal, infoState, setInfoState, Name, isModalLoading, setIsModalLoading, rowOriginal,} = useContext(TableDataContext);
+    const {
+        isOpenModal, 
+        infoState, setInfoState, 
+        Name, 
+        isModalLoading, setIsModalLoading, 
+        rowOriginal,
+        LazadInfo, setLazadaInfo,
+        LazadModalLoading, setLazadModalLoading
+
+    } = useContext(TableDataContext);
 
     if(!isOpenModal) return null // if not open, render nothing, else render below box
 
     function Close_Null() {
         setInfoState(null)
+        setLazadaInfo(null)
         setIsModalLoading(true)
+        setLazadModalLoading(true)
         return onClose()
     }
 
@@ -42,7 +53,7 @@ const Modal = ({ onClose, id, card}) => {
                             
                             <>
                             <div className="w-48 h-10 bg-gray-200 rounded-sm ml-14 animate-pulse"></div>
-                                <div className="flex flex-wrap items-start justify-center px-8 mb-24 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
+                                <div className="flex flex-wrap items-start justify-center px-8 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
                                 
                                     <SkeletonBox/>
                                     <SkeletonBox/>
@@ -65,7 +76,33 @@ const Modal = ({ onClose, id, card}) => {
                                 </div>
                             </div>
                             /** ModalCard Block end*/ }
+                            { LazadModalLoading ? 
                             
+                            <>
+                            <div className="w-48 h-10 bg-gray-200 rounded-sm ml-14 animate-pulse"></div>
+                                <div className="flex flex-wrap items-start justify-center px-8 mb-24 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
+                                
+                                    <SkeletonBox/>
+                                    <SkeletonBox/>
+                                    <SkeletonBox/>
+                                    <SkeletonBox/>
+                                    <SkeletonBox/>
+                                </div>
+                            </>  
+                            
+                            
+                            :
+                            /** ModalCard Block start */
+                            <div>
+                            
+                                <h1 className="py-6 pl-10 font-semibold lg:text-2xl">Lazada</h1>
+                                <div className="flex items-start px-8 pb-8 space-x-4 overflow-x-auto overflow-y-scroll text-center bg-white rounded scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
+                                        { LazadInfo.map((product) => (
+                                            <ModalCard id={id} card={card} name={Name} info={product} rowOriginal={rowOriginal} key={product.itemName}/>
+                                        ))}  
+                                </div>
+                            </div>
+                            /** ModalCard Block end*/ }
                     {/* <!-- End of Modal Content--> */}
                         </div>
                     </div>
