@@ -19,8 +19,7 @@
   },
   "scripts": {
     "start": "node server",
-    "dev": "npx nodemon server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --cwd build.me && yarn run build --cwd build.me"
+    "dev": "npx nodemon server.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
