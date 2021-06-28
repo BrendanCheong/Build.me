@@ -12,7 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
       <ReactNotification/>
       <AuthContextFunc>
-        <BrowserRouter>
+        <BrowserRouter basename='/'>
           <App />
         </BrowserRouter>
       </AuthContextFunc>
