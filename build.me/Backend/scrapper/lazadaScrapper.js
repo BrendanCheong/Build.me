@@ -9,16 +9,34 @@ let scrape = async (itemSearch, maxItems) => {
         defaultViewport: null,
         'args' : [
             '--no-sandbox',
-            '--disable-setuid-sandbox'
+            '--disable-setuid-sandbox',
+            "--single-process",
+            '--disable-dev-shm-usage',
+            "--no-zygote"
         ]
     });
-    const page = await browser.newPage();
-    await page.goto(URL);
+    console.log('browser opened')
 
+    const page = await browser.newPage();
+    console.log('page opened')
+    await page.goto(URL, {
+        waitUntil: 'networkidle0',
+    });
+
+    console.log('finding search bar')
     // Searching for item on lazada
+    await page.waitForSelector('#q')
+    await page.waitForTimeout(3000)
     await page.type('#q', itemSearch);
+
+    console.log('typing search bar!')
+
+    await page.waitForTimeout(2000)
     await page.click('button.search-box__button--1oH7');
-    await page.waitForNavigation();
+    await page.waitForNavigation({
+        waitUntil: 'networkidle0',
+    });
+    await page.waitForTimeout(2000)
 
     const grabItem = await page.evaluate((maxItems) => {
 

@@ -9,17 +9,25 @@ const scrape = async (itemSearch, maxItems) => {
         defaultViewport: null,
         'args' : [
             '--no-sandbox',
-            '--disable-setuid-sandbox'
+            '--disable-setuid-sandbox',
+            "--single-process",
+            '--disable-dev-shm-usage',
+            "--no-zygote"
         ]
     });
+    console.log('Browser opened success!')
     const page = await browser.newPage();
-    await page.goto(URL);
-
+    
+    await page.goto(URL, {timeout: 60000, waitUntil: 'domcontentloaded'}); // timeout bug????
+    console.log(`going to ${URL}!`)
+    console.log(`attempting to search for ${itemSearch}!`)
     // Searching for item on amazon
     await page.type('#twotabsearchtextbox', itemSearch);
+    console.log('typing in search bar!')
     await page.click('#nav-search-submit-button');
-    await page.waitForNavigation();
-
+    console.log('submit search!')
+    await page.waitForNavigation({waitUntil: "domcontentloaded"});
+    console.log('navigating page!')
     const grabItem = await page.evaluate((maxItems) => {
 
         // Json object to hold all items
@@ -30,7 +38,7 @@ const scrape = async (itemSearch, maxItems) => {
         
         // Set max item limit, default to all items in page if pass in no argument
         let itemLimit = itemCon.length;
-
+        console.log('Zhi Xuan is Awesome!')
         if (maxItems !== undefined) {
             itemLimit = Math.min(itemLimit, maxItems);
         }
@@ -97,19 +105,21 @@ const scrape = async (itemSearch, maxItems) => {
             } else {
                 itemArr[i] = getFinalItem(itemCon, currItem, 0, 1, 3);
             }
+            console.log('Collecting results!')
         }
 
         return itemArr;
     }, maxItems);
-
+    console.log('Closing browser!')
     await browser.close();
-    
+    console.log(grabItem)
     return grabItem;
 }
 
 async function scrapper(itemSearch, maxItems) {
     try {
         const response = await scrape(itemSearch, maxItems)
+        console.log('done!')
         return response
     } catch(err) {
         return err
