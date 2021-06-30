@@ -175,8 +175,8 @@ router.post("/login",async (req, res) => {
         // send the token in a HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
+            secure: true,
+            sameSite: "none",
         })
         .json("User logged in successfully")
         
@@ -191,8 +191,8 @@ router.get('/logout', (req, res) => { // GET REQUEST
     res.cookie("token", "",{ // clear cookie or make the cookie empty
         httpOnly:true,
         expires: new Date(0), // completely remove cookie
-        // secure: true,
-        // sameSite: "none",
+        secure: true,
+        sameSite: "none",
     })
     .send("Logout Successful");
 })
@@ -245,8 +245,8 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
 
         res.cookie("token", cookie, {
             httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
+            secure: true,
+            sameSite: "none",
         })
         .json("User Added Successfully")
 
@@ -257,7 +257,6 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
         .json({Error: err})
     }
 
-    return res.redirect(`http://localhost:3000`)
 })
 
 router.delete('/delete', auth, async (req, res) => {// DELETE USER by removing from DB and delete cookie
