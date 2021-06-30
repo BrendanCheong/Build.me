@@ -3,9 +3,10 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
-const nodemailer = require('nodemailer');
 const handlebars = require('handlebars');
 const fs = require('fs');
+const sgMail = require('@sendgrid/mail');
+
 
 router.route('/').get((req, res) => { // /users/ is for GET req
     User.find()                         // will get array of ALL users
@@ -89,14 +90,16 @@ router.post('/add', async (req, res) => { // Register User and Log in
             expiresIn:'300s' // 5 minute email token expiry
         })
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_SECRET
-            },
-            from: process.env.EMAIL_USERNAME
-        });
+        sgMail.setApiKey(process.env.SENDGRID_API);
+
+        // const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         user: process.env.EMAIL_USERNAME,
+        //         pass: process.env.EMAIL_SECRET
+        //     },
+        //     from: process.env.EMAIL_USERNAME
+        // });
 
         const url = `http://localhost:3000/confirm/${token}`
 
@@ -113,7 +116,7 @@ router.post('/add', async (req, res) => { // Register User and Log in
                 html: htmlToSend
             }
 
-            transporter.sendMail(mailOptions, function(err, data) {
+            sgMail.send(mailOptions, function(err, data) {
                 if(err) {
                     res.status(500).json(err)
                 } else {
