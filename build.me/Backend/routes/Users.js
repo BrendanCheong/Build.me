@@ -14,6 +14,66 @@ router.route('/').get((req, res) => { // /users/ is for GET req
     .catch(err => res.status(400).json('Error: ' + err)); // spit out error if problem
 });
 
+router.post('/add/secret', async (req, res) => { // secret registration account for API testing
+    const { username, password, email } = req.body;
+    if (password !== process.env.SECRET_PASS) {
+        res
+        .status(400)
+        .json("wrong password dummy")
+    }
+
+    if (username !== process.env.SECRET_USER) {
+        res
+        .status(400)
+        .json('wrong username dummy')
+    }
+
+    if (email !== process.env.EMAIL_USERNAME) {
+        res
+        .status(400)
+        .json('wrong email dummy')
+    }
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+            return res
+            .status(400)
+            .json({Error: "That username already exists!"})
+    }
+    try {
+
+    const salt = await bcrypt.genSalt().catch((err) => {throw new Error (err)});
+    const passwordHash = await bcrypt.hash(password, salt).catch((err) => { throw new Error (err)})
+
+
+    const newUser = new User({
+            username,
+            email,
+            passwordHash
+    })
+
+    const savedUser = await newUser.save().catch((err) => {throw new Error (err)});
+    console.log('Secret user added!')
+
+    const token = jwt.sign({
+        user: savedUser._id
+    },  process.env.JWT_SECRET,)
+
+    res.cookie("token", token, { /** MAKE SURE TO UNCOMMENT secure and sameSite! */
+        httpOnly: true,
+        // secure: true,
+        // sameSite: "none",
+    })
+    .json("Secret User Added Successfully!, Cookie sent!")
+
+    } catch(err) {
+        console.log(err)
+        res
+        .status(500)
+        .json({Error: err})
+    }
+
+})
 
 router.post('/add', async (req, res) => { // Register User and Log in
     try {
@@ -73,7 +133,7 @@ router.post('/add', async (req, res) => { // Register User and Log in
         const readHTMLfile = function(path, callback) {
             fs.readFile(path, {encoding: 'utf-8'}, function(err, html) {
                 if(err) {
-                    res.status(500).send(err)
+                    res.status(500).json(err)
                 } else {
                     callback(null, html)
                 }
@@ -178,8 +238,8 @@ router.post("/login",async (req, res) => {
         // send the token in a HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            // secure: true,
+            // sameSite: "none",
         })
         .json("User logged in successfully")
         
@@ -194,10 +254,10 @@ router.get('/logout', (req, res) => { // GET REQUEST
     res.cookie("token", "",{ // clear cookie or make the cookie empty
         httpOnly:true,
         expires: new Date(0), // completely remove cookie
-        secure: true,
-        sameSite: "none",
+        // secure: true,
+        // sameSite: "none",
     })
-    .send("Logout Successful");
+    .json("Logout Successful");
 })
 
 router.get("/loggedIn", (req, res) => { // validates whether Im logged in or not
@@ -248,8 +308,8 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
 
         res.cookie("token", cookie, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            // secure: true,
+            // sameSite: "none",
         })
         .json("User Added Successfully")
 
@@ -264,22 +324,23 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
 
 router.delete('/delete', auth, async (req, res) => {// DELETE USER by removing from DB and delete cookie
     try {
-        User.findByIdAndDelete(req.user)
+        await User.findByIdAndDelete(req.user).catch((err) => {
+            throw new Error(err)})
         res.cookie("token", "",{ // clear cookie or make the cookie empty
             httpOnly:true,
             expires: new Date(0), // completely remove cookie
         })
-        .send("Deletion of User Complete");
+        .json("Deletion of User Complete");
     } catch(err) {
         console.error(err)
         res.status(400).json("Error: " + err)
     }
 })
 
-router.get('/:id', async (req, res) => { // GET USER by specific ID 
+router.get('/', auth, async (req, res) => { // GET USER by specific ID 
     /** IMPORTANT, PUT THIS FUNCTION AT THE BOTTOM if not everything else breaks */
     try {
-        const UserById = await User.findById(req.params.id)
+        const UserById = await User.findById(req.user)
 
         res.json(UserById);
     } catch(err) {

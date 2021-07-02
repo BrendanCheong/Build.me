@@ -5,6 +5,7 @@ const auth = async (req, res, next) => {
         const token = req.cookies.token; // cookie intercepted and recieved whenever an post/get/del/patch is done
 
         if(!token) {
+            console.log('bad cookie')
             return res
             .status(401)
             .json({Error: "Unauthorized Request"})
