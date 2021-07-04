@@ -19,17 +19,18 @@ let scrape = async (itemSearch, maxItems) => {
 
   const page = await browser.newPage();
   console.log("page opened");
-  await page.goto(URL);
+  await page.goto(URL, {
+    waitUntil: "networkidle0",
+  });
 
   console.log("finding search bar");
   // Searching for item on lazada
   await page.waitForSelector("#q");
-  await page.waitForTimeout(3000);
+
   await page.type("#q", itemSearch);
 
   console.log("typing search bar!");
 
-  await page.waitForTimeout(2000);
   await page.click("button.search-box__button--1oH7");
   await page.waitForNavigation({
     waitUntil: "networkidle0",

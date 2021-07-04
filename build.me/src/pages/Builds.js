@@ -108,8 +108,14 @@ const Builds = () => {
     };
 
     const addCards = async () => {
-        await PostCard(cardSchema).catch(err =>console.error(err))
-        setSubmitting(true)
+        try {
+            await PostCard(cardSchema).catch(err =>console.error(err))
+            setSubmitting(true)
+        } catch(err) {
+            console.error(err)
+        }
+        
+        
         // console.log(response)
     };
 

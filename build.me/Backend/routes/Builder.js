@@ -15,7 +15,9 @@ router.post('/', auth, async (req, res) => { // POST NEW BUILDER
 
         const savedBuilder = await newBuilder.save();
 
-        res.json(savedBuilder);
+        res
+        .status(200)
+        .json(savedBuilder);
     } catch(err) {
         console.error(err)
         res.status(500).send({Error:'Builder already exists'})
@@ -25,7 +27,9 @@ router.post('/', auth, async (req, res) => { // POST NEW BUILDER
 router.get('/',auth, async (req, res) => { // GET ALL Builders
     try {
         const AllBuilders = await Builder.find()
-        res.json(AllBuilders)
+        res
+        .status(200)
+        .json(AllBuilders)
     } catch(err) {
         console.error(err)
         res.status(500).send();
@@ -36,7 +40,9 @@ router.get('/find', auth, async (req, res) => { // GET SPECIFIC Builder
     try {
         const BuilderById = await Builder.findById(req.user)
 
-        res.json(BuilderById);
+        res
+        .status(200)
+        .json(BuilderById);
     } catch(err) {
         console.error(err)
         res.status(500).send({Error:'Builder does not exist'})
@@ -49,16 +55,16 @@ router.delete('/:id', auth, async (req, res) => { // DELETE specific card in Car
             {_id:req.user},
             {$pull:{CardArray:{_id:req.params.id}}})
 
-        if (response) res.json("Card Deleted successfully")
+        if (response) res.status(200).json("Card Deleted successfully")
     } catch(err) {
         console.error(err)
         res.status(500).send({Error: 'Failed to delete'})
     }
 })
 
-router.delete('/delete', auth, (req, res) => { // DELETE BUILDER completely
-    Builder.findByIdAndDelete(req.user)
-    .then(() => res.json("Builder Deleted successfully"))
+router.get('/delete', auth, (req, res) => { // DELETE BUILDER completely
+    Builder.deleteOne({_id: req.user})
+    .then(() => res.status(200).json("Builder Deleted successfully"))
     .catch((err) => res.status(500).json('Error: ' + err))
 })
 
@@ -72,7 +78,9 @@ router.patch('/:id', auth, async (req, res) => { // UPDATE SPECIFIC Card's parts
             }
         }
         BuilderById.save()
-        res.json("PartsData updated successfully")
+        res
+        .status(200)
+        .json("PartsData updated successfully")
 
     } catch(err) {
         console.error(err)
@@ -90,7 +98,9 @@ router.patch('/CardName/:id', auth, async (req, res) => { // UPDATE SPECIFIC Car
             }
         }
         BuilderById.save()
-        res.json("CardName updated successfully")
+        res
+        .status(200)
+        .json("CardName updated successfully")
 
     } catch(err) {
         console.error(err)
@@ -113,7 +123,9 @@ router.put('/addCard', auth, async (req, res) => { // adds a Card to CardArray o
 
         BuilderById.CardArray.push(newCard)
         BuilderById.save()
-        res.json(BuilderById)
+        res
+        .status(200)
+        .json(BuilderById)
 
     } catch(err) {
         console.error(err)
