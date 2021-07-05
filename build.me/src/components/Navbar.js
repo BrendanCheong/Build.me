@@ -15,16 +15,16 @@ const Navbar = ( {toggle} ) => {
                 </svg>
             </div>
             <div className="hidden p-2 space-x-5 md:block"> {/** this burger icon will be hidden on smaller screens*/}
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/" title="Home">
                     Home 
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Builds" title="Builds">
                     Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Compare_Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/Compare_Builds" title="Compare Builds">
                     Compare Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/User">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-blueGray-900 hover:shadow-md" to="/User" title="User">
                     User
                 </Link>
             </div>

@@ -16,7 +16,7 @@ const LogoutButton = () => {
     }
     return (
         <>
-            <button className="px-4 py-1 bg-yellow-500 rounded-2xl" onClick={logOut}>
+            <button className="px-4 py-1 bg-yellow-500 rounded-2xl" onClick={logOut} title="LogOut">
                 Log out
             </button>
         </>

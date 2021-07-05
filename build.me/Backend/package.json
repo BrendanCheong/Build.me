@@ -1,7 +1,11 @@
 {
   "name": "backend",
+  "jest": {
+    "verbose": false,
+    "preset": "jest-puppeteer"
+  },
   "description": "REST API for build.me, includes scrapers",
-  "version": "1.2.0",
+  "version": "2.2.0",
   "main": "server.js",
   "license": "MIT",
   "dependencies": {
@@ -13,6 +17,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.2",
+    "jest": "^27.0.6",
+    "jest-puppeteer": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.10",
     "nodemailer": "^6.6.1",
@@ -20,6 +26,7 @@
   },
   "scripts": {
     "start": "node server",
+    "test": "jest",
     "dev": "npx nodemon server.js"
   },
   "devDependencies": {

@@ -86,7 +86,10 @@ const RegisterPage = () => {
 								</div>
 							</div>
 							<div className="items-center justify-center text-center">
-								<p className="pb-5 text-xs italic text-red-500">{Message}</p>
+								<p className="pb-5 text-xs italic text-red-500"
+								id="ErrorMessage">
+									{Message}
+								</p>
 							</div>
 							<div className="flex flex-shrink-0 mt-1 mb-6 text-center">
 								<button

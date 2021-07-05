@@ -39,6 +39,7 @@ const LoginPage = () => {
       return response.data;
     } catch (err) {
       const response = err.response.data.Error;
+      console.log(err.response.data)
       setMessage(response);
       setErrorState(true);
     }
@@ -97,12 +98,17 @@ const LoginPage = () => {
               <button
                 className="p-2 mt-8 text-lg font-bold text-white duration-200 bg-black rounded-lg shadow-md hover:bg-gray-700"
                 type="submit"
+                title= "Log In"
               >
                 Log In
               </button>
             </form>
             <div className="pt-5 text-center text-red-500">
-              <p>{Message}</p>
+              <p
+              title="error_message"
+              className="Error">
+              {Message}
+              </p>
             </div>
             <div className="pt-5 pb-12 text-center">
               <p>

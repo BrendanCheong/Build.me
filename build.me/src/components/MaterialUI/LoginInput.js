@@ -32,6 +32,7 @@ const LoginInput = ({label, setUsername, setEmail, setPassword, ErrorState, setP
                 type={label==="Confirm Password" ? "Password" : label}
                 size='small'
                 fullWidth={width}
+                id={label}
             />
         </>
     )
