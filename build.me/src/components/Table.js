@@ -176,7 +176,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
                                         <tr {...row.getRowProps()} onClick={() => ScrapAll(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={row.id}>
                                             { row.cells.map( cell => {
                                                 return (
-                                                    <td {...cell.getCellProps()} className="px-6 py-4" key={cell.value}>
+                                                    <td {...cell.getCellProps()} className="px-6 py-4" key={cell.value} name={cell.value}>
                                                         {cell.render('Cell')}
                                                     </td>)
                                             })
@@ -203,7 +203,7 @@ const Table = ({TableColumns, Name, data, propData}) => {
                         <p className="font-bold">{`${pageIndex + 1} of ${pageOptions.length}`}</p>
                     </span>
                     <button className={canNextPage ? "flex items-center px-10 py-4 ml-2 font-bold text-white bg-indigo-500 border rounded-md hover:bg-transparent hover:text-indigo-500 hover:border-indigo-500" : "flex items-center px-10 py-2 ml-2 font-bold"}
-                    onClick={() => nextPage()} disabled={!canNextPage}>
+                    onClick={() => nextPage()} disabled={!canNextPage} name="Next Page">
                         <p>Next page</p>
                         <svg className="w-5 h-5 ml-2 fill-current" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>

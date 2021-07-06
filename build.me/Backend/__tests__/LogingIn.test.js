@@ -20,7 +20,7 @@ afterEach( async () => {
 
 test('Logging in successfully and Logging Out', async () => {
 
-    await page.type('#Username', "TestAccount");
+    await page.type('#Username', "TestAccount"); // enter test account details
     await page.type('#Email', "siyilad870@jq600.com");
     await page.type("#Password", "password1234");
 

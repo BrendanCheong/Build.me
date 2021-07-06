@@ -153,7 +153,7 @@ const BuildCard = () => {
                 {`Total Price: ${totalPrice}`}
                 </h1>
                 <button className="absolute px-4 py-1 text-white duration-300 bg-indigo-500 rounded-lg shadow-md bottom-2 right-6 hover:bg-indigo-700"
-                onClick={() => handleDelete(card._id)}>
+                onClick={() => handleDelete(card._id)} name="Remove">
                     Remove Build
                 </button>
             </div>

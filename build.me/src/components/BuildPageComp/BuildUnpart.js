@@ -40,7 +40,7 @@ const BuildUnpart = ({name, id, card}) => {
             })()}
             <div className=" font-poppins">{name}</div>
             <Link className="px-5 py-1 mt-3 duration-300 bg-white shadow-md rounded-xl hover:bg-indigo-500 hover:text-white font-roboto"
-            to={newTo}>
+            to={newTo} name={name}>
                 Add
             </Link>
         </div>

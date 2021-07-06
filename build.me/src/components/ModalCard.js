@@ -1,7 +1,7 @@
 import axiosInstance from "../AxiosInstance";
 import { useHistory } from "react-router-dom";
 
-const ModalCard = ({ id, card, name, info, rowOriginal}) => {
+const ModalCard = ({ id, card, name, info, rowOriginal, ECOMS}) => {
 
 
     const partType = name // partType: CPU,Motherboard, GPU etc
@@ -97,7 +97,7 @@ const ModalCard = ({ id, card, name, info, rowOriginal}) => {
                     <a className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' href={itemURL} target="_blank" rel="noreferrer">
                         STORE PAGE
                     </a>
-                    <button className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' onClick={() => CleanData(card)}>
+                    <button className='px-2 py-1 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100' onClick={() => CleanData(card)} name={ECOMS}>
                         ADD TO BUILD
                     </button>
                 </div>
