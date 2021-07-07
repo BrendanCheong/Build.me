@@ -4,9 +4,6 @@ const puppeteer = require('puppeteer');
 let browser, page;
 jest.setTimeout(800000); // allows test to run as long as I want it to in miliseconds
 
-// afterEach( async () => {
-//     await browser.close();
-// });
 
 test("Login into the Build.me with the test account and navigate to Builds section", async () => {
     browser = await puppeteer.launch({
@@ -25,11 +22,11 @@ test("Login into the Build.me with the test account and navigate to Builds secti
 })
 
 test("Add builds to the Page", async () => {
-    await page.click('button[title="Add Build"]');
-    await page.waitForTimeout(100);
-    await page.click('button[title="Add Build"]');
-    await page.waitForTimeout(100);
-    await page.click('button[title="Add Build"]');
+    await page.waitForTimeout(1000)
+    await page.click('button[title="Add Build"]', { delay: 1000});
+    await page.click('a[title="Home"]')
+    await page.click('a[title="Builds"]')
+    await page.waitForTimeout(1000);
 });
 
 test("Add CPU to the Builds Page, Amazon Product", async () => {
@@ -96,4 +93,6 @@ test("Add Storage to Builds Page, Amazon Product", async () => {
     await page.waitForSelector('button[name="Amazon"]')
     const AmazonProducts = await page.$$('button[name="Amazon"]');
     await AmazonProducts[0].click();
+
+    await browser.close(); // end tests
 });
