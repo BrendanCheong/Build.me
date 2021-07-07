@@ -9,14 +9,16 @@ export const UserContext = createContext(null);
 
 const UserForm = () => {
 
-    const [toggleTabs, setToggleTabs] = useState(1) 
+    const [toggleTabs, setToggleTabs] = useState(1)
+    const [logOutLoading, setLogOutLoading] = useState(false);
     const { getLoggedIn } = useContext(AuthContextData)
     const history = useHistory();
 
     const logOut = async () => {
+        setLogOutLoading(true)
         await axiosInstance.get('/users/logout'); // returns cookie that expires immediately
         await getLoggedIn();
-
+        setLogOutLoading(false)
         history.push('/Login')
     }
 
@@ -59,7 +61,7 @@ const UserForm = () => {
                     <div></div>
                 </div>
         {/** Rightside Nonsense */}
-        <UserContext.Provider value={{toggleTabs, setToggleTabs, logOut}}>
+        <UserContext.Provider value={{toggleTabs, setToggleTabs, logOut, logOutLoading}}>
             {(() => {
                 switch(toggleTabs) {
                     case 1:

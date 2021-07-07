@@ -52,7 +52,7 @@ function App() {
 
   // start of the styling of App.js
   return (
-    <>
+    <div className="w-screen h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
   {loggedIn.status === false && (
     <>
       <LoginNavbar toggle={toggle}/>
@@ -96,7 +96,7 @@ function App() {
         </>
       )}
     </Switch>
-  </>
+  </div>
   );
 }
 
