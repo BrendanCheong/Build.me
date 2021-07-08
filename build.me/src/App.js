@@ -19,12 +19,6 @@ import Builds from "./pages/Builds";
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Public_Builds from './pages/Public_Builds';
-/** 
-
-TODO:
-Create the rest of the tables for GPU,MOTHERBOARD etc (EASY)
-
-*/
 
 
 function App() {

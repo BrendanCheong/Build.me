@@ -97,7 +97,7 @@ router.patch('/CardName/:id', auth, async (req, res) => { // UPDATE SPECIFIC Car
                 break;
             }
         }
-        BuilderById.save()
+        await BuilderById.save()
         res
         .status(200)
         .json("CardName updated successfully")

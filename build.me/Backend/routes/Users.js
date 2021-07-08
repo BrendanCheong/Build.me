@@ -7,6 +7,11 @@ const handlebars = require('handlebars');
 const fs = require('fs');
 const sgMail = require('@sendgrid/mail');
 
+const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+    
+}
 
 router.route('/').get((req, res) => { // /users/ is for GET req
     User.find()                         // will get array of ALL users
@@ -78,11 +83,6 @@ router.post('/add/secret', async (req, res) => { // secret registration account 
 router.post('/add', async (req, res) => { // Register User and Log in
     try {
         const {username, email, password, passwordVerify} = req.body;
-        const validateEmail = (email) => {
-            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
-            
-        }
         
         // the following if statements are for validation, the user must have these conditions to create an account
         
@@ -337,7 +337,98 @@ router.delete('/delete', auth, async (req, res) => {// DELETE USER by removing f
     }
 })
 
-router.get('/', auth, async (req, res) => { // GET USER by specific ID 
+router.patch('/reset/Email', auth, async (req, res) => { // change Email of existing User
+    const data = req.user;
+    const payload = req.body;
+    try {
+
+        const UserById = await User.findById(data);
+        if (!validateEmail(payload.email)) {
+            return res
+            .status(400)
+            .json("Please Enter a Valid Email");
+        }
+
+        if (UserById.email === payload.email) {
+            return res
+            .status(400)
+            .json("Your account already has that Email Address");
+            
+        }
+        UserById.email = payload.email;
+        await UserById.save();
+        res
+        .status(200)
+        .json("Email Successfully Changed!");
+
+    } catch(err) {
+        console.log(err)
+        res.status(400).json({Error : err})
+    }
+})
+
+router.patch('/reset/Username', auth, async (req, res) => {
+    const data = req.user;
+    const username = req.body.username;
+    try {
+
+        const UserById = await User.findById(data);
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res
+            .status(400)
+            .json({Error: "That username already exists!"})
+        }
+
+        if (!username) {
+            return res
+            .status(400)
+            .json({Error: "Please enter a username"})
+        }
+
+        UserById.username = username;
+        await UserById.save();
+        res
+        .status(200)
+        .json("Username Successfully Changed!");
+
+    } catch(err) {
+        res.status(400).json({Error : err})
+    }
+})
+
+router.patch('/reset/Password', auth, async (req, res) => {
+    const data = req.user;
+    const { password, passwordVerify } = req.body;
+    try {
+        const UserById = await User.findById(data);
+        if (password !== passwordVerify) {
+            return res
+            .status(400)
+            .json({Error: "Please enter the same password twice"})
+        }
+
+        if (password.length < 8) {
+            return res
+            .status(400)
+            .json({Error : "Password needs to be at least 8 characters"})
+        }
+
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        UserById.passwordHash = passwordHash;
+        await UserById.save();
+        res
+        .status(200)
+        .json("Password Successfully Changed!")
+
+    } catch(err) {
+        res.status(400).json({Error : err})
+    }
+})
+
+router.get('/find', auth, async (req, res) => { // GET USER by specific ID 
     /** IMPORTANT, PUT THIS FUNCTION AT THE BOTTOM if not everything else breaks */
     try {
         const UserById = await User.findById(req.user)

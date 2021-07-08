@@ -1,22 +1,44 @@
 import { useState, useContext } from 'react';
 import { UserContext } from './UserForm';
-
+import axiosInstance from '../../AxiosInstance';
+import { SuccessHandlingNotif } from '../Misc/Success';
 
 const Password = () => {
 
     const {toggleTabs, setToggleTabs, logOut} = useContext(UserContext);
 
     const [loadingSubmit, setLoadingSubmit] = useState(false);
-    const [newPassword, setNewPassword] = useState(null);
-    const [newConfirm, setNewConfirm] = useState(null);
+    const [newPassword, setNewPassword] = useState(undefined);
+    const [newConfirm, setNewConfirm] = useState(undefined);
     const [passwordError, setPasswordError] = useState('');
+
+    const SubmitPasswords = async (event) => {
+        event.preventDefault();
+        setLoadingSubmit(true);
+        try {
+
+            const response = await axiosInstance.patch('/users/reset/Password', {
+                password: newPassword,
+                passwordVerify: newConfirm,
+            })
+            SuccessHandlingNotif(response.data);
+            setPasswordError('');
+            setLoadingSubmit(false)
+        } catch(err) {
+
+            setPasswordError(err.response.data.Error)
+            setLoadingSubmit(false);
+
+        }
+    }
+
 
     return (
         <div className="p-5 bg-white md:flex-1 md:w-full lg:w-full md:ml-10 lg:ml-10 xl:ml-10">
             <h3 className="my-4 text-2xl font-semibold text-gray-700 font-poppins">Reset Password</h3>
-            <form className="flex flex-col space-y-5">
+            <form className="flex flex-col space-y-5" onSubmit={SubmitPasswords}>
                 <div className="flex flex-col space-y-1">
-                    <label for="email" className="text-sm font-semibold text-gray-500 font-roboto">New Password</label>
+                    <label htmlFor="email" className="text-sm font-semibold text-gray-500 font-roboto">New Password</label>
                         <input
                         type="text"
                         id="text"
@@ -28,7 +50,7 @@ const Password = () => {
                 </div>
                 <div className="flex flex-col space-y-1">
                     <div className="flex items-center justify-between">
-                        <label for="password" className="text-sm font-semibold text-gray-500 font-roboto">Confirm Password</label>
+                        <label htmlFor="password" className="text-sm font-semibold text-gray-500 font-roboto">Confirm Password</label>
                     </div>
                     <input
                     type="Password"
@@ -51,7 +73,7 @@ const Password = () => {
                         case true:
                             return (<>
                                     <button className="inline-flex items-center px-8 py-2 text-base font-medium text-white duration-300 delay-300 bg-teal-400 border border-transparent rounded-md shadow-sm bg-gradient-to-r focus:outline-none font-poppins">
-                                    <svg className="w-5 h-5 mr-3 -ml-1 transition duration-300 delay-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    <svg className="w-5 h-5 mr-3 -ml-1 transition duration-300 delay-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                                         Loading...
                                     </button>
                             </>)
