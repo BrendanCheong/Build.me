@@ -4,7 +4,7 @@ import ImageTwo from '../../images/robot.svg'
 
 const LoginNavbar = ({toggle}) => {
     return (
-        <nav className="relative flex items-center h-20 text-gray-200 bg-indigo-600 shadow-xl justify-evenly" role="navigation">
+        <nav className="relative flex items-center h-20 text-gray-200 shadow-xl bg-gradient-to-l from-indigo-600 to-purple-700 justify-evenly" role="navigation">
             <Link to= "/" className="flex-col lg:pr-96 md:pr-8 sm:pr-8 font-poppins">
                 <img src={ImageTwo} className="pt-3 pl-5 w-14 h-14" alt="Build.me logo"/>
                 <p className="pb-5 uppercase hover:text-black">Build.me</p>
@@ -16,14 +16,14 @@ const LoginNavbar = ({toggle}) => {
                 </svg>
             </div>
             <div className="hidden p-2 space-x-5 md:block"> {/** this burger icon will be hidden on smaller screens*/}
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/Login" title="Login">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/Login" title="Login">
                     Login 
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/Register"
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/Register"
                 title="Register">
                     Register
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black" to="/Public_Builds"
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/Public_Builds"
                 title="Builds">
                     Builds
                 </Link>
