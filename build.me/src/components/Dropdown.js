@@ -6,16 +6,16 @@ const Dropdown = ( {isOpen, toggle} ) => {
         <div className={isOpen ? "grid grid-rows-4 text-center items-center bg-gray-50 shadow-md" : 'hidden'}
         onClick={toggle}
         >
-            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black"to="/">
+            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-teal-500 text-blueGray-200"to="/">
                 Home 
             </Link>
-            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black"to="/Builds">
+            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-teal-500 text-blueGray-200"to="/Builds">
                 Builds
             </Link>
-            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black"to="/Compare_Builds">
+            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-teal-500 text-blueGray-200"to="/Compare_Builds">
                 Compare Builds
             </Link>
-            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-yellow-500 hover:text-black"to="/User">
+            <Link className="p-6 transition duration-300 rounded-full font-poppins hover:bg-teal-500 text-blueGray-200"to="/User">
                 User
             </Link>
         </div>

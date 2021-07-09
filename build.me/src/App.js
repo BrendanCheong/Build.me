@@ -3,6 +3,7 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import LoginNavbar from './components/Authentication/LoginNavbar';
 import LoginDropDown from './components/Authentication/LoginDropDown';
+import Reset from './components/ForgotPassword/Reset';
 import Compare_Builds from "./pages/Compare_Builds";
 import Dropdown from "./components/Dropdown";
 import CPU_Table from './components/Tables/CPU_Table';
@@ -19,6 +20,7 @@ import Builds from "./pages/Builds";
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Public_Builds from './pages/Public_Builds';
+import ForgotPassword from './pages/ForgotPassword';
 
 
 function App() {
@@ -67,6 +69,8 @@ function App() {
           <Route path="/Register" exact component={RegisterPage}/>
           <Route path="/Public_Builds" exact component={Public_Builds}/>
           <Route path="/confirm/:token" exact component={Confirmation}/>
+          <Route path="/ForgotPassword" exact component={ForgotPassword}/>
+          <Route path="/reset/:token" exact component={Reset}/>
           <Route exact path="/" render={() => <Redirect to="/Login"/>}/>
         </>
       )}

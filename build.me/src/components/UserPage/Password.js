@@ -1,11 +1,9 @@
-import { useState, useContext } from 'react';
-import { UserContext } from './UserForm';
+import { useState } from 'react';
 import axiosInstance from '../../AxiosInstance';
 import { SuccessHandlingNotif } from '../Misc/Success';
 
 const Password = () => {
 
-    const {toggleTabs, setToggleTabs, logOut} = useContext(UserContext);
 
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [newPassword, setNewPassword] = useState(undefined);

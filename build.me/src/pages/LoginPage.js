@@ -110,7 +110,7 @@ const LoginPage = () => {
               {Message}
               </p>
             </div>
-            <div className="pt-5 pb-12 text-center">
+            <div className="pt-2 text-center">
               <p>
                 {"Don't have an account? "}
                 <Link
@@ -118,6 +118,17 @@ const LoginPage = () => {
                   to="/Register"
                 >
                   Register here.
+                </Link>
+              </p>
+            </div>
+            <div className="pt-5 pb-12 text-center">
+              <p>
+                {"Forgot Password? "}
+                <Link
+                  className="font-semibold underline duration-200 hover:text-indigo-500"
+                  to="/ForgotPassword"
+                >
+                  Reset Password here
                 </Link>
               </p>
             </div>
