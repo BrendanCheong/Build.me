@@ -105,12 +105,12 @@ const RegisterPage = () => {
 							</div>
 							<hr className="mb-6 border-t" />
 							<div className="text-center">
-								<p
+								<Link
 									className="inline-block text-sm text-blue-500 align-baseline duration-200 hover:text-indigo-800"
-									href="#"
+									to="/ForgotPassword"
 								>
 									Forgot Password?
-								</p>
+								</Link>
 							</div>
 							<div className="flex flex-col items-center flex-shrink-0 text-center">
 								<Link

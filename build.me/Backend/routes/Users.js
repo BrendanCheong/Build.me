@@ -192,6 +192,74 @@ router.post('/add', async (req, res) => { // Register User and Log in
     }
 })
 
+router.post('/forgot/Password', async (req, res) => {
+    const { username } = req.body; // do UNIQUE username -> Tell the user the Email?
+    try {
+
+            const existingUser = await User.findOne({ username });
+        if (!existingUser) {
+            return res
+            .status(401)
+            .json({Error : "User Does Not Exist"});
+        }
+        const UserEmail = existingUser.email;
+        const token = jwt.sign({
+            UserId: existingUser._id,
+        },
+        process.env.EMAIL_SECRET,
+        {
+            expiresIn:'500s' // if expired send an Error Message
+        });
+        sgMail.setApiKey(process.env.SENDGRID_API);
+        const readHTMLfile = function(path, callback) {
+            fs.readFile(path, {encoding: 'utf-8'}, function(err, html) {
+                if(err) {
+                    return res
+                    .status(500)
+                    .json(err)
+                } else {
+                    callback(null, html)
+                }
+            })
+        }
+        const url = `http://localhost:3000/reset/${token}`; // remember to CHANGE this one
+
+        readHTMLfile(__dirname + '/public/resetPassword.html', function(err, html) {
+            const template = handlebars.compile(html);
+            const replacements = {
+                url: url
+            }
+            const htmlToSend = template(replacements);
+            const mailOptions = {
+                from: process.env.EMAIL_USERNAME,
+                to: UserEmail,
+                subject: "Reset Password for Build.me",
+                html: htmlToSend
+            }
+
+            sgMail.send(mailOptions, function(err, data) {
+                if(err) {
+                    res
+                    .status(500)
+                    .json(err)
+                } else {
+                    res
+                    .status(200)
+                    .json(UserEmail)
+                }
+            })
+        })
+
+    } catch(err) {
+        console.error(err)
+        res
+        .status(500)
+        .json({Error: err})
+    }
+    
+})
+
+
 // log in the users using POST
 
 router.post("/login",async (req, res) => {
@@ -373,7 +441,7 @@ router.patch('/reset/Username', auth, async (req, res) => {
     try {
 
         const UserById = await User.findById(data);
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ username }); // finds by UNIQUE Username
         if (existingUser) {
             return res
             .status(400)
@@ -424,6 +492,43 @@ router.patch('/reset/Password', auth, async (req, res) => {
         .json("Password Successfully Changed!")
 
     } catch(err) {
+        res.status(400).json({Error : err})
+    }
+})
+
+router.post('/reset/Password/:id', async (req, res) => {
+
+    const { password, passwordVerify } = req.body
+    try {
+        const decoded = jwt.verify(req.params.id, process.env.EMAIL_SECRET)
+        const UserId = decoded.UserId
+        const UserById = await User.findById(UserId);
+        if (password !== passwordVerify) {
+            return res
+            .status(400)
+            .json({Error: "Please enter the same password twice"})
+        }
+
+        if (password.length < 8) {
+            return res
+            .status(400)
+            .json({Error : "Password needs to be at least 8 characters"})
+        }
+
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+        UserById.passwordHash = passwordHash;
+        await UserById.save();
+        res
+        .status(200)
+        .json("Password Successfully Changed!")
+
+    } catch(err) {
+        if (err.name === "TokenExpiredError") {
+            return res
+            .status(400)
+            .json({Error: {message: err.name}})
+        }
         res.status(400).json({Error : err})
     }
 })
