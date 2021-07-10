@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const admin = require('../middleware/AdminAuth');
 let Mobo = require('../models/Mobo.model');
 
 function parser (item) {
@@ -55,7 +56,7 @@ router.post('/', async (req, res) => { // GET all Mobo
     }
 });
 
-router.post('/add/all', (req, res) => {
+router.post('/add/all', admin, (req, res) => {
     try {
         const payLoad = req.body;
         const sortedArr = payLoad.sort(function(a,b) {

@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/AdminAuth');
 const handlebars = require('handlebars');
 const fs = require('fs');
 const sgMail = require('@sendgrid/mail');
@@ -13,7 +14,7 @@ const validateEmail = (email) => {
     
 }
 
-router.route('/').get((req, res) => { // /users/ is for GET req
+router.route('/').get(admin, (req, res) => { // /users/ is for GET req
     User.find()                         // will get array of ALL users
     .then(users => res.json(users))     //  Promise, if success, return users, json style
     .catch(err => res.status(400).json('Error: ' + err)); // spit out error if problem

@@ -5,7 +5,7 @@ import { SuccessHandlingNotif } from '../Misc/Success';
 
 const Settings = () => {
 
-    const {toggleTabs, setToggleTabs, logOut, logOutLoading} = useContext(UserContext);
+    const { logOut, logOutLoading} = useContext(UserContext);
 
     const [loadingButtonEmail, setLoadingButtonEmail] = useState(false);
     const [loadingButtonUsername, setLoadingButtonUsername] = useState(false);

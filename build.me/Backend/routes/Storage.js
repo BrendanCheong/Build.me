@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const admin = require('../middleware/AdminAuth');
 let Storage = require('../models/Storage.model');
 
 
@@ -21,7 +22,7 @@ router.post('/', async (req, res) => {
     .json(response)
 });
 
-router.post('/add/all', (req, res) => {
+router.post('/add/all', admin, (req, res) => {
     try {
         const payLoad = req.body;
         const sortedArr = payLoad.sort(function(a,b) {
