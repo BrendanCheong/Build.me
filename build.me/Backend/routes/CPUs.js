@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const admin = require('../middleware/AdminAuth');
 let CPU = require('../models/CPU.model');
 
 function parser (item) {
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => { // GET ALL CPUs
     }
 });
 
-router.post('/add/all', (req, res) => {
+router.post('/add/all', admin, (req, res) => {
     try {
         const payLoad = req.body
         const sortedArr = payLoad.sort(function(a,b) {
@@ -57,7 +58,7 @@ router.post('/add/all', (req, res) => {
 })
 
 
-router.route('/add').post((req, res) => { // POST 1 new CPU with exact specifications
+router.route('/add').post(admin, (req, res) => { // POST 1 new CPU with exact specifications
     const itemName = req.body.itemName
     const itemBrand = req.body.itemBrand
     const coreCount = req.body.coreCount
@@ -91,13 +92,13 @@ router.get('/:id', (req, res) => { // GET SPEICIFC CPU by id
     .catch(err => res.status(400).json({Error : err}));
 });
 
-router.route('/:id').delete((req, res) => { // DELETE SPECIFIC CPU by id
+router.route('/:id').delete(admin, (req, res) => { // DELETE SPECIFIC CPU by id
     CPU.findByIdAndDelete(req.params.id)
     .then(() => res.json('CPU deleted successfully!.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC CPU by id and ENTER ALL new values/ params ** Uses a POST request **
+router.route('/update/:id').post(admin, (req, res) => { // UPDATE SPECIFIC CPU by id and ENTER ALL new values/ params ** Uses a POST request **
     CPU.findById(req.params.id)
     .then(cpu => {
         cpu.itemName = req.body.itemName;
@@ -119,7 +120,7 @@ router.route('/update/:id').post((req, res) => { // UPDATE SPECIFIC CPU by id an
 
 //  PATCH request
 // UPDATE SPECIFIC CPU based on ID
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', admin, async (req, res) => {
     try {
         const cpu = await CPU.findByIdAndUpdate(req.params.id, req.body);
         if(!cpu) {

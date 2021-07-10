@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const admin = require('../middleware/AdminAuth');
 let GPU = require('../models/GPU.model');
 
 router.post('/add', async (req, res) => { // adds 1 item at a time
@@ -35,7 +36,7 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
     }
 })
 
-router.post('/add/all', (req, res) => {
+router.post('/add/all', admin, (req, res) => {
     try {
         const payLoad = req.body
         
@@ -56,7 +57,7 @@ router.post('/add/all', (req, res) => {
 })
 
 // GET ALL GPUS
-router.get('/', async (req, res) => {
+router.get('/', admin, async (req, res) => {
     try {
 
         const response = await GPU.find()

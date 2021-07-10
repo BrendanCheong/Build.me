@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const admin = require('../middleware/AdminAuth');
 let RAM = require('../models/RAM.model');
 
 
-router.post('/add/all', (req, res) => {
+router.post('/add/all', admin, (req, res) => {
     try {
         const payLoad = req.body;
         const sortedArr = payLoad.sort(function(a,b) {
@@ -66,7 +67,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/add', async (req, res) => { // adds 1 item at a time
+router.post('/add', admin, async (req, res) => { // adds 1 item at a time
     try {
 
         const itemName = req.body.itemName;
@@ -107,8 +108,8 @@ router.post('/add', async (req, res) => { // adds 1 item at a time
     }
 })
 
-router.get('/', (req, res) => { 
-    RAM.find(req.params.id)
+router.get('/', admin, (req, res) => { // FIND ALL RAM
+    RAM.find()
     .then(ram => res.json(ram))
     .catch(err => res.status(400).json({Error : err}));
 });
