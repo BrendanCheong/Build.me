@@ -1,43 +1,36 @@
 import {useState, useEffect, useContext} from 'react';
-import { Bar } from 'react-chartjs-2'; 
-import { CompBuildPageData } from '../../pages/Compare_Builds';
+import  { Line } from 'react-chartjs-2';
 
-const PriceBarChart = () => {
+const LineChart = () => {
 
-    const {BarGraphZero, BarGraphOne, autoCompleteState0, autoCompleteState1} = useContext(CompBuildPageData)
-    const [barChartData, setBarChartData] = useState({});
-
+    const [lineChartData, setLineChartData] = useState({});
 
     useEffect(() => {
-        setBarChartData({
-            labels: ['CPU','Motherboard','GPU','Memory','PSU','Storage'],
-            datasets: [
-                {
-                    label:autoCompleteState0,
-                    backgroundColor: ['#6366F1'],
-                    data: BarGraphZero
+        setLineChartData({
+            labels: ["15/12/2020", "16/12/2020","25/12/2020", "28/12/2020", "05/01/2021","09/01/2021", "13/01/2021", "24/02/2021"],
+            datasets : [
+                    {
 
-                },
-                {   
-                    label:autoCompleteState1,
-                    backgroundColor: ['#2DD4BF'],
-                    data: BarGraphOne
-                    
-                }]
+                    label: "CPU",
+                    data: [509.00, 509.00, 450.00, 450.00, 375.00,375.00, 460.00, 489.00],
+                    fill: false,
+                    borderColor:"#6366F1",
+                    backgroundColor: '#8B5CF6',
+
+                }
+            ],
         })
-
-
-    }, [BarGraphZero, BarGraphOne,autoCompleteState1,autoCompleteState0])
+    },[])
 
     return (
-        <div className="relative w-8/12 h-full">
-            <Bar 
-                data={barChartData}
+        <>
+            <Line
+                data={lineChartData}
                 options={{
                     plugins: {
                         title: {
-                                display: false,
-                                text: "Compare PC Part Prices",
+                                display: true,
+                                text: "3-Monthly Price Trends",
                                 postion: 'top',
                                 font: {
                                     family: 'Arial',
@@ -62,7 +55,7 @@ const PriceBarChart = () => {
                         yAxes:{
                             ticks: {
                                 callback: function (value,index,values) {
-                                    return 'S$ ' + value.toFixed(0);
+                                    return 'S$ ' + value.toFixed(2);
                                 },
                                 beginAtZero: false,
                                 font: {
@@ -72,7 +65,7 @@ const PriceBarChart = () => {
                                 color: 'black' // change axis color
                             },
                             title: {
-                                display:true,
+                                display:false,
                                 text: 'Total Price per Part',
                                 font: {
                                     family:'Arial',
@@ -101,7 +94,7 @@ const PriceBarChart = () => {
                                 color: '#94A3B8', // change grid x color
                                 borderWidth: 1,
                                 
-                            }
+                            },
                         },
                         
                     },
@@ -109,8 +102,8 @@ const PriceBarChart = () => {
                     maintainAspectRatio: false,
                 }}
             />
-        </div>
+        </>
     )
 }
 
-export default PriceBarChart
+export default LineChart

@@ -14,6 +14,7 @@ const MoboRouter = require("./routes/Mobo");
 const PSURouter = require("./routes/PSU");
 const StorageRouter = require("./routes/Storage");
 const BuilderRouter = require("./routes/Builder");
+const auth = require("./middleware/auth");
 // const AmazonRouter = require('./routes/Scraper/amazonScrapper');
 // const LazadaRouter = require('./routes/Scraper/LazadaScrapper')
 
@@ -21,6 +22,7 @@ const AmazonScrapper = require("./scrapper/amazonScrapper");
 const LazadaScrapper = require("./scrapper/lazadaScrapper");
 const shopeeScrapper = require("./scrapper/shopeeScrapper");
 const qoo10Scrapper = require("./scrapper/qoo10Scrapper");
+const AliPriceScrapper = require("./scrapper/alipriceScrapper");
 const scrappingFilter = require("./scrapper/scrappingFilters");
 
 const app = express();
@@ -120,6 +122,27 @@ app.get("/LazadaScrapper/:id", async (req, res) => {
     res.status(500).json({ Error: err });
   }
 });
+
+app.post("/PriceTrends", auth, async (req, res) => {
+  const { link } = req.body;
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Content-Type": "text/plain",
+  });
+  try {
+    const answer = await AliPriceScrapper.AlipriceScrapper(link);
+    console.log("sending answer");
+    res.json(answer);
+
+  } catch(err) {
+    console.log("Error! Don't Give up! Try Again!");
+    res.status(500).json({Error : "No information found"});
+  }
+
+})
 
 // serve up static assets
 if (process.env.NODE_ENV === "production") {
