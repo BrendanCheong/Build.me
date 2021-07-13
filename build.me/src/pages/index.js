@@ -6,6 +6,9 @@ const Home = () => {
         <>
             <Dashboard/>
             {/* <PosterContent/> */}
+            <div className="w-screen bg-gray-100 lg:h-56">
+
+            </div>
         </>
     )
 }
