@@ -5,7 +5,7 @@ const URL = 'https://www.amazon.sg';
 const scrape = async (itemSearch, maxItems) => {
     // Launch puppeteer headless browser
     const browser = await puppeteer.launch({
-        headless:true, 
+        headless:false, 
         defaultViewport: null,
         'args' : [
             '--no-sandbox',
@@ -18,7 +18,9 @@ const scrape = async (itemSearch, maxItems) => {
     console.log('Browser opened success!')
     const page = await browser.newPage();
     
-    await page.goto(URL, {timeout: 60000, waitUntil: 'domcontentloaded'}); // timeout bug????
+    try {
+
+    await page.goto(URL, {waitUntil: "networkidle0"}); // timeout bug????
     console.log(`going to ${URL}!`)
     console.log(`attempting to search for ${itemSearch}!`)
     // Searching for item on amazon
@@ -26,7 +28,7 @@ const scrape = async (itemSearch, maxItems) => {
     console.log('typing in search bar!')
     await page.click('#nav-search-submit-button');
     console.log('submit search!')
-    await page.waitForNavigation({waitUntil: "domcontentloaded"});
+    await page.waitForNavigation({waitUntil: "networkidle0"});
     console.log('navigating page!')
     const grabItem = await page.evaluate((maxItems) => {
 
@@ -107,13 +109,18 @@ const scrape = async (itemSearch, maxItems) => {
             }
             console.log('Collecting results!')
         }
-
+        
         return itemArr;
     }, maxItems);
-    console.log('Closing browser!')
-    await browser.close();
+
     console.log(grabItem)
     return grabItem;
+    } catch(err) {
+        console.log(err);
+    } finally {
+        console.log('Closing browser!')
+        await browser.close();
+    }
 }
 
 async function scrapper(itemSearch, maxItems) {
