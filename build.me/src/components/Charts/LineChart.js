@@ -1,18 +1,18 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect,} from 'react';
 import  { Line } from 'react-chartjs-2';
 
-const LineChart = () => {
+const LineChart = ({ time, prices, name }) => {
 
     const [lineChartData, setLineChartData] = useState({});
 
     useEffect(() => {
         setLineChartData({
-            labels: ["15/12/2020", "16/12/2020","25/12/2020", "28/12/2020", "05/01/2021","09/01/2021", "13/01/2021", "24/02/2021"],
+            labels: time,
             datasets : [
                     {
 
-                    label: "CPU",
-                    data: [509.00, 509.00, 450.00, 450.00, 375.00,375.00, 460.00, 489.00],
+                    label: name,
+                    data: prices,
                     fill: false,
                     borderColor:"#6366F1",
                     backgroundColor: '#8B5CF6',
@@ -20,7 +20,7 @@ const LineChart = () => {
                 }
             ],
         })
-    },[])
+    },[time, prices])
 
     return (
         <>

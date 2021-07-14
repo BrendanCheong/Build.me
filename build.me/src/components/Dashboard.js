@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import DashboardTab from './FrontPage/DashboardTab';
 import LineChart from "./Charts/LineChart"
-import Rating from "@material-ui/lab/Rating";
+import BestSeller from './FrontPage/BestSeller';
 import moment from "moment";
 
 const Dashboard = () => {
@@ -36,7 +37,7 @@ const Dashboard = () => {
                         <div className="flex pt-4">
                             <button 
                             className={ toggleTabs === 1 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -45,7 +46,7 @@ const Dashboard = () => {
                             </button>
                             <button 
                             className={ toggleTabs === 2 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -54,7 +55,7 @@ const Dashboard = () => {
                             </button>
                             <button 
                             className={ toggleTabs === 3 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -63,7 +64,7 @@ const Dashboard = () => {
                             </button>
                             <button 
                             className={ toggleTabs === 4 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -72,7 +73,7 @@ const Dashboard = () => {
                             </button>
                             <button 
                             className={ toggleTabs === 5 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -81,7 +82,7 @@ const Dashboard = () => {
                             </button>
                             <button 
                             className={ toggleTabs === 6 ?
-                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-white border-t border-l border-r rounded-t focus:outline-none mt-2"
+                                "px-4 py-2 -mb-px font-semibold text-gray-800 bg-indigo-100 border-t border-l border-r rounded-t focus:outline-none mt-2"
                                 :
                                 "px-4 py-2 font-semibold text-white rounded-t mt-2"
                                 }
@@ -95,71 +96,44 @@ const Dashboard = () => {
 
                 <div id="tab-contents" className="w-full h-screen">
                     <div id="first" 
-                    className={ toggleTabs === 1 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    className={ toggleTabs === 1 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
                     :
                     "hidden p-4"
                     }
                     >
                     
-                        {/** Card Start */}
-                            <div className="max-w-sm mx-auto my-8 overflow-hidden rounded shadow-lg">
-                                <div className="relative w-full h-56">
-                                    <img className="absolute object-cover w-full h-full rounded-lg" src={(() => {
+                        <DashboardTab name={"CPU"}/>
+                    </div>
+                    <div id="second" className={ toggleTabs === 2 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    :
+                    "hidden p-4"
+                    }>
+                        <DashboardTab name={"Motherboard"}/>
 
-                                        const imgLink = "https://images-na.ssl-images-amazon.com/images/I/71mINzpZ7QL._AC_UL200_SR200,200_.jpg"
-                                        return imgLink.replace("_AC_UL200_SR200,200_", "_AC_SX466_")
-                                        })()}
-                                        alt="Product Power"/>
-                                </div>
-                                <div className="px-6 py-4">
-                                    <div className="mb-2 text-xl font-bold">Intel Core i5-9600K Desktop Processor 6 Cores up to 4.6 GHz Turbo unlocked LGA1151 300 Series 95W</div>
-                                    <p className="text-lg text-gray-600 font-roboto">
-                                    Current Price: S$ 295.00
-                                    </p>
-                                    <div className="flex flex-row">
-                                        <Rating name="product rating" 
-                                        defaultValue={2} 
-                                        precision={0.5}
-                                        max={5}
-                                        readOnly
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        {/** Card End */}
-                        <div className="w-8/12 p-5 bg-white shadow-md h-custom rounded-xl">
-                            <LineChart/>
-                        </div>
                     </div>
-                    <div id="second" className={ toggleTabs === 2 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    <div id="third" className={ toggleTabs === 3 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
                     :
                     "hidden p-4"
                     }>
-                    Second tab
+                        <DashboardTab name={"GPU"}/>
                     </div>
-                    <div id="third" className={ toggleTabs === 3 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    <div id="fourth" className={ toggleTabs === 4 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
                     :
                     "hidden p-4"
                     }>
-                    Third tab
+                        <DashboardTab name={"Memory"}/>
                     </div>
-                    <div id="fourth" className={ toggleTabs === 4 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    <div id="fifth" className={ toggleTabs === 5 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
                     :
                     "hidden p-4"
                     }>
-                    Fourth tab
+                        <DashboardTab name={"PSU"}/>
                     </div>
-                    <div id="fifth" className={ toggleTabs === 5 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
+                    <div id="sixth" className={ toggleTabs === 6 ? "p-4 h-full bg-indigo-100 w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
                     :
                     "hidden p-4"
                     }>
-                    Fifth tab
-                    </div>
-                    <div id="sixth" className={ toggleTabs === 6 ? "p-4 h-full bg-white w-full shadow-md rounded-b-2xl justify-center items-center flex flex-row"
-                    :
-                    "hidden p-4"
-                    }>
-                    Sixth tab
+                        <DashboardTab name={"Storage"}/>
                     </div>
                 </div>
             </div>
