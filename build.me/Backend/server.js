@@ -14,6 +14,7 @@ const MoboRouter = require("./routes/Mobo");
 const PSURouter = require("./routes/PSU");
 const StorageRouter = require("./routes/Storage");
 const BuilderRouter = require("./routes/Builder");
+const BestSellerRouter = require("./routes/BestSeller");
 const auth = require("./middleware/auth");
 // const AmazonRouter = require('./routes/Scraper/amazonScrapper');
 // const LazadaRouter = require('./routes/Scraper/LazadaScrapper')
@@ -79,6 +80,7 @@ app.use("/RAMs", RAMRouter);
 app.use("/Mobos", MoboRouter);
 app.use("/PSUs", PSURouter);
 app.use("/Storage", StorageRouter);
+app.use("/BestSellers", BestSellerRouter);
 // app.use('/Ascrapper',AmazonRouter);
 // app.use('/LazadaScrapper', LazadaRouter);
 
