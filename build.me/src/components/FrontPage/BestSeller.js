@@ -11,7 +11,10 @@ const BestSeller = () => {
                 <img className="absolute object-cover w-full h-full rounded-lg" src={(() => {
 
                     const imgLink = cardData.ProductImg
-                    return imgLink.replace("_AC_UL200_SR200,200_", "_AC_SX466_")
+                    // if (imgLink.includes("_AC_UL200_SR200,200_")) {
+                    //     // imgLink.replace("_AC_UL200_SR200,200_", "_AC_SX466_")
+                    // }
+                    return imgLink
                     })()}
                     alt="Product Power"/>
             </div>

@@ -46,8 +46,7 @@ async function scrapeQoo10Items(itemSearch) {
           let itemRating = element.querySelector(
             "td:nth-child(5) > span.rate_v > span"
           ).innerText;
-          itemRating =
-            itemRating === "New" ? "NA" : getStringBtwn(itemRating, "(", "/");
+          itemRating = itemRating === "New" ? "NA" : getStringBtwn(itemRating, "(", "/");
 
           return {
             itemName: element.querySelector("div > div.sbj > a").innerText,

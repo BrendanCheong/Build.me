@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import DashboardTab from './FrontPage/DashboardTab';
-import LineChart from "./Charts/LineChart"
-import BestSeller from './FrontPage/BestSeller';
-import moment from "moment";
 
 const Dashboard = () => {
 
@@ -11,13 +8,8 @@ const Dashboard = () => {
     const Toggler = (index) => {
         setToggleTabs(index);
     };
-
-    const testFunc = (seconds) => {
-        const date = new Date(0);
-        date.setUTCSeconds(seconds);
-        const answer = moment(date).format('MMM Do YYYY');
-        return answer;
-    }
+    const dateObj = new Date()
+    const monthName = dateObj.toLocaleString("default", { month: "long" })
 
     return (
         <div className="flex flex-col items-center justify-center w-screen h-screen bg-gray-100 lg:p-10">
@@ -31,7 +23,7 @@ const Dashboard = () => {
             <div className="lg:pt-10">
                 <div id="tabs buttons" className="inline-flex flex-row w-full mx-auto bg-indigo-500 border-b lg:mr-10 rounded-t-md">
                     <div className="flex overflow-hidden top">
-                        <h1 className="p-3 mt-4 text-xl text-white font-roboto"> Best Sellers for July</h1>
+                        <h1 className="p-3 mt-4 text-xl text-white font-roboto">{`Best Sellers for ${monthName}`}</h1>
                         <span className="lg:ml-96"></span>
                         <span className="lg:ml-56"></span>
                         <div className="flex pt-4">

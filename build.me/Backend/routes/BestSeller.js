@@ -3,6 +3,7 @@ const router = express.Router();
 const admin = require('../middleware/AdminAuth');
 const auth = require("../middleware/auth");
 const BestSeller = require('../models/Best.Seller.model');
+const SchedulerAuth = require("../middleware/SchedulerAuth");
 
 router.post("/", admin, async (req, res) => { // only admin can change monthly best sellers
 
@@ -42,28 +43,24 @@ router.post("/", admin, async (req, res) => { // only admin can change monthly b
 
 });
 
-router.patch("/:type", admin, (req, res) => { // update the monthly best Seller according to type: CPU,Motherboard,GPU,etc
+router.route('/update/:type').patch(SchedulerAuth, (req, res) => { // UPDATE SPECIFIC CPU by id and ENTER ALL new values/ params ** Uses a POST request **
+    BestSeller.findOne({Type: req.params.type})
+    .then(Product => {
+        Product.Type = req.body.Type;
+        Product.ProductName = req.body.ProductName;
+        Product.ProductURL = req.body.ProductURL;
+        Product.ProductTime = req.body.ProductTime;
+        Product.ProductPrices = req.body.ProductPrices;
+        Product.CurrentPrice = req.body.CurrentPrice;
+        Product.ProductImg = req.body.ProductImg;
+        Product.ProductRating = req.body.ProductRating;
 
-        const PartType = req.params.type;
-        BestSeller.find({"Type": {
-            $in: PartType,
-        }}).then((product) => {
-            product.Type = req.body.Type;
-            product.ProductName = req.body.ProductName;
-            product.ProductURL = req.body.ProductURL;
-            product.ProductTime = req.body.ProductTime;
-            product.ProductPrices = req.body.ProductPrices;
-            product.CurrentPrice = req.body.CurrentPrice;
-            product.ProductImg = req.body.ProductImg;
-            product.ProductRating = req.body.ProductRating;
-
-            product.save()
-            .then(() => res.status(200).json({Success: "BestSeller Updated successfully"}))
-            .catch((err) => res.status(500).json({Error: err}));
-        })
-        .catch((err) => res.status(500).json({Error: err}));
-
-})
+        Product.save()
+        .then(() => res.json({Success :'BestSeller updated successfully'}))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 router.get("/:type", auth, async (req, res) => { // Get best sellers based on type: CPU,Motherboard,GPU,etc
     try {
