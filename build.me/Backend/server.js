@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
-const path = require("path");
+const CronJob = require("cron").CronJob;
+const axios = require('axios');
 // import router files
 const CPURouter = require("./routes/CPUs");
 const GPURouter = require("./routes/GPU");
@@ -16,6 +17,7 @@ const StorageRouter = require("./routes/Storage");
 const BuilderRouter = require("./routes/Builder");
 const BestSellerRouter = require("./routes/BestSeller");
 const auth = require("./middleware/auth");
+const SchedulerAuth = require("./middleware/SchedulerAuth");
 // const AmazonRouter = require('./routes/Scraper/amazonScrapper');
 // const LazadaRouter = require('./routes/Scraper/LazadaScrapper')
 
@@ -24,6 +26,7 @@ const LazadaScrapper = require("./scrapper/lazadaScrapper");
 const shopeeScrapper = require("./scrapper/shopeeScrapper");
 const qoo10Scrapper = require("./scrapper/qoo10Scrapper");
 const AliPriceScrapper = require("./scrapper/alipriceScrapper");
+const DashboardScrapper = require("./scrapper/DashboardScrapper");
 const scrappingFilter = require("./scrapper/scrappingFilters");
 
 const app = express();
@@ -146,13 +149,101 @@ app.post("/PriceTrends", auth, async (req, res) => {
 
 })
 
-// serve up static assets
-if (process.env.NODE_ENV === "production") {
-  app.use("/static", express.static(path.join(__dirname, "../build"))); // hopefully this works
-  console.log("production mode activated");
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../build/index.html")); // hopefully this is the right directionary
-  });
-}
+app.post("/DashboardScraper/Monthly", SchedulerAuth, async (req, res) => {
+  const { type } = req.body;
+  try {
+    const response = await DashboardScrapper(type)
+    return res
+    .status(200)
+    .json(response);
+    
+  } catch(err) {
+    console.log(err);
+    res.status(500).json({Error: err})
+  }
+})
+
+/* cron Job at regular intervals, only works if Dyno is not asleep (Shouldn't be a problem with ping system set-up)
+  * Here we have our monthly updates for the Amazon BestSellers
+  * It will update the database on the first day of every month
+  * If Error encountered, it will console.log(error)
+  * It must be authenticated via the ADMIN_PASS
+  * Remember to change the localhost to actual deployment site URL
+  * Selected Product Types: CPU, Motherboard, GPU, Memory, PSU, Storage
+  */
+const BestSeller1 = new CronJob('30 20 1 * *', async () => {
+  const TypesArray = ["CPU", "Motherboard", "GPU"];
+  for (let item of TypesArray) {
+    try {
+
+      const Dashboard = await axios.post("http://localhost:8888/DashboardScraper/Monthly", {
+        "password": process.env.ADMIN_PASS,
+        "type": item,
+      });
+      const DashboardData = Dashboard.data;
+      const AliPrice = await AliPriceScrapper.AlipriceScrapper(DashboardData.ProductURL);
+      const ExchangeRate = await axios.get(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_API}/latest/USD`);
+      const SGDrate = ExchangeRate.data.conversion_rates.SGD;
+      const ProccessedPrices = AliPrice.prices.map((x) => (x * SGDrate).toFixed(2));
+      const payload = {
+        Type: item,
+        ProductName: DashboardData.ProductName,
+        ProductURL: DashboardData.ProductURL,
+        CurrentPrice: DashboardData.CurrentPrice,
+        ProductImg : DashboardData.ProductImg,
+        ProductRating: DashboardData.ProductRating,
+        ProductTime: AliPrice.time,
+        ProductPrices: ProccessedPrices,
+        password: process.env.ADMIN_PASS,
+      }
+      const response = await axios.patch(`http://localhost:8888/BestSellers/update/${item}`, payload);
+  
+      console.log(response.data);
+  
+    } catch(err) {
+      console.log(err)
+    }
+  }
+}, null, true, "UTC");
+
+const BestSeller2 = new CronJob('30 20 2 * *', async () => {
+  const TypesArray = ["Memory", "PSU", "Storage"];
+  for (let item of TypesArray) {
+    try {
+
+      const Dashboard = await axios.post("http://localhost:8888/DashboardScraper/Monthly", {
+        "password": process.env.ADMIN_PASS,
+        "type": item,
+      });
+      const DashboardData = Dashboard.data;
+      const AliPrice = await AliPriceScrapper.AlipriceScrapper(DashboardData.ProductURL);
+      const ExchangeRate = await axios.get(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_API}/latest/USD`);
+      const SGDrate = ExchangeRate.data.conversion_rates.SGD;
+      const ProccessedPrices = AliPrice.prices.map((x) => (x * SGDrate).toFixed(2));
+      const payload = {
+        Type: item,
+        ProductName: DashboardData.ProductName,
+        ProductURL: DashboardData.ProductURL,
+        CurrentPrice: DashboardData.CurrentPrice,
+        ProductImg : DashboardData.ProductImg,
+        ProductRating: DashboardData.ProductRating,
+        ProductTime: AliPrice.time,
+        ProductPrices: ProccessedPrices,
+        password: process.env.ADMIN_PASS,
+      }
+      const response = await axios.patch(`http://localhost:8888/BestSellers/update/${item}`, payload);
+  
+      console.log(response.data);
+  
+    } catch(err) {
+      console.log(err)
+    }
+  }
+}, null, true, "UTC")
+
+BestSeller1.start();
+BestSeller2.start();
+console.log(`BestSeller 1 is running = ${BestSeller1.running}`);
+console.log(`BestSeller 2 is running = ${BestSeller2.running}`);
 
 app.listen(PORT, () => console.log(`Server Running at ${PORT}, Awesome!`));
