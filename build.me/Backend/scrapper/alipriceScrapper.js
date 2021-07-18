@@ -13,6 +13,8 @@ const scrapeAliPrice = async (link) => {
     } else if (link.includes("amazon.sg")) {
         const newLink = encodeURIComponent(link.replace("www.amazon.sg", "www.amazon.com"));
         url += `/Search/amazon.html?link=${newLink}`;
+    } else if (link.includes("qoo10.sg")) {
+        throw Error()
     }
 
     puppeteer.use(StealthPlugin());

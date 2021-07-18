@@ -57,7 +57,7 @@ router.post('/add/all', admin, (req, res) => {
 })
 
 // GET ALL GPUS
-router.get('/', admin, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
 
         const response = await GPU.find()

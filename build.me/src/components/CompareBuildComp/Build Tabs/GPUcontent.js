@@ -13,10 +13,14 @@ import Asrock from '../../../images/svg/Motherboard/Asrock';
 import GIgabyte from '../../../images/svg/Motherboard/GIgabyte';
 import MSI from '../../../images/svg/Motherboard/MSI';
 import Asus from '../../../images/svg/Motherboard/Asus';
+import moment from "moment";
+import Modal from "../Modal";
 
 const GPUcontent = () => {
 
-    const [GPUSpecs, setGPUSpecs] = useState('')
+    const [GPUSpecs, setGPUSpecs] = useState('');
+    const [LineChartData, setLineChartData] = useState({nothing: "nothing"});
+    const [ChartDataLoading, setChartDataLoading] = useState(true);
     const { currentPartsData, tabsLoading, setTabsLoading, totalWattage } = useContext(TabsData)
     const GPU = currentPartsData[2]
 
@@ -24,6 +28,52 @@ const GPUcontent = () => {
     const itemImg = GPU.itemImg;
     const itemURL = GPU.itemURL;
     const itemID = GPU.itemID;
+
+
+    async function openModal(key) {
+        document.getElementById(key).showModal(); 
+        document.body.setAttribute('style', 'overflow: hidden;'); 
+        document.getElementById(key).children[0].scrollTop = 0; 
+        document.getElementById(key).children[0].classList.remove('opacity-0'); 
+        document.getElementById(key).children[0].classList.add('opacity-100');
+
+        try {
+    
+            if (itemURL && LineChartData.nothing === "nothing") {
+                console.log("fetching data")
+                const response = await axiosInstance.post("/PriceTrends", {
+                    link: itemURL,
+                })
+                const ChartDataPayload = {
+                    time: response.data.time.map((seconds) => {
+                        const date = new Date(0);
+                        date.setUTCSeconds(seconds);
+                        const answer = moment(date).format('MMM Do YYYY');
+                        return answer;
+                    }),
+                    prices: response.data.prices,
+                }
+                setLineChartData(ChartDataPayload);
+                setChartDataLoading(false);
+            }
+            
+            return () => setChartDataLoading(true);
+        } catch(err) {
+
+            console.error(err.response.data.Error)
+            setLineChartData("Error");
+        }
+        
+    }
+
+    function modalClose(key) {
+        document.getElementById(key).children[0].classList.remove('opacity-100');
+        document.getElementById(key).children[0].classList.add('opacity-0');
+        setTimeout(function () {
+            document.getElementById(key).close();
+            document.body.removeAttribute('style');
+        }, 100);
+    }
 
     useEffect(() => {
         async function getData() {
@@ -55,9 +105,11 @@ const GPUcontent = () => {
         <div className="relative flex flex-col h-full space-y-4">
         {(() => {
             if (!itemID) {
-                return (<h1>Motherboard was not selected</h1>)
+                return (<h1 className="flex flex-col justify-center w-full h-full text-3xl text-center text-trueGray-500 text-opacity-30">GPU was not found in this Build</h1>)
             } else if (tabsLoading) {
-                return (<h1>Loading Please Wait</h1>)
+                return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
             } else {
                 return (<>
                     <div className="flex items-center justify-center w-full h-full">
@@ -134,8 +186,10 @@ const GPUcontent = () => {
                 href={itemURL} target="_blank" rel="noreferrer">
                     Store Page
                 </a>
-                <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins">Checkout parts</button>
-                
+                <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
+                onClick={() => openModal('GPUModal')}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"GPU"} itemName={itemName}/>
+        
             </div>
                 </>)
             }
