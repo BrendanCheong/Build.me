@@ -25,7 +25,7 @@ const AutoComplete = ({id}) => {
                 :
                 setAutoCompleteState1(newValue);
                 }}
-                options={autoCompletedata}
+                options={autoCompletedata.filter((x) => x)}
                 getOptionLabel={(options) => options}
                 style={{width: 250,}}
                 clearOnEscape

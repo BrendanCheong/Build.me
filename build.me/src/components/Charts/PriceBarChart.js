@@ -13,13 +13,13 @@ const PriceBarChart = () => {
             labels: ['CPU','Motherboard','GPU','Memory','PSU','Storage'],
             datasets: [
                 {
-                    label:autoCompleteState0,
+                    label:!autoCompleteState0 ? "Left Side Build Not Selected" : autoCompleteState0,
                     backgroundColor: ['#6366F1'],
                     data: BarGraphZero
 
                 },
                 {   
-                    label:autoCompleteState1,
+                    label:!autoCompleteState1 ? "Right Side Build Not Selected" : autoCompleteState0,
                     backgroundColor: ['#2DD4BF'],
                     data: BarGraphOne
                     

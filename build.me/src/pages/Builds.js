@@ -94,7 +94,6 @@ const Builds = () => {
             }
             setCards(State);
             setSubmitting(false)
-            
         }
         if (submitting) {
             updateState();

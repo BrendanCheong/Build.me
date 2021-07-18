@@ -15,7 +15,7 @@ const BarGraphTab = () => {
             <div id="tabs buttons" className="inline-flex w-full px-1 pt-2 bg-teal-500 border-b rounded-t-md">
                 <button 
                 className={ toggleBarGraph === 1 ? 
-                "px-4 py-2 -mb-px font-semibold text-gray-800 border-t border-l border-r rounded-t bg-trueGray-100"
+                "px-4 py-2 -mb-px font-semibold text-gray-800 border-t border-l border-r rounded-t bg-trueGray-100 focus:outline-none"
                 :
                 "px-4 py-2 font-semibold text-white rounded-t"
                 }
@@ -25,7 +25,7 @@ const BarGraphTab = () => {
                 </button>
                 <button 
                 className={ toggleBarGraph === 2 ? 
-                "px-4 py-2 -mb-px font-semibold text-gray-800 border-t border-l border-r rounded-t bg-trueGray-100"
+                "px-4 py-2 -mb-px font-semibold text-gray-800 border-t border-l border-r rounded-t bg-trueGray-100 focus:outline-none"
                 :
                 "px-4 py-2 font-semibold text-white rounded-t"
                 }

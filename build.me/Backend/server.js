@@ -131,7 +131,7 @@ app.get("/LazadaScrapper/:id", async (req, res) => {
 app.post("/PriceTrends", auth, async (req, res) => {
   const { link } = req.body;
   res.set({
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "http://localhost:3000",
     "Access-Control-Allow-Credentials": true,
     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",

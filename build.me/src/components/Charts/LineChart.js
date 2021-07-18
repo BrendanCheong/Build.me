@@ -20,7 +20,7 @@ const LineChart = ({ time, prices, name }) => {
                 }
             ],
         })
-    },[time, prices])
+    },[time, prices, name])
 
     return (
         <>
