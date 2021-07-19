@@ -1,9 +1,7 @@
 const randomUseragent = require("random-useragent");
 const cheerio = require("cheerio");
 const axios = require("axios");
-const { MongoClient } = require("mongodb");
 // i hope this is the correct URL
-var url = process.env.ATLAS_URI;
 
 // TESTING
 // getMongodbURL("AMD", "Ryzen 5 3600").then((res) => console.log(res));
@@ -12,14 +10,13 @@ var url = process.env.ATLAS_URI;
 ); */
 
 // EXAMPLE USE
-//getFps("Intel", "Core i5-7600K").then((res) => console.log(res));
 
-async function getFps(itemBrand, itemName) {
-  // search mongodb for item and get URL
-  const URL = await getMongodbURL(itemBrand, itemName);
-  // scrape the URL for fps
-  return await scrapeUBM(URL);
-}
+// async function getFps(itemBrand, itemName) {
+//   // search mongodb for item and get URL
+//   const URL = await getMongodbURL(itemBrand, itemName);
+//   // scrape the URL for fps
+//   return await scrapeUBM(URL);
+// }
 
 async function scrapeUBM(URL) {
   // function to parse string obtained from scraping UBM
@@ -31,7 +28,7 @@ async function scrapeUBM(URL) {
   }
 
   function arrDataToJSON(arr) {
-    if (arr === undefined || arr.length == 0) {
+    if (arr === undefined || arr.length === 0) {
       // if no fps data
       return {};
     } else {
@@ -74,36 +71,4 @@ async function scrapeUBM(URL) {
   }
 }
 
-async function getMongodbURL(itemBrand, itemName) {
-  const client = new MongoClient(url, { useUnifiedTopology: true });
-  try {
-    await client.connect();
-    // define a database and collection on which to run the method
-    const database = client.db("ubmDatabase");
-    const col = database.collection("cpuData");
-    // specify an optional query document
-    /* const query = {
-      Brand: { $regex: itemBrand.toUpperCase() },
-      Model: { $regex: itemName.toUpperCase() },
-    }; */
-    const query = {
-      Brand: itemBrand.toUpperCase(),
-      Model: itemName.toUpperCase(),
-    };
-    // const res = await col.findOne({ Brand: itemBrand, Model: itemName });
-    const res = await col.findOne(query);
-
-    // if no product found in mongodb, return empty string
-    if (res == null) {
-      return "";
-    } else {
-      return res.URL;
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    await client.close();
-  }
-}
-
-module.exports.ubmScrapper = getFps;
+module.exports = scrapeUBM;

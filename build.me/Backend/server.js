@@ -16,6 +16,9 @@ const PSURouter = require("./routes/PSU");
 const StorageRouter = require("./routes/Storage");
 const BuilderRouter = require("./routes/Builder");
 const BestSellerRouter = require("./routes/BestSeller");
+const FPSdataRouter = require("./routes/FPSdata");
+const cpuData = require("./models/cpuData.model");
+const gpuData = require("./models/gpuData.model");
 const auth = require("./middleware/auth");
 const SchedulerAuth = require("./middleware/SchedulerAuth");
 // const AmazonRouter = require('./routes/Scraper/amazonScrapper');
@@ -27,6 +30,7 @@ const shopeeScrapper = require("./scrapper/shopeeScrapper");
 const qoo10Scrapper = require("./scrapper/qoo10Scrapper");
 const AliPriceScrapper = require("./scrapper/alipriceScrapper");
 const DashboardScrapper = require("./scrapper/DashboardScrapper");
+const scrapeUBM = require("./scrapper/ubmScrapper");
 const scrappingFilter = require("./scrapper/scrappingFilters");
 
 const app = express();
@@ -84,6 +88,7 @@ app.use("/Mobos", MoboRouter);
 app.use("/PSUs", PSURouter);
 app.use("/Storage", StorageRouter);
 app.use("/BestSellers", BestSellerRouter);
+app.use("/FpsData", FPSdataRouter);
 // app.use('/Ascrapper',AmazonRouter);
 // app.use('/LazadaScrapper', LazadaRouter);
 
@@ -163,6 +168,81 @@ app.post("/DashboardScraper/Monthly", SchedulerAuth, async (req, res) => {
   }
 })
 
+app.post("/UBM/CPU", auth, async (req, res) => {
+  const { Brand, Model } = req.body;
+  try {
+
+    const data = await cpuData.findOne({Brand: Brand.toUpperCase(), Model: Model.toUpperCase()});
+    console.log(data)
+    if (!data) { // if query cannot be found in database
+      return res
+      .status(200)
+      .json({})
+    }
+    const response = await scrapeUBM(data.URL);
+
+    return res
+    .status(200)
+    .json(response);
+
+  } catch(err) {
+    console.log(err);
+    res
+    .status(500)
+    .json({Error: err})
+  }
+})
+
+app.post("/UBM/GPU", auth, async (req, res) => {
+  const { Model } = req.body;
+  function parser(input) {
+    let answer1 = input.replace(" G6", "");
+    let answer2 = answer1.replace("GeForce ", "");
+    return answer2.replace("Radeon ", "");
+  }
+  try {
+    let query = [];
+    const InputChipSet = parser(Model);
+    console.log(InputChipSet)
+    const data1 = await gpuData.find({
+      Model: { $in: InputChipSet.toUpperCase() },
+    });
+    query = data1;
+
+    if (query.length === 0) {
+      const data2 = await gpuData.find({
+        Model: { $regex: InputChipSet.toUpperCase()}
+      })
+      query = data2;
+    }
+
+    if (query.length === 0) {
+      const input = Model.split(" ").join("-")
+      const data3 = await gpuData.find({
+        URL: { $regex: input}
+      })
+      query = data3;
+    }
+
+    if (!query[0]) { // if query cannot be found in database
+      return res
+      .status(200)
+      .json({})
+    }
+
+    const response = await scrapeUBM(query[0].URL);
+
+    return res
+    .status(200)
+    .json(response);
+
+  } catch(err) {
+    console.log(err);
+    res
+    .status(500)
+    .json({Error: err})
+  }
+})
 /* cron Job at regular intervals, only works if Dyno is not asleep (Shouldn't be a problem with ping system set-up)
   * Here we have our monthly updates for the Amazon BestSellers
   * It will update the database on the first day of every month
