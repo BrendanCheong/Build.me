@@ -1,33 +1,30 @@
-import {useState, useEffect, useContext} from 'react';
-import { Bar } from 'react-chartjs-2'; 
-import { CompBuildPageData } from '../../pages/Compare_Builds';
+import {useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
 
-const PriceBarChart = () => {
+const FPSBarChart = ({labels, BarGraphLeft, BarGraphRight, nameLeft, nameRight}) => {
 
-    const {BarGraphZero, BarGraphOne, autoCompleteState0, autoCompleteState1} = useContext(CompBuildPageData)
     const [barChartData, setBarChartData] = useState({});
-
 
     useEffect(() => {
         setBarChartData({
-            labels: ['CPU','Motherboard','GPU','Memory','PSU','Storage'],
+            labels: labels ? labels : ["Avg", "CSGO", "GTAV", "Overwatch", "PUBG", "Fortnite"],
             datasets: [
                 {
-                    label:!autoCompleteState0 ? "Left Side Build Not Selected" : autoCompleteState0,
+                    label:!nameLeft ? "Left Side Build Not Selected" : nameLeft,
                     backgroundColor: ['#6366F1'],
-                    data: BarGraphZero
+                    data: BarGraphLeft
 
                 },
                 {   
-                    label:!autoCompleteState1 ? "Right Side Build Not Selected" : autoCompleteState1,
+                    label:!nameRight ? "Right Side Build Not Selected" : nameRight,
                     backgroundColor: ['#2DD4BF'],
-                    data: BarGraphOne
+                    data: BarGraphRight
                     
                 }]
         })
 
 
-    }, [BarGraphZero, BarGraphOne,autoCompleteState1,autoCompleteState0])
+    }, [BarGraphLeft, BarGraphRight,nameRight, nameLeft, labels])
 
     return (
         <div className="relative w-8/12 h-full">
@@ -61,9 +58,6 @@ const PriceBarChart = () => {
                     scales: {
                         yAxes:{
                             ticks: {
-                                callback: function (value,index,values) {
-                                    return 'S$ ' + value.toFixed(0);
-                                },
                                 beginAtZero: false,
                                 font: {
                                     family: 'Arial',
@@ -73,7 +67,7 @@ const PriceBarChart = () => {
                             },
                             title: {
                                 display:true,
-                                text: 'Total Price per Part',
+                                text: 'FPS',
                                 font: {
                                     family:'Arial',
                                     size: 20,
@@ -113,4 +107,4 @@ const PriceBarChart = () => {
     )
 }
 
-export default PriceBarChart
+export default FPSBarChart

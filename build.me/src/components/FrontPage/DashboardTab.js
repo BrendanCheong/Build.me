@@ -56,12 +56,19 @@ const DashboardTab = ( { name }) => {
     })
     return (
         <>
-        <DashboardData.Provider value={{cardData, chartData, name}}>
-            <BestSeller/>
-            <div className="w-8/12 p-5 bg-white shadow-md h-custom rounded-xl">
-                <LineChart time={chartData.time} prices={chartData.prices} name={name}/>
+        { !loading && 
+            <DashboardData.Provider value={{cardData, chartData, name}}>
+                <BestSeller/>
+                <div className="w-8/12 p-5 bg-white shadow-md h-custom rounded-xl">
+                    <LineChart time={chartData.time} prices={chartData.prices} name={name}/>
+                </div>
+            </DashboardData.Provider>
+        }
+        { loading &&
+            <div className="flex flex-col items-center justify-center w-full h-full">
+                <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             </div>
-        </DashboardData.Provider>
+        }
         </>
     )
 }

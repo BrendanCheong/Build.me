@@ -176,7 +176,7 @@ const MemoryContent = () => {
                     <h1 className="text-4xl mt-7 font-roboto">{RAMSpecs.firstWordLatency}</h1>
                 </section>
             </div>
-            <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-24">
+            <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-96">
                 <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL}

@@ -64,7 +64,7 @@ async function scrapeUBM(URL) {
       .each(function (index, element) {
         fpsArr.push(trimResMid($(element).text()));
       });
-
+    console.log(data)
     return arrDataToJSON(fpsArr);
   } catch (error) {
     console.error(error);

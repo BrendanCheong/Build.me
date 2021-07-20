@@ -5,15 +5,15 @@ import Rating from "@material-ui/lab/Rating";
 const BestSeller = () => {
     
     const { cardData } = useContext(DashboardData);
+    const ProductRating = cardData.ProductRating || "";
+    const rates = parseFloat(ProductRating.replace(" out of 5 stars", ""));
+    
     return (
         <div className="max-w-sm mx-auto my-8 overflow-hidden rounded shadow-lg">
             <div className="relative w-full h-56 bg-white">
                 <img className="absolute object-cover w-full h-full rounded-lg" src={(() => {
 
                     const imgLink = cardData.ProductImg
-                    // if (imgLink.includes("_AC_UL200_SR200,200_")) {
-                    //     // imgLink.replace("_AC_UL200_SR200,200_", "_AC_SX466_")
-                    // }
                     return imgLink
                     })()}
                     alt="Product Power"/>
@@ -25,7 +25,7 @@ const BestSeller = () => {
                 </p>
                 <div className="flex flex-row">
                     <Rating name="product rating" 
-                    defaultValue={2} 
+                    defaultValue={rates || parseFloat(ProductRating.replace(" out of 5 stars", ""))} 
                     precision={0.5}
                     max={5}
                     readOnly

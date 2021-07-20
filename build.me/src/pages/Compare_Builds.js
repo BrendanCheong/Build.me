@@ -43,9 +43,11 @@ const Compare_Builds = () => {
             }
         }
 
-        if(loadingData) {
+        if(loadingData && autoCompleteState0) {
             getPartsData()
         }
+
+        return () => setLoadingData(false)
     },[autoCompleteState0, loadingData ])
 
     useEffect(() => { // to update BarGraph One state
@@ -71,7 +73,7 @@ const Compare_Builds = () => {
             }
         }
 
-        if(loadingData) {
+        if(loadingData && autoCompleteState1) {
             getPartsData()
         }
     },[autoCompleteState1, loadingData ])

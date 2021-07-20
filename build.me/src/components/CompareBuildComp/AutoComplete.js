@@ -1,5 +1,6 @@
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { CompBuildPageData } from '../../pages/Compare_Builds';
 import { useContext } from 'react';
 
@@ -28,8 +29,23 @@ const AutoComplete = ({id}) => {
                 options={autoCompletedata.filter((x) => x)}
                 getOptionLabel={(options) => options}
                 style={{width: 250,}}
+                loading={autoCompletedata.length === 0}
                 clearOnEscape
-                renderInput={(params) => <TextField {...params} label="Select Build Name" variant="outlined"/>}
+                renderInput={(params) => (
+                <TextField 
+                {...params} 
+                label={ autoCompletedata.length === 0 ? "Loading..." : "Select Build Name"} 
+                variant="outlined"
+                InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                        <>
+                            {autoCompletedata.length === 0 ? <CircularProgress color="inherit" size={20} /> : null}
+                            {params.InputProps.endAdornment}
+                        </>
+                        ),
+                    }}
+                />)}
             />
         </>
     )

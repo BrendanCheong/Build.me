@@ -180,7 +180,7 @@ app.post("/UBM/CPU", auth, async (req, res) => {
       .json({})
     }
     const response = await scrapeUBM(data.URL);
-
+    console.log(response)
     return res
     .status(200)
     .json(response);
@@ -223,7 +223,7 @@ app.post("/UBM/GPU", auth, async (req, res) => {
       })
       query = data3;
     }
-
+    console.log(query[0])
     if (!query[0]) { // if query cannot be found in database
       return res
       .status(200)

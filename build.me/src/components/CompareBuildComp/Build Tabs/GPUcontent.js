@@ -115,7 +115,9 @@ const GPUcontent = () => {
                     <div className="flex items-center justify-center w-full h-full">
                 <section className="h-full text-xl w-custom font-poppins">
                     <h1 className="pb-2 text-center">{itemName}</h1>
-                    <img className="object-contain object-center w-full h-56" src={itemImg} alt="Video Card Product"/>
+                    <div className="w-full h-56">
+                        <img className="object-contain object-center w-full h-full" src={itemImg} alt="Video Card Product"/>
+                    </div>
                 </section>
             </div>
             <div className="flex flex-row justify-center space-x-2">
@@ -180,7 +182,7 @@ const GPUcontent = () => {
                     <h1 className="text-xl mt-7 font-roboto">{GPUSpecs.itemTDP}</h1>
                 </section>
             </div>
-            <div className="absolute flex flex-row items-start w-full space-x-5 left-3 -bottom-24">
+            <div className="absolute flex flex-row items-start w-full space-x-5 -bottom-96 left-3">
                 <section className="px-5 py-2 text-white duration-300 bg-teal-500 rounded-full shadow-md font-poppins">{`Total Wattage: ${totalWattage}W`}</section>
                 <a className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 href={itemURL} target="_blank" rel="noreferrer">

@@ -271,72 +271,102 @@ const Tabs = ({ id }) => {
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
+                {/* { currentPartsData ?
                     <CPUcontent/> // swap this later
                 :
                     <Filler/>
                     
-                }
+                } */}
+                {(() => {
+                    if (currentPartsData) return (<CPUcontent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <div id={`second ${id}`} className={ toggleTabs === 2 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
-                    <MotherboardContent/> // swap this later
-                :
-                    <Filler/>
-                
-                }
+                {(() => {
+                    if (currentPartsData) return (<MotherboardContent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <div id={`third ${id}`} className={ toggleTabs === 3 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
-                    <GPUcontent/> // swap this later
-                :
-                    <Filler/>
-                    
-                }
+                {(() => {
+                    if (currentPartsData) return (<GPUcontent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <div id={`fourth ${id}`} className={ toggleTabs === 4 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
-                    <MemoryContent/> // swap this later
-                :
-                    <Filler/>
-                    
-                }
+                {(() => {
+                    if (currentPartsData) return (<MemoryContent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <div id={`fifth ${id}`} className={ toggleTabs === 5 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
-                    <PSUcontent/> // swap this later
-                :
-                    <Filler/>
-                    
-                }
+                {(() => {
+                    if (currentPartsData) return (<PSUcontent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <div id={`sixth ${id}`} className={ toggleTabs === 6 ? "w-full h-custom p-4 flex text-center justify-center"
                     :
                     "hidden p-4"
                     }
                 >
-                { currentPartsData ?
-                    <StorageContent/> // swap this later
-                :
-                    <Filler/>
-                    
-                }
+                {(() => {
+                    if (currentPartsData) return (<StorageContent/>)
+                    else if (id === 0 && autoCompleteState0 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else if (id === 1 && autoCompleteState1 && submitting) return (<div className="flex flex-col items-center justify-center w-full h-full">
+                            <svg className="w-56 h-56 transition duration-300 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>)
+                    else return (<Filler/>)
+                })()}
                 </div>
                 <form id={`Budget ${id}`} className={ toggleTabs === 7 ? "flex flex-col items-center p-4 w-full h-full"
                     :
