@@ -18,72 +18,13 @@ const Compare_Builds = () => {
     const [BarGraphZero, setBarGraphZero] = useState([0,0,0,0,0,0])
     const [BarGraphOne, setBarGraphOne] = useState([0,0,0,0,0,0])
 
-    useEffect(() => { // for BarGraphZero State, since there are 2 seperate sates
+
+    useEffect(() => {
         const getPartsData = async () => {
-            try {
-                const response = await axiosInstance.get('/Builder/find')
-                const selectedCardZero = response.data.CardArray.filter((card) => card.CardName === autoCompleteState0)
-                
-                if (selectedCardZero.length > 0) {
-                    const priceArr = selectedCardZero[0].partsData.map((parts) => ( parts.itemPrice ? parts.itemPrice.replace('S$','') : 0))
-                    const priceArrZero = priceArr.map((parts) => typeof parts === 'string' ? parseFloat(parts.replace(',', '')) : 0)
-
-                    setBarGraphZero(priceArrZero);
-                    
-
-                    setLoadingData(false)
-                }
-                
-            } catch(err) {
-                console.log(err.message)
-                if (err.message !=="Cannot read property 'map' of null") {
-                    ErrorHandlingNotif()
-                }
-                
-            }
-        }
-
-        if(loadingData && autoCompleteState0) {
-            getPartsData()
-        }
-
-        return () => setLoadingData(false)
-    },[autoCompleteState0, loadingData ])
-
-    useEffect(() => { // to update BarGraph One state
-        const getPartsData = async () => {
-            try {
-                const response = await axiosInstance.get('/Builder/find')
-                const selectedCardOne = response.data.CardArray.filter((card) => card.CardName === autoCompleteState1)
-                if (selectedCardOne.length > 0) {
-                    const priceArr = selectedCardOne[0].partsData.map((parts) => ( parts.itemPrice ? parts.itemPrice.replace('S$','') : 0))
-                    const priceArrOne = priceArr.map((parts) => typeof parts === 'string' ? parseFloat(parts.replace(',', '')) : 0)
-
-                    setBarGraphOne(priceArrOne);
-
-                    setLoadingData(false)
-                }
-                
-            } catch(err) {
-                console.log(err.message)
-                if (err.message !=="Cannot read property 'map' of null") {
-                    ErrorHandlingNotif()
-                }
-                
-            }
-        }
-
-        if(loadingData && autoCompleteState1) {
-            getPartsData()
-        }
-    },[autoCompleteState1, loadingData ])
-
-    useEffect(() => { 
-        async function getAllCards() {
             try {
                 let newData = []
                 const response = await axiosInstance.get('/Builder/find')
-
+    
                 
                 response.data.CardArray.map((card) => (
                     newData.push(card.CardName)
@@ -98,14 +39,40 @@ const Compare_Builds = () => {
                 return [null, err]
             }
         }
-        if (loadingData) {
-            getAllCards()
+
+        const fetchData = async (state, Graph) => {
+            try {
+
+                const response = await axiosInstance.get('/Builder/find')
+                const selectedCard = response.data.CardArray.filter((card) => card.CardName === state)
+                if (selectedCard.length > 0) {
+                    const priceArr = selectedCard[0].partsData.map((parts) => ( parts.itemPrice ? parts.itemPrice.replace('S$','') : 0))
+                    const priceArrZero = priceArr.map((parts) => typeof parts === 'string' ? parseFloat(parts.replace(',', '')) : 0)
+
+                    Graph(priceArrZero);
+                    setLoadingData(false)
+                }
+            } catch (err) {
+                console.log(err.message)
+                if (err.message !=="Cannot read property 'map' of null") {
+                    ErrorHandlingNotif()
+                }
+            }
         }
-    },[loadingData])
 
+        if (loadingData && autoCompletedata.length === 0) {
+            getPartsData()
+        }
 
+        if (loadingData && autoCompleteState0) {
+            fetchData(autoCompleteState0, setBarGraphZero)
+        }
+        
+        if (loadingData && autoCompleteState1) {
+            fetchData(autoCompleteState1, setBarGraphOne)
+        }
+    }, [loadingData, autoCompleteState0, autoCompleteState1, autoCompletedata])
     
-
     return (
         <div className="flex flex-col items-center h-screen overflow-y-auto bg-trueGray-100 scrollbar-thin">
         

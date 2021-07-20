@@ -1,9 +1,23 @@
-
+import Card from "../components/Public Builds/Card";
+import UnCard from "../components/Public Builds/UnCard"
 
 const Public_Builds = () => {
 
+    const normal = "90vh"
+    const short = "80vh"
+
     return (
-        <div className="flex items-center justify-center h-screen text-center bg-gray-100">
+        <div className="flex flex-col w-screen h-screen">
+            <div className="flex w-full h-full p-4 text-center bg-gray-100 sm:space-x-2 lg:flex-row xl:flex-row lg:justify-evenly">
+                <Card height={normal}/>
+                <Card height={normal}/>
+                <UnCard height={normal}/>
+            </div>
+            <div className="flex w-full h-full p-4 text-center bg-gray-100 sm:space-x-2 lg:flex-row xl:flex-row lg:justify-evenly">
+                <Card height={short}/>
+                <UnCard height={short}/>
+                <Card height={short}/>
+            </div>
         </div>
     )
 }
