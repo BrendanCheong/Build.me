@@ -36,6 +36,7 @@ module.exports = {
     scrollbar
   ],
   variants: {
-    scrollbar:['rounded', 'dark']
+    scrollbar:['rounded', 'dark'],
+    fill: ['hover', 'focus'],
   },
 }

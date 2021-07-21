@@ -3,7 +3,7 @@ import ImageTwo from "../images/robot.svg"
 
 const Navbar = ( {toggle} ) => {
     return (
-        <nav className="relative flex items-center w-full h-20 text-gray-200 shadow-xl justify-evenly bg-gradient-to-l from-indigo-600 to-purple-700" role="navigation">
+        <nav className="relative flex items-center w-screen h-20 text-gray-200 shadow-xl justify-evenly bg-gradient-to-l from-indigo-600 to-purple-700" role="navigation">
             <Link to= "/" className="flex-col lg:pr-96 md:pr-8 sm:pr-8 font-poppins">
                 <img src={ImageTwo} className="pt-3 pl-5 w-14 h-14" alt="Build.me logo"/>
                 <p className="pb-5 uppercase hover:text-black">Build.me</p>
@@ -15,16 +15,16 @@ const Navbar = ( {toggle} ) => {
                 </svg>
             </div>
             <div className="hidden p-2 space-x-5 md:block"> {/** this burger icon will be hidden on smaller screens*/}
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/" title="Home">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200 hover:text-white" to="/" title="Home">
                     Home 
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/Builds" title="Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200 hover:text-white" to="/Builds" title="Builds">
                     Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/Compare_Builds" title="Compare Builds">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200 hover:text-white" to="/Compare_Builds" title="Compare Builds">
                     Compare Builds
                 </Link>
-                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200" to="/User" title="User">
+                <Link className="p-2 px-5 transition duration-300 rounded-full font-poppins hover:bg-teal-500 hover:shadow-md text-blueGray-200 hover:text-white" to="/User" title="User">
                     User
                 </Link>
             </div>
