@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from "react"
-import { CPU_COLUMNS } from "../../Tables/Columns/CPU_Columns";
+import { PSU_Columns } from "../../Tables/Columns/PSU_Columns";
 import { ErrorHandlingNotif } from "../../Misc/Error";
 import axiosInstance from "../../../AxiosInstance";
 import Tables from "./Tables";
 
-const Public_CPU = () => {
+const Public_PSU = () => {
 
-    const Name = "CPU"
+    const Name = "PSU"
     const [TableData,setTableData] = useState([]);
     const [loadingTableData, setLoadingTableData] = useState(true);
 
@@ -14,53 +14,20 @@ const Public_CPU = () => {
         return TableData
     }, [TableData]);
 
-
-    const PayloadAlgo = async () => {
-        
-        let payload = {
-            'maxSupMem' : 0,
-            'itemSocket': ''
-        }
-        
-        const Motherboard = JSON.parse(localStorage.getItem("Motherboard"))
-        const Memory = JSON.parse(localStorage.getItem("Memory"))
-        const MotherboardID = Motherboard.itemID
-        const MemoryID = Memory.itemID
-        if (MotherboardID) {
-
-            const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
-            console.log(response)
-            const MotherboardSocket = response.data.itemSocket
-            payload['itemSocket'] = MotherboardSocket
-        }
-
-        if (MemoryID) {
-
-            const response = await axiosInstance.get(`/RAMs/${MemoryID}`)
-            const MemoryTotalMem = response.data.totalMem
-            payload['maxSupMem'] = MemoryTotalMem
-        }
-        
-        return payload
-        
-    }
-
     useEffect(() => {
         async function getData() {
-            const payload = await PayloadAlgo()
+            // const payload = await PayloadAlgo()
+            // console.log(payload)
             await axiosInstance
-                .post('/CPUs/',payload)
+                .get('/PSUs/')
                 .then((response) => {
                     setTableData(response.data)
                     setLoadingTableData(false) // swap this with true to see the loading skeleton 
                 })
                 .catch((err) => ErrorHandlingNotif())
-            
-    
         }
         if (loadingTableData) {
             getData()
-            
         }
     }, [loadingTableData])
 
@@ -81,7 +48,7 @@ const Public_CPU = () => {
         100% { transform: rotate(360deg); }
     }
     `
-    
+
     return (
         <div>
         {/* <button onClick={() => console.log(propData.card)}>test</button> */}
@@ -94,10 +61,10 @@ const Public_CPU = () => {
 
                 :
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Tables TableColumns={CPU_COLUMNS} Name={Name} data={data} key={Name + " Table"}/>
+                    <Tables TableColumns={PSU_Columns} Name={Name} data={data} key={Name + " Table"}/>
                 </div>}
         </div>
     )
 }
 
-export default Public_CPU
+export default Public_PSU

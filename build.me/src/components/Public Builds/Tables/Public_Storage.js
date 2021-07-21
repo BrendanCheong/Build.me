@@ -1,32 +1,18 @@
-import { useState ,useMemo, useEffect,} from "react";
-import { Storage_Columns } from './Columns/Storage_Columns';
-import Table from '../Table';
-import axiosInstance from "../../AxiosInstance";
-import { ErrorHandlingNotif } from "../Misc/Error";
+import { useState, useEffect, useMemo } from "react"
+import { Storage_Columns } from "../../Tables/Columns/Storage_Columns";
+import { ErrorHandlingNotif } from "../../Misc/Error";
+import axiosInstance from "../../../AxiosInstance";
+import Tables from "./Tables";
 
+const Public_Storage = () => {
 
-const StorageTable = (props) => {
+    const Name = "Storage"
+    const [TableData,setTableData] = useState([]);
+    const [loadingTableData, setLoadingTableData] = useState(true);
 
-    const Name = "Storage" // change name accordingly for new Tables
-
-
-    const [propData, setPropData] = useState(props.location.data)
-    const [TableData,setTableData] = useState([])
-    const [loadingTableData, setLoadingTableData] = useState(true)
-    
     const data = useMemo(() => {
         return TableData
     }, [TableData]);
-
-
-    useEffect(()=>{
-        
-        if (!propData || !props.location.data) {
-            setPropData(JSON.parse(localStorage.getItem('propData')))
-        } else {
-            localStorage.setItem('propData', JSON.stringify(props.location.data))
-        }
-    },[]);
 
     const PayloadAlgo = async () => {
         let payload = {
@@ -34,9 +20,8 @@ const StorageTable = (props) => {
             "sata6Gb":1
 
         }
-        const propData = JSON.parse(localStorage.getItem('propData'))
-        const card = propData.card.partsData
-        const MotherboardID = card[1].itemID
+        const Motherboard = JSON.parse(localStorage.getItem("Motherboard"))
+        const MotherboardID = Motherboard.itemID
 
         if (MotherboardID) {
             const response = await axiosInstance.get(`/Mobos/${MotherboardID}`)
@@ -46,7 +31,7 @@ const StorageTable = (props) => {
 
         return payload
     }
-    
+
     useEffect(() => {
         async function getData() {
             const payload = await PayloadAlgo()
@@ -63,10 +48,6 @@ const StorageTable = (props) => {
             getData()
         }
     }, [loadingTableData])
-
-    
-
-    
 
     const css = `
     .loader {
@@ -86,8 +67,9 @@ const StorageTable = (props) => {
     }
     `
 
-    return ( 
+    return (
         <div>
+        {/* <button onClick={() => console.log(propData.card)}>test</button> */}
             {loadingTableData ?
                 <div className="flex flex-col items-center justify-center pt-48">
                     <style>{css}</style>
@@ -97,10 +79,10 @@ const StorageTable = (props) => {
 
                 :
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Table TableColumns={Storage_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the GPU"}/>
+                    <Tables TableColumns={Storage_Columns} Name={Name} data={data} key={Name + " Table"}/>
                 </div>}
         </div>
     )
 }
 
-export default StorageTable
+export default Public_Storage

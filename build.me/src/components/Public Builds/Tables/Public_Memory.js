@@ -1,32 +1,18 @@
-import { useState ,useMemo, useEffect,} from "react";
-import { RAM_Columns } from "./Columns/RAM_Columns";
-import Table from '../Table';
-import axiosInstance from "../../AxiosInstance";
-import { ErrorHandlingNotif } from "../Misc/Error";
+import { useState, useEffect, useMemo } from "react"
+import { RAM_Columns } from "../../Tables/Columns/RAM_Columns";
+import { ErrorHandlingNotif } from "../../Misc/Error";
+import axiosInstance from "../../../AxiosInstance";
+import Tables from "./Tables";
 
+const Public_Memory = () => {
 
-const RAMTable = (props) => {
+    const Name = "Memory"
+    const [TableData,setTableData] = useState([]);
+    const [loadingTableData, setLoadingTableData] = useState(true);
 
-    const Name = "Memory" // change name accordingly for new Tables
-
-
-    const [propData, setPropData] = useState(props.location.data)
-    const [TableData,setTableData] = useState([])
-    const [loadingTableData, setLoadingTableData] = useState(true)
-    
     const data = useMemo(() => {
         return TableData
     }, [TableData]);
-
-
-    useEffect(()=>{
-        
-        if (!propData || !props.location.data) {
-            setPropData(JSON.parse(localStorage.getItem('propData')))
-        } else {
-            localStorage.setItem('propData', JSON.stringify(props.location.data))
-        }
-    },[]);
 
     const PayloadAlgo = async () => {
 
@@ -38,10 +24,10 @@ const RAMTable = (props) => {
             "totalMem": 0,
         }
 
-        const propData = JSON.parse(localStorage.getItem('propData'))
-        const card = propData.card.partsData
-        const MotherboardID = card[1].itemID;
-        const CPUID = card[0].itemID;
+        const Motherboard = JSON.parse(localStorage.getItem("Motherboard"))
+        const Memory = JSON.parse(localStorage.getItem("Memory"))
+        const MotherboardID = Motherboard.itemID;
+        const CPUID = Memory.itemID;
 
         let totalMem = 0
         if (MotherboardID) {
@@ -74,6 +60,7 @@ const RAMTable = (props) => {
         return payload
 
     }
+
     useEffect(() => {
         async function getData() {
             const payload = await PayloadAlgo()
@@ -90,10 +77,6 @@ const RAMTable = (props) => {
             getData()
         }
     }, [loadingTableData])
-
-    
-
-    
 
     const css = `
     .loader {
@@ -113,8 +96,9 @@ const RAMTable = (props) => {
     }
     `
 
-    return ( 
+    return (
         <div>
+        {/* <button onClick={() => console.log(propData.card)}>test</button> */}
             {loadingTableData ?
                 <div className="flex flex-col items-center justify-center pt-48">
                     <style>{css}</style>
@@ -123,12 +107,11 @@ const RAMTable = (props) => {
                 </div>
 
                 :
-                
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Table TableColumns={RAM_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the RAM"}/>
+                    <Tables TableColumns={RAM_Columns} Name={Name} data={data} key={Name + " Table"}/>
                 </div>}
         </div>
     )
 }
 
-export default RAMTable
+export default Public_Memory

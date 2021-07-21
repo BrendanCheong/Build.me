@@ -24,6 +24,9 @@ import Public_Builds from './pages/Public_Builds';
 import Public_CPU from "./components/Public Builds/Tables/Public_CPU";
 import Public_Motherboard from "./components/Public Builds/Tables/Public_Motherboard";
 import Public_GPU from "./components/Public Builds/Tables/Public_GPU";
+import Public_PSU from "./components/Public Builds/Tables/Public_PSU";
+import Public_Memory from "./components/Public Builds/Tables/Public_Memory";
+import Public_Storage from "./components/Public Builds/Tables/Public_Storage";
 
 
 function App() {
@@ -74,6 +77,9 @@ function App() {
           <Route path="/Public_Builds/CPU" exact component={Public_CPU}/>
           <Route path="/Public_Builds/GPU" exact component={Public_GPU}/>
           <Route path="/Public_Builds/Motherboard" exact component={Public_Motherboard}/>
+          <Route path="/Public_Builds/Memory" exact component={Public_Memory}/>
+          <Route path="/Public_Builds/Storage" exact component={Public_Storage}/>
+          <Route path="/Public_Builds/PSU" exact component={Public_PSU}/>
           <Route path="/confirm/:token" exact component={Confirmation}/>
           <Route path="/ForgotPassword" exact component={ForgotPassword}/>
           <Route path="/reset/:token" exact component={Reset}/>
