@@ -1,4 +1,7 @@
-const Card = ({ height }) => {
+import { useEffect } from "react";
+import { useHistory } from 'react-router-dom';
+
+const Card = ({ height, type }) => {
 
     const divStyle = {
         display: "grid",

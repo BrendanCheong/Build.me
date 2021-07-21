@@ -1,17 +1,13 @@
-import { useState ,useMemo, useEffect,} from "react";
-import { GPU_Columns } from './Columns/GPU_Columns';
-import Table from '../Table';
-import axiosInstance from "../../AxiosInstance";
-import { ErrorHandlingNotif } from "../Misc/Error";
+import { useState, useEffect, useMemo } from "react"
+import { GPU_Columns } from "../../Tables/Columns/GPU_Columns";
+import { ErrorHandlingNotif } from "../../Misc/Error";
+import axiosInstance from "../../../AxiosInstance";
+import Tables from "./Tables";
 
 
+const Public_GPU = () => {
 
-const GPUTable = (props) => {
-
-    const Name = "GPU" // change name accordingly for new Tables
-
-
-    const [propData, setPropData] = useState(props.location.data)
+    const Name = "GPU"
     const [TableData,setTableData] = useState([])
     const [loadingTableData, setLoadingTableData] = useState(true)
     
@@ -19,17 +15,6 @@ const GPUTable = (props) => {
         return TableData
     }, [TableData]);
 
-
-    useEffect(()=>{
-        
-        if (!propData || !props.location.data) {
-            setPropData(JSON.parse(localStorage.getItem('propData')))
-        } else {
-            localStorage.setItem('propData', JSON.stringify(props.location.data))
-        }
-    },[]);
-
-    
     useEffect(() => {
         async function getData() {
             // const payload = await PayloadAlgo()
@@ -46,10 +31,6 @@ const GPUTable = (props) => {
             getData()
         }
     }, [loadingTableData])
-
-    
-
-    
 
     const css = `
     .loader {
@@ -69,8 +50,9 @@ const GPUTable = (props) => {
     }
     `
 
-    return ( 
+    return (
         <div>
+        {/* <button onClick={() => console.log(propData.card)}>test</button> */}
             {loadingTableData ?
                 <div className="flex flex-col items-center justify-center pt-48">
                     <style>{css}</style>
@@ -80,10 +62,10 @@ const GPUTable = (props) => {
 
                 :
                 <div className="p-4 overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-                    <Table TableColumns={GPU_Columns} Name={Name} data={data} propData={propData} key={Name + " Larry the GPU"}/>
+                    <Tables TableColumns={GPU_Columns} Name={Name} data={data} key={Name + " Table"}/>
                 </div>}
         </div>
     )
 }
 
-export default GPUTable
+export default Public_GPU

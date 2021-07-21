@@ -19,8 +19,11 @@ import User from "./pages/User";
 import Builds from "./pages/Builds";
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import Public_Builds from './pages/Public_Builds';
 import ForgotPassword from './pages/ForgotPassword';
+import Public_Builds from './pages/Public_Builds';
+import Public_CPU from "./components/Public Builds/Tables/Public_CPU";
+import Public_Motherboard from "./components/Public Builds/Tables/Public_Motherboard";
+import Public_GPU from "./components/Public Builds/Tables/Public_GPU";
 
 
 function App() {
@@ -68,6 +71,9 @@ function App() {
           <Route path="/Login" exact component={LoginPage}/>
           <Route path="/Register" exact component={RegisterPage}/>
           <Route path="/Public_Builds" exact component={Public_Builds}/>
+          <Route path="/Public_Builds/CPU" exact component={Public_CPU}/>
+          <Route path="/Public_Builds/GPU" exact component={Public_GPU}/>
+          <Route path="/Public_Builds/Motherboard" exact component={Public_Motherboard}/>
           <Route path="/confirm/:token" exact component={Confirmation}/>
           <Route path="/ForgotPassword" exact component={ForgotPassword}/>
           <Route path="/reset/:token" exact component={Reset}/>

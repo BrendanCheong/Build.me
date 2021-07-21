@@ -4,9 +4,11 @@ import Motherboardsvg from './svg/Motherboardsvg';
 import PSUsvg from './svg/PSUsvg';
 import RAMsvg from './svg/RAMsvg';
 import Storagesvg from './svg/Storagesvg';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const UnCard = ({ type, short }) => {
+
+    const history = useHistory();
 
     const divStyle = {
         display: "grid",
@@ -14,6 +16,7 @@ const UnCard = ({ type, short }) => {
         placeItems: "center",
         marginTop: "2.25rem",
     }
+
     return (
         <div className={ short ? "antialiased text-gray-900 mt-9" : "antialiased text-gray-900"} style={{divStyle}}>
             <div>
@@ -41,7 +44,7 @@ const UnCard = ({ type, short }) => {
                     <div className="p-6 rounded-lg shadow-lg bg-gradient-to-tl from-white to-blueGray-100">
                             <h4 className="mt-1 text-2xl font-semibold leading-tight uppercase truncateo font-roboto">Add</h4>
                         <div className="flex flex-col items-center w-full">
-                            <svg className="w-24 h-24 mt-4 duration-300 cursor-pointer hover:text-teal-500 hover:fill-current" fill="#5EEAD4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" className=""/></svg>
+                            <svg className="w-24 h-24 mt-4 duration-300 cursor-pointer hover:text-teal-500 hover:fill-current" fill="#5EEAD4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" onClick={() => history.push(`/Public_Builds/${type}`)}><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" className=""/></svg>
                         </div>  
                     </div>
                 </div>

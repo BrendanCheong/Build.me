@@ -1,5 +1,6 @@
 import Card from "../components/Public Builds/Card";
-import UnCard from "../components/Public Builds/UnCard"
+import UnCard from "../components/Public Builds/UnCard";
+import State from "../components/Public Builds/State";
 
 const Public_Builds = () => {
 
@@ -9,14 +10,14 @@ const Public_Builds = () => {
     return (
         <div className="flex flex-col w-screen h-screen">
             <div className="flex w-full h-full p-4 text-center bg-gray-100 sm:space-x-2 lg:flex-row xl:flex-row lg:justify-evenly">
-                <Card height={normal}/>
-                <Card height={normal}/>
-                <UnCard type={"GPU"} short={true}/>
+                <State type={"CPU"} short={true} height={normal}/>
+                <State type={"GPU"} short={true} height={normal}/>
+                <State type={"Motherboard"} short={true} height={normal}/>
             </div>
             <div className="flex w-full h-full p-4 text-center bg-gray-100 sm:space-x-2 lg:flex-row xl:flex-row lg:justify-evenly">
-                <Card height={short}/>
-                <UnCard type={"CPU"} short={false}/>
-                <Card height={short}/>
+                <State type={"Memory"} short={false} height={short}/>
+                <State type={"PSU"} short={false} height={short}/>
+                <State type={"Storage"} short={false} height={short}/>
             </div>
         </div>
     )
