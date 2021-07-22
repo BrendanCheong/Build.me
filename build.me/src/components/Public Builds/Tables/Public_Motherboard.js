@@ -29,10 +29,10 @@ const Public_Motherboard = () => {
 
         const Memory = JSON.parse(localStorage.getItem('Memory'))
         const Storage = JSON.parse(localStorage.getItem('Storage'))
-        const PSU = JSON.parse(localStorage.getItem('PSU'))
+        const CPU = JSON.parse(localStorage.getItem('CPU'))
         const MemoryID = Memory.itemID
         const StorageID = Storage.itemID
-        const CPUID = PSU.itemID
+        const CPUID = CPU.itemID
 
         if (CPUID) {
             const response = await axiosInstance.get(`/CPUs/${CPUID}`)

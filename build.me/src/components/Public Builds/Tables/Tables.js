@@ -65,6 +65,7 @@ const Tables = ({TableColumns, Name, data }) => {
 
             // console.log(RowInfo)
             // evaluate the technique to input into the Scrappers
+            setIsAmazonModalLoading(true)
             setRowOriginal(RowInfo)
             openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
@@ -76,7 +77,7 @@ const Tables = ({TableColumns, Name, data }) => {
             const AmazonResponse = DataCleaner(AmazonOutput, partName) // T** CHANGE ItemNAme
             console.log(AmazonResponse)
             setInfoState(AmazonResponse)
-            isAmazonModalLoading(false) // change for skelebox
+            setIsAmazonModalLoading(false) // change for skelebox
             
         } catch(err) {
 
@@ -101,12 +102,14 @@ const Tables = ({TableColumns, Name, data }) => {
     }
 
     function modalClose(key) {
+        
         document.getElementById(key).children[0].classList.remove('opacity-100');
         document.getElementById(key).children[0].classList.add('opacity-0');
         setTimeout(function () {
             document.getElementById(key).close();
             document.body.removeAttribute('style');
         }, 100);
+        setIsAmazonModalLoading(true)
     }
 
     const tableInstance = useTable(

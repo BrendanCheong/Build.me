@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import Card from "./Card";
 import UnCard from "./UnCard";
 
 const State = ({ type, short, height}) => {
 
-    
+    const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+
     const PartData = JSON.parse(localStorage.getItem(type))
 
     useEffect(() => {
@@ -18,9 +19,8 @@ const State = ({ type, short, height}) => {
     return (
         <>
             {(() =>{
-                if (!PartData) return (<UnCard type={type} short={short}/>)
-                else if (!PartData.itemName) return (<UnCard type={type} short={short}/>)
-                else return (<Card type={type} height={height}/>)
+                if (!PartData || !PartData.itemID) return (<UnCard type={type} short={short}/>)
+                else return (<Card type={type} height={height} forceUpdate={forceUpdate}/>)
             })()}
         </>
     )
