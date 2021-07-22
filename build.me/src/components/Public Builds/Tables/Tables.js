@@ -1,12 +1,12 @@
 import { useState ,useMemo, createContext,} from "react";
 import { useTable, usePagination, useFilters } from "react-table";
+import Modal from "../Modals/Modal";
 import axiosInstance from "../../../AxiosInstance";
 
 export const TableDataContext = createContext(null);
 
 const Tables = ({TableColumns, Name, data }) => {
 
-    const [isOpenModal, setIsOpenModal] = useState(false) // to open the modal
     const [infoState, setInfoState] = useState(null) // infostate is the Scrapped data from e-comms FOR AMAZON
     const [isAmazonModalLoading, setIsAmazonModalLoading] = useState(true) // this is to see whether skeletal boxes are needed FOR AMAZON
     const [rowOriginal, setRowOriginal] = useState("")
@@ -65,7 +65,8 @@ const Tables = ({TableColumns, Name, data }) => {
 
             // console.log(RowInfo)
             // evaluate the technique to input into the Scrappers
-            setIsOpenModal(true)
+            setRowOriginal(RowInfo)
+            openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
             // console.log(ScrapperInput)
             const AmazonOutput = await AmazonScrapper(ScrapperInput)
@@ -73,9 +74,8 @@ const Tables = ({TableColumns, Name, data }) => {
             
             const partName =  RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
             const AmazonResponse = DataCleaner(AmazonOutput, partName) // T** CHANGE ItemNAme
-            // console.log(AmazonResponse)
+            console.log(AmazonResponse)
             setInfoState(AmazonResponse)
-            setRowOriginal(RowInfo)
             isAmazonModalLoading(false) // change for skelebox
             
         } catch(err) {
@@ -92,6 +92,22 @@ const Tables = ({TableColumns, Name, data }) => {
         return
     }
 
+    function openModal(key) {
+        document.getElementById(key).showModal(); 
+        document.body.setAttribute('style', 'overflow: hidden;'); 
+        document.getElementById(key).children[0].scrollTop = 0; 
+        document.getElementById(key).children[0].classList.remove('opacity-0'); 
+        document.getElementById(key).children[0].classList.add('opacity-100');
+    }
+
+    function modalClose(key) {
+        document.getElementById(key).children[0].classList.remove('opacity-100');
+        document.getElementById(key).children[0].classList.add('opacity-0');
+        setTimeout(function () {
+            document.getElementById(key).close();
+            document.body.removeAttribute('style');
+        }, 100);
+    }
 
     const tableInstance = useTable(
         {
@@ -141,7 +157,7 @@ const Tables = ({TableColumns, Name, data }) => {
                                 prepareRow(row)
                                 return (
                                     <>
-                                        <tr {...row.getRowProps()} onClick={() => console.log(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={row.id}>
+                                        <tr {...row.getRowProps()} onClick={() => ScrapAll(row.original)} className="transition duration-200 cursor-pointer hover:bg-indigo-500 hover:text-white hover:underline" key={row.id}>
                                             { row.cells.map( cell => {
                                                 return (
                                                     <td {...cell.getCellProps()} className="px-6 py-4" key={cell.value} name={cell.value}>
@@ -181,13 +197,14 @@ const Tables = ({TableColumns, Name, data }) => {
             </div>
             <TableDataContext.Provider value={{
 
-                isOpenModal, 
+                openModal, modalClose,
                 infoState, setInfoState, 
-                Name, 
+                Name, Evaluate,
                 isAmazonModalLoading, setIsAmazonModalLoading,
                 rowOriginal, setRowOriginal,
                 
-                }} key={`${Name} Modals`}>  
+                }} key={`${Name} Modals`}> 
+                    <Modal key={`${Name} Modal`}/>
             </TableDataContext.Provider>
         </div>
     )
