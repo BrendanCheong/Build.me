@@ -25,9 +25,9 @@ const Public_Memory = () => {
         }
 
         const Motherboard = JSON.parse(localStorage.getItem("Motherboard"))
-        const Memory = JSON.parse(localStorage.getItem("Memory"))
+        const CPU = JSON.parse(localStorage.getItem("CPU"))
         const MotherboardID = Motherboard.itemID;
-        const CPUID = Memory.itemID;
+        const CPUID = CPU.itemID;
 
         let totalMem = 0
         if (MotherboardID) {

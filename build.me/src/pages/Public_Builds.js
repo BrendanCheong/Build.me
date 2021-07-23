@@ -1,5 +1,3 @@
-import Card from "../components/Public Builds/Card";
-import UnCard from "../components/Public Builds/UnCard";
 import State from "../components/Public Builds/State";
 
 const Public_Builds = () => {

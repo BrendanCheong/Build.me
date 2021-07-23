@@ -6,11 +6,11 @@ import LoadedSection from "./LoadedSection";
 const Modal = () => {
 
     const {
-        openModal, modalClose,
-        infoState, setInfoState, 
+        modalClose,
+        infoState,
         Name, Evaluate,
-        isAmazonModalLoading, setIsAmazonModalLoading,
-        rowOriginal, setRowOriginal,
+        isAmazonModalLoading,
+        rowOriginal,
     } = useContext(TableDataContext);
 
     return (
