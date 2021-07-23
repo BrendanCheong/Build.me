@@ -1,5 +1,6 @@
 import BuildCard from '../components/BuildPageComp/BuildCard';
 import BuildUnCard from "../components/BuildPageComp/BuildUnCard";
+import css from "../components/BuildPageComp/css";
 import {useState, useEffect, createContext, useMemo} from 'react'
 import axiosInstance from "../AxiosInstance";
 
@@ -147,20 +148,41 @@ const Builds = () => {
 
 
     return (
-        <div className="flex flex-row items-start h-screen p-2 space-x-3 overflow-hidden overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
-            {cards.map((card) => ( card.isUncard ?
+        <>
+            {(() => {
+                if (submitting) return (<>
+                    <style>{css}</style>
+                    <div className="peeek-loading">
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </>)
+                else return (<>
+                    <div className="flex flex-row items-start h-screen p-2 space-x-3 overflow-hidden overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
+                    {cards.map((card) => ( card.isUncard ?
 
-            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}} key={card._id}>
-                <BuildUnCard key={card._id}/>
-            </ContextData.Provider> // if render Uncard boolean
-
-            : 
-
-            <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}} key={card._id}>
-                <BuildCard key={card._id}/> 
-            </ContextData.Provider> // render Card boolean
-            ))}
-        </div>
+                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}} key={card._id}>
+                            <BuildUnCard key={card._id}/>
+                        </ContextData.Provider> // if render Uncard boolean
+                        : 
+                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}} key={card._id}>
+                            <BuildCard key={card._id}/> 
+                        </ContextData.Provider> // render Card boolean
+                    ))}
+                    </div>
+                </>)
+            })()}
+        </>
     )
 }
 

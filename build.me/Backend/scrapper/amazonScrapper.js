@@ -1,8 +1,11 @@
 const puppeteer = require("puppeteer");
 
-const URL = "https://www.amazon.sg";
-
 const scrape = async (itemSearch, maxItems) => {
+
+  const initialURL = "https://www.amazon.sg";
+  const plusInput = itemSearch.replace(" ", "+")
+  const URL = `${initialURL}/s?k=${plusInput}&ref=nb_sb_noss`
+
   // Launch puppeteer headless browser
   const browser = await puppeteer.launch({
     headless: true,
@@ -21,16 +24,8 @@ const scrape = async (itemSearch, maxItems) => {
   // page.on("console", (consoleObj) => console.log(consoleObj));
 
   try {
-    await page.goto(URL, { waitUntil: "networkidle0" }); // timeout bug????
+    await page.goto(URL, { waitUntil: "networkidle0" }); 
     console.log(`going to ${URL}!`);
-    console.log(`attempting to search for ${itemSearch}!`);
-    // Searching for item on amazon
-    await page.type("#twotabsearchtextbox", itemSearch);
-    console.log("typing in search bar!");
-    await page.click("#nav-search-submit-button");
-    console.log("submit search!");
-    await page.waitForNavigation({ waitUntil: "networkidle0" });
-    console.log("navigating page!");
     const grabItem = await page.evaluate((maxItems) => {
       // Json object to hold all items
       var itemArr = [];

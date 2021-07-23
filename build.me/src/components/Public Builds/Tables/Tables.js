@@ -1,5 +1,6 @@
 import { useState ,useMemo, createContext,} from "react";
 import { useTable, usePagination, useFilters } from "react-table";
+import { ErrorHandlingNotif } from "../../Misc/CustomizableError";
 import Modal from "../Modals/Modal";
 import axiosInstance from "../../../AxiosInstance";
 
@@ -8,7 +9,11 @@ export const TableDataContext = createContext(null);
 const Tables = ({TableColumns, Name, data }) => {
 
     const [infoState, setInfoState] = useState(null) // infostate is the Scrapped data from e-comms FOR AMAZON
+    const [ShopeeInfo, setShopeeInfo] = useState(null)
+    const [Qo10Info, setQo10Info] = useState(null)
     const [isAmazonModalLoading, setIsAmazonModalLoading] = useState(true) // this is to see whether skeletal boxes are needed FOR AMAZON
+    const [isShopeeModalLoading, setIsShopeeModalLoading] = useState(true)
+    const [isQo10ModalLoading, setIsQo10ModalLoading] = useState(true)
     const [rowOriginal, setRowOriginal] = useState("")
 
 
@@ -19,12 +24,37 @@ const Tables = ({TableColumns, Name, data }) => {
         try {
             // process input to remove spaces
             const Input = encodeURIComponent(input)
-            const response = await axiosInstance.get(`/Ascrapper/${Input}`,{withCredentials: false})
-            return response.data // remove withCredientals: false later once authentication complete
+            const response = await axiosInstance.get(`/Ascrapper/${Input}`, {withCredentials: false})
+            return response.data 
         } catch(err) {
-            return err
+            console.error(err)
+            ErrorHandlingNotif("Amazon Data Error", "Server Timeout, No Data from Amazon Found")
         }
     };
+
+    const ShopeeScrapper = async (input) => {
+        try {
+
+            const Input = encodeURIComponent(input);
+            const response = await axiosInstance.get(`/ShopeeScrapper/${Input}`, {withCredentials: false})
+            return response.data
+        } catch(err) {
+            console.error(err)
+            ErrorHandlingNotif("Shopee Data Error", "Server Timeout, No Data from Shopee Found")
+        }
+    }
+
+    const Qo10Scrapper = async (input) => {
+        try {
+
+            const Input = encodeURIComponent(input)
+            const response = await axiosInstance.get(`/Qo10Scrapper/${Input}`, {withCredentials: false})
+            return response.data
+        } catch(err) {
+            console.error(err)
+            ErrorHandlingNotif("Qo10 Data Error", "Server Timeout, No Data from Qo10 Found")
+        }
+    }
 
 
     //Evaluate Input based on Name
@@ -38,7 +68,7 @@ const Tables = ({TableColumns, Name, data }) => {
     }
 
     // DataCleaners
-    const DataCleaner = (info, partName) => {
+    const DataCleaner = (info) => {
         const ChosenArray = []
         for (let i = 0 ; i < info.length; ++i) {
             if (!info[i]) {
@@ -66,19 +96,27 @@ const Tables = ({TableColumns, Name, data }) => {
             // console.log(RowInfo)
             // evaluate the technique to input into the Scrappers
             setIsAmazonModalLoading(true)
+            setIsShopeeModalLoading(true)
+            setIsQo10ModalLoading(true)
             setRowOriginal(RowInfo)
             openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
             // console.log(ScrapperInput)
             const AmazonOutput = await AmazonScrapper(ScrapperInput)
+            const ShopeeOutput = await ShopeeScrapper(ScrapperInput)
+            const Qo10Output = await Qo10Scrapper(ScrapperInput)
             // console.log(AmazonOutput);
             
-            const partName =  RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
-            const AmazonResponse = DataCleaner(AmazonOutput, partName) // T** CHANGE ItemNAme
-            console.log(AmazonResponse)
+            const AmazonResponse = DataCleaner(AmazonOutput) // T** CHANGE ItemNAme
+            const ShopeeResponse = DataCleaner(ShopeeOutput)
+            const Qo10Response = DataCleaner(Qo10Output)
+
             setInfoState(AmazonResponse)
+            setShopeeInfo(ShopeeResponse)
+            setQo10Info(Qo10Response)
             setIsAmazonModalLoading(false) // change for skelebox
-            
+            setIsShopeeModalLoading(false)
+            setIsQo10ModalLoading(false)
         } catch(err) {
 
             console.error(err)
@@ -109,7 +147,9 @@ const Tables = ({TableColumns, Name, data }) => {
             document.getElementById(key).close();
             document.body.removeAttribute('style');
         }, 100);
-        setIsAmazonModalLoading(true)
+        setIsAmazonModalLoading(true);
+        setIsShopeeModalLoading(true);
+        setIsQo10ModalLoading(true);
     }
 
     const tableInstance = useTable(
@@ -202,8 +242,12 @@ const Tables = ({TableColumns, Name, data }) => {
 
                 openModal, modalClose,
                 infoState, setInfoState, 
+                ShopeeInfo,
+                Qo10Info,
                 Name, Evaluate,
                 isAmazonModalLoading, setIsAmazonModalLoading,
+                isShopeeModalLoading,
+                isQo10ModalLoading,
                 rowOriginal, setRowOriginal,
                 
                 }} key={`${Name} Modals`}> 

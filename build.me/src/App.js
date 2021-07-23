@@ -14,6 +14,7 @@ import PSU_Table from './components/Tables/PSU_Table';
 import Storage_Table from './components/Tables/Storage_Table';
 import Confirmation from './components/Authentication/Confirmation';
 import AuthContextData from './components/Context/AuthContext';
+import css from "./components/BuildPageComp/css";
 import Home from "./pages";
 import User from "./pages/User";
 import Builds from "./pages/Builds";
@@ -55,6 +56,23 @@ function App() {
   // start of the styling of App.js
   return (
     <div className="w-screen h-screen scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
+  {loggedIn.status === undefined && (<>
+      <style>{css}</style>
+      <div className="peeek-loading">
+          <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+          </ul>
+      </div>
+  </>)}
   {loggedIn.status === false && (
     <>
       <LoginNavbar toggle={toggle}/>

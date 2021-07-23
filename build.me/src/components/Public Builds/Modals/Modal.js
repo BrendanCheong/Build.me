@@ -8,8 +8,12 @@ const Modal = () => {
     const {
         modalClose,
         infoState,
+        ShopeeInfo,
+        Qo10Info,
         Name, Evaluate,
         isAmazonModalLoading,
+        isShopeeModalLoading,
+        isQo10ModalLoading,
         rowOriginal,
     } = useContext(TableDataContext);
 
@@ -36,9 +40,19 @@ const Modal = () => {
                         {/* <!--Header End--> */}
                         </div>
                         {/* <-!----Modal Section Start----> */}
-                        <div className="w-full h-full space-y-48 overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
+                        <div className="w-full h-full space-y-56 overflow-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-gray-500">
                             {   !isAmazonModalLoading ? 
                                 <LoadedSection rowOriginal={rowOriginal} infoState={infoState} Name={Name} scrapType={"Amazon"}/>
+                                :
+                                <Skeleton/>
+                            }
+                            {   !isShopeeModalLoading ? 
+                                <LoadedSection rowOriginal={rowOriginal} infoState={ShopeeInfo} Name={Name} scrapType={"Shopee"}/>
+                                :
+                                <Skeleton/>
+                            }
+                            {   !isQo10ModalLoading ? 
+                                <LoadedSection rowOriginal={rowOriginal} infoState={Qo10Info} Name={Name} scrapType={"Qo10"}/>
                                 :
                                 <Skeleton/>
                             }

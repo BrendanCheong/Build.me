@@ -6,7 +6,10 @@ async function scrapeQoo10(itemName) {
 }
 
 async function scrapeQoo10Items(itemSearch) {
-  const URL = "https://www.qoo10.sg";
+  const initialURL = "https://www.qoo10.sg/s/";
+  const dashedInput = itemSearch.replace(" ", "-").toUpperCase();
+  const plusInput = itemSearch.replace(" ", "+");
+  const URL = `${initialURL}${dashedInput}?keyword=${plusInput}&keyword_auto_change=`
 
   puppeteer.use(StealthPlugin());
 
@@ -26,9 +29,6 @@ async function scrapeQoo10Items(itemSearch) {
     const page = await browser.newPage();
     await page.goto(URL, { waitUntil: "networkidle0" });
     // Searching for item on qoo10
-    await page.type("#search____keyword", itemSearch);
-    await page.click("#search_____form > fieldset > button");
-    await page.waitForNavigation({ waitUntil: "networkidle0" });
     await scroll(page);
 
     const scriptHTML = await page.evaluate(() => {
@@ -81,7 +81,7 @@ async function scroll(page) {
     await new Promise((resolve) => {
       // Adjust as necessary
       const y = 50,
-        speed = 20;
+        speed = 5;
       let heightScrolled = 0;
 
       setInterval(() => {

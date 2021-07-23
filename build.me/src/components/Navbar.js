@@ -3,7 +3,7 @@ import ImageTwo from "../images/robot.svg"
 
 const Navbar = ( {toggle} ) => {
     return (
-        <nav className="relative flex items-center w-screen h-20 text-gray-200 shadow-xl justify-evenly bg-gradient-to-l from-indigo-600 to-purple-700" role="navigation">
+        <nav className="relative z-50 flex items-center w-screen h-20 text-gray-200 shadow-xl justify-evenly bg-gradient-to-l from-indigo-600 to-purple-700" role="navigation">
             <Link to= "/" className="flex-col lg:pr-96 md:pr-8 sm:pr-8 font-poppins">
                 <img src={ImageTwo} className="pt-3 pl-5 w-14 h-14" alt="Build.me logo"/>
                 <p className="pb-5 uppercase hover:text-black">Build.me</p>

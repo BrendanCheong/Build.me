@@ -61,7 +61,7 @@ const LoadedSection = ({ rowOriginal, infoState, Name, scrapType}) => {
                                 if (recommended && recommended.length > 0) {
                                     return (<>
                                         { recommended.map((card) =>
-                                                <ModalCard key={card.itemName} itemName={card.itemName.length > 80 ? card.itemName.slice(0,80) + "..." : card.itemName}
+                                                <ModalCard key={card.itemName + " recommended"} itemName={card.itemName.length > 80 ? card.itemName.slice(0,80) + "..." : card.itemName}
                                                 itemURL={card.itemURL} itemImg={card.itemImg} itemPrice={card.itemPrice.replace("S$", "")}
                                                 itemVendor={card.itemVendor} itemRating={card.itemRating.replace(" out of 5 stars", "")}
                                                 scrapType={scrapType} Name={Name} rowOriginal={rowOriginal}/>
@@ -84,7 +84,7 @@ const LoadedSection = ({ rowOriginal, infoState, Name, scrapType}) => {
                                     if (suggestions && suggestions.length > 0) {
                                         return (<>
                                             { suggestions.map((card) =>
-                                                    <ModalCard key={card.itemName} itemName={card.itemName.length > 100 ? card.itemName.slice(0,100) + "..." : card.itemName}
+                                                    <ModalCard key={card.itemName + " suggestions"} itemName={card.itemName.length > 100 ? card.itemName.slice(0,100) + "..." : card.itemName}
                                                     itemURL={card.itemURL} itemImg={card.itemImg} itemPrice={card.itemPrice.replace("S$", "")}
                                                     itemVendor={card.itemVendor} itemRating={card.itemRating.replace(" out of 5 stars", "")}
                                                     scrapType={scrapType} Name={Name} rowOriginal={rowOriginal}/>
