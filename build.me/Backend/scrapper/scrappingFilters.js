@@ -8,9 +8,23 @@ function itemFilter(itemArr, filterName, filterStr) {
 }
 
 // Filter out items WITH filterName: filterStr
-function itemExcludes(itemArr, filterName, filterStr) {
+function itemExcludes(itemArr, filterName, filterArr) {
   try {
-    return itemArr.filter((item) => !item[filterName].includes(filterStr));
+    let Arr = [];
+    for (let item of itemArr) {
+      let truth = true;
+      for (let filterItem of filterArr) {
+        const check = item[filterName].toLowerCase();
+        if (check.includes(filterItem)) {
+          truth = false;
+          break;
+        }
+      }
+      if (truth) {
+        Arr.push(item);
+      }
+    }
+    return Arr;
   } catch (err) {
     return err;
   }

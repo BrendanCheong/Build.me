@@ -52,7 +52,7 @@ const LoadedSection = ({ rowOriginal, infoState, Name, scrapType}) => {
                 </span>
                 <div className="flex flex-row space-x-5">
                     {/** Recommended Section */}
-                    <div className="p-5 -space-y-5 rounded-lg shadow-sm from-blueGray-100 bg-gradient-to-br to-gray-100" id="Recommended block" style={{height:"35rem"}}>
+                    <div className="p-5 -space-y-5 rounded-lg shadow-sm from-blueGray-100 bg-gradient-to-br to-gray-100" id="Recommended block" style={{height:"36rem"}}>
                         <div className="w-56 h-16 text-xl rounded-sm">
                             <h3 className="ml-5 font-bold text-black font-poppins">Recommended</h3>
                         </div>
@@ -61,7 +61,7 @@ const LoadedSection = ({ rowOriginal, infoState, Name, scrapType}) => {
                                 if (recommended && recommended.length > 0) {
                                     return (<>
                                         { recommended.map((card) =>
-                                                <ModalCard key={card.itemName} itemName={card.itemName.length > 100 ? card.itemName.slice(0,100) + "..." : card.itemName}
+                                                <ModalCard key={card.itemName} itemName={card.itemName.length > 80 ? card.itemName.slice(0,80) + "..." : card.itemName}
                                                 itemURL={card.itemURL} itemImg={card.itemImg} itemPrice={card.itemPrice.replace("S$", "")}
                                                 itemVendor={card.itemVendor} itemRating={card.itemRating.replace(" out of 5 stars", "")}
                                                 scrapType={scrapType} Name={Name} rowOriginal={rowOriginal}/>

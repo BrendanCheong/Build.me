@@ -11,7 +11,7 @@ async function scrapeQoo10Items(itemSearch) {
   puppeteer.use(StealthPlugin());
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     defaultViewport: null,
     args: [
       "--no-sandbox",

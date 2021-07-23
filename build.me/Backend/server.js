@@ -133,6 +133,51 @@ app.get("/LazadaScrapper/:id", async (req, res) => {
   }
 });
 
+app.get("/ShopeeScrapper/:id", async (req, res) => {
+  const input = decodeURIComponent(req.params.id)
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Content-Type": "text/plain",
+  });
+
+  try {
+
+    console.log("Shopee Request Recieved!");
+    const response = await shopeeScrapper.shopeeScrapper(input);
+    const answer = scrappingFilter.itemLimit(scrappingFilter.itemExcludes(response, "itemName",[
+      "bundle","laptop"," + ","lenovo","huawei","acer","hp", "fans", "powerlink", "cable", "book", "sodimm",
+    ]),10)
+
+    console.log("sending Shopee Answer");
+    return res
+    .status(200)
+    .json(answer)
+  } catch(err) {
+    res.status(500).json({ Error: err });
+  }
+});
+
+app.get("/Qo10Scrapper/:id", async (req, res) => {
+  const input = decodeURIComponent(req.params.id)
+  try {
+    
+    console.log("Qo10 Request recieved!")
+    const response = await qoo10Scrapper.qoo10Scraper(input);
+    const answer = scrappingFilter.itemLimit(scrappingFilter.itemExcludes(response, "itemName",[
+      "hair", "cable", "panasonic", "ml", "laptop", "sodimm", "kg", "book", "chrome", "dell", "huawei", "lenovo", "acer", "heatsink", "nuc",
+    ]),10)
+
+    return res
+    .status(200)
+    .json(answer)
+  } catch(err) {
+    res.status(500).json({ Error: err });
+  }
+});
+
 app.post("/PriceTrends", auth, async (req, res) => {
   const { link } = req.body;
   res.set({
