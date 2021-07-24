@@ -128,7 +128,7 @@ const BarGraphTab = () => {
                     :
                     "hidden p-4"}
                 >
-                    <FPSBarChart labels={CPUlabel} BarGraphLeft={CPUleftBar} BarGraphRight={CPUrightBar} nameLeft={CPUnameLeft} nameRight={GPUnameLeft}/>
+                    <FPSBarChart labels={CPUlabel} BarGraphLeft={CPUleftBar} BarGraphRight={CPUrightBar} nameLeft={CPUnameLeft} nameRight={CPUnameRight}/>
                 </div>
                 <div id="third" 
                 className={toggleBarGraph === 3 ?
@@ -136,7 +136,7 @@ const BarGraphTab = () => {
                     :
                     "hidden p-4"}
                 >
-                    <FPSBarChart labels={GPUlabel} BarGraphLeft={GPUleftBar} BarGraphRight={GPUrightBar} nameLeft={CPUnameRight} nameRight={GPUnameRight}/>
+                    <FPSBarChart labels={GPUlabel} BarGraphLeft={GPUleftBar} BarGraphRight={GPUrightBar} nameLeft={GPUnameLeft} nameRight={GPUnameRight}/>
                 </div>
             </div>
         </div>

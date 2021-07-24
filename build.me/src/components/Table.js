@@ -1,5 +1,6 @@
 import { useState ,useMemo, createContext,} from "react";
 import { useTable, usePagination, useFilters } from "react-table";
+import { ErrorHandlingNotif } from "./Misc/CustomizableError";
 import Modal from "./Modal";
 import axiosInstance from '../AxiosInstance';
 
@@ -9,9 +10,11 @@ const Table = ({TableColumns, Name, data, propData}) => {
 
     const [isOpenModal, setIsOpenModal] = useState(false) // to open the modal
     const [infoState, setInfoState] = useState(null) // infostate is the Scrapped data from e-comms FOR AMAZON
-    const [LazadInfo, setLazadaInfo] = useState(null) // infostate for Scraped data from e-comms FOR LAZADA
-    const [LazadModalLoading, setLazadModalLoading] = useState(true)
-    const [isModalLoading, setIsModalLoading] = useState(true) // this is to see whether skeletal boxes are needed FOR AMAZON
+    const [ShopeeInfo, setShopeeInfo] = useState(null)
+    const [Qo10Info, setQo10Info] = useState(null)
+    const [isAmazonModalLoading, setIsAmazonModalLoading] = useState(true) // this is to see whether skeletal boxes are needed FOR AMAZON
+    const [isShopeeModalLoading, setIsShopeeModalLoading] = useState(true)
+    const [isQo10ModalLoading, setIsQo10ModalLoading] = useState(true)
     const [rowOriginal, setRowOriginal] = useState("")
 
 
@@ -29,13 +32,27 @@ const Table = ({TableColumns, Name, data, propData}) => {
         }
     };
 
-    const LazadaScrapper = async (input) => {
+    const ShopeeScrapper = async (input) => {
         try {
-            const Input = encodeURIComponent(input)
-            const response = await axiosInstance.get(`/LazadaScrapper/${Input}`, {withCredentials: false})
+
+            const Input = encodeURIComponent(input);
+            const response = await axiosInstance.get(`/ShopeeScrapper/${Input}`, {withCredentials: false})
             return response.data
         } catch(err) {
-            return err
+            console.error(err)
+            ErrorHandlingNotif("Shopee Data Error", "Server Timeout, No Data from Shopee Found")
+        }
+    }
+
+    const Qo10Scrapper = async (input) => {
+        try {
+
+            const Input = encodeURIComponent(input)
+            const response = await axiosInstance.get(`/Qo10Scrapper/${Input}`, {withCredentials: false})
+            return response.data
+        } catch(err) {
+            console.error(err)
+            ErrorHandlingNotif("Qo10 Data Error", "Server Timeout, No Data from Qo10 Found")
         }
     }
 
@@ -50,13 +67,12 @@ const Table = ({TableColumns, Name, data, propData}) => {
     }
 
     // DataCleaners
-    const DataCleaner = (info, partName) => {
+    const DataCleaner = (info) => {
         const ChosenArray = []
         for (let i = 0 ; i < info.length; ++i) {
             if (!info[i]) {
 
                 continue
-                
             } else {
 
                 const Price = info[i].itemPrice
@@ -66,7 +82,6 @@ const Table = ({TableColumns, Name, data, propData}) => {
                     
                 }
             }
-            
         }
         return ChosenArray
     }
@@ -78,17 +93,30 @@ const Table = ({TableColumns, Name, data, propData}) => {
             // console.log(RowInfo)
             // evaluate the technique to input into the Scrappers
             setIsOpenModal(true)
+
+            setIsAmazonModalLoading(true)
+            setIsShopeeModalLoading(true)
+            setIsQo10ModalLoading(true)
+            setRowOriginal(RowInfo)
+            openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
             // console.log(ScrapperInput)
             const AmazonOutput = await AmazonScrapper(ScrapperInput)
+            const ShopeeOutput = await ShopeeScrapper(ScrapperInput)
+            const Qo10Output = await Qo10Scrapper(ScrapperInput)
             // console.log(AmazonOutput);
             
-            const partName =  RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
-            const AmazonResponse = DataCleaner(AmazonOutput, partName) // T** CHANGE ItemNAme
+            const AmazonResponse = DataCleaner(AmazonOutput) // T** CHANGE ItemNAme
+            const ShopeeResponse = DataCleaner(ShopeeOutput)
+            const Qo10Response = DataCleaner(Qo10Output)
             // console.log(AmazonResponse)
             setInfoState(AmazonResponse)
-            setRowOriginal(RowInfo)
-            setIsModalLoading(false) // change for skelebox
+            setInfoState(AmazonResponse)
+            setShopeeInfo(ShopeeResponse)
+            setQo10Info(Qo10Response)
+            setIsAmazonModalLoading(false) // change for skelebox
+            setIsShopeeModalLoading(false)
+            setIsQo10ModalLoading(false) // change for skelebox
             
         } catch(err) {
 
@@ -97,33 +125,33 @@ const Table = ({TableColumns, Name, data, propData}) => {
 
     }
 
-    const LScrapper = async (RowInfo) => {
-        try {
-
-            // console.log(RowInfo)
-            // evaluate the technique to input into the Scrappers
-            setIsOpenModal(true)
-            const ScrapperInput = Evaluate(RowInfo)
-            const LazadaOutput = await LazadaScrapper(ScrapperInput)
-
-            const partName = RowInfo.itemName ? RowInfo.itemName : RowInfo.itemChipSet
-            const LazadaResponse = DataCleaner(LazadaOutput, partName);
-            setLazadaInfo(LazadaResponse);
-            setRowOriginal(RowInfo)
-            setLazadModalLoading(false)
-            
-        } catch(err) {
-            console.error(err)
-        }
-    }
 
     const ScrapAll = (info) => {
         
         AScrapper(info)
-        LScrapper(info)
         return
     }
 
+    function openModal(key) {
+        document.getElementById(key).showModal(); 
+        document.body.setAttribute('style', 'overflow: hidden;'); 
+        document.getElementById(key).children[0].scrollTop = 0; 
+        document.getElementById(key).children[0].classList.remove('opacity-0'); 
+        document.getElementById(key).children[0].classList.add('opacity-100');
+    }
+
+    function modalClose(key) {
+        
+        document.getElementById(key).children[0].classList.remove('opacity-100');
+        document.getElementById(key).children[0].classList.add('opacity-0');
+        setTimeout(function () {
+            document.getElementById(key).close();
+            document.body.removeAttribute('style');
+        }, 100);
+        setIsAmazonModalLoading(true);
+        setIsShopeeModalLoading(true);
+        setIsQo10ModalLoading(true);
+    }
 
     const tableInstance = useTable(
         {
@@ -213,16 +241,18 @@ const Table = ({TableColumns, Name, data, propData}) => {
             </div>
             <TableDataContext.Provider value={{
 
-                isOpenModal, 
-                infoState, setInfoState, 
-                Name, 
-                isModalLoading, setIsModalLoading,
-                rowOriginal, setRowOriginal,
-                LazadInfo, setLazadaInfo,
-                LazadModalLoading, setLazadModalLoading
+                isOpenModal, modalClose, 
+                infoState, setInfoState,
+                ShopeeInfo, setShopeeInfo,
+                Qo10Info, setQo10Info,
+                Name, Evaluate,
+                isAmazonModalLoading, setIsAmazonModalLoading,
+                isShopeeModalLoading, setIsShopeeModalLoading,
+                isQo10ModalLoading, setIsQo10ModalLoading,
+                rowOriginal,
                 
-                }} key={propData.id + JSON.stringify(propData.card)}>  
-                <Modal onClose={() =>setIsOpenModal(false)} id={propData.id} card={propData.card} key={propData.id + JSON.stringify(propData.card)}/>
+            }} key={propData.id + JSON.stringify(propData.card)}>  
+                <Modal id={propData.id} card={propData.card} key={propData.id + JSON.stringify(propData.card)}/>
             </TableDataContext.Provider>
         </div>
     )

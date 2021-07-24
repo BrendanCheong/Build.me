@@ -55,7 +55,7 @@ const BuildPart = ({name, id, card}) => {
             <div className="flex flex-col items-start justify-between p-2 space-y-1 font-roboto">
                 <h1 className="text-sm">{NewItemName}</h1>
                 <h1 className="text-sm">{`Vendor: ${card.partsData[index].vendorName}`}</h1>
-                <h1 className="px-3 py-1 text-xs text-left bg-white rounded-lg shadow-md">{card.partsData[index].itemPrice}</h1>
+                <h1 className="px-3 py-1 text-xs text-left bg-white rounded-lg shadow-md">{"S$ " + card.partsData[index].itemPrice.replace("S$","")}</h1>
             </div>
             <div className='absolute bottom-0 flex flex-row w-full pb-2 ml-2 space-x-9'>
                     <Link className='px-3 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100 hover:shadow-md'
