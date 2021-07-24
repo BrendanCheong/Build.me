@@ -24,8 +24,11 @@ const Tables = ({TableColumns, Name, data }) => {
         try {
             // process input to remove spaces
             const Input = encodeURIComponent(input)
-            const response = await axiosInstance.get(`/Ascrapper/${Input}`, {withCredentials: false})
-            return response.data 
+            const response = await axiosInstance.get(`/Ascrapper/${Input}`,{withCredentials: false})
+            const AmazonResponse = DataCleaner(response.data)
+            setInfoState(AmazonResponse);
+            setIsAmazonModalLoading(false);
+
         } catch(err) {
             console.error(err)
             ErrorHandlingNotif("Amazon Data Error", "Server Timeout, No Data from Amazon Found")
@@ -37,7 +40,10 @@ const Tables = ({TableColumns, Name, data }) => {
 
             const Input = encodeURIComponent(input);
             const response = await axiosInstance.get(`/ShopeeScrapper/${Input}`, {withCredentials: false})
-            return response.data
+            const ShopeeResponse = DataCleaner(response.data)
+            setShopeeInfo(ShopeeResponse)
+            setIsShopeeModalLoading(false);
+            
         } catch(err) {
             console.error(err)
             ErrorHandlingNotif("Shopee Data Error", "Server Timeout, No Data from Shopee Found")
@@ -101,21 +107,17 @@ const Tables = ({TableColumns, Name, data }) => {
             setRowOriginal(RowInfo)
             openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
-            // console.log(ScrapperInput)
-            const AmazonOutput = await AmazonScrapper(ScrapperInput)
-            const ShopeeOutput = await ShopeeScrapper(ScrapperInput)
-            const Qo10Output = await Qo10Scrapper(ScrapperInput)
-            // console.log(AmazonOutput);
             
-            const AmazonResponse = DataCleaner(AmazonOutput) // T** CHANGE ItemNAme
-            const ShopeeResponse = DataCleaner(ShopeeOutput)
+            AmazonScrapper(ScrapperInput)
+            ShopeeScrapper(ScrapperInput)
+            const Qo10Output = await Qo10Scrapper(ScrapperInput)
+            
             const Qo10Response = DataCleaner(Qo10Output)
 
-            setInfoState(AmazonResponse)
-            setShopeeInfo(ShopeeResponse)
+            
+            
             setQo10Info(Qo10Response)
-            setIsAmazonModalLoading(false) // change for skelebox
-            setIsShopeeModalLoading(false)
+            
             setIsQo10ModalLoading(false)
         } catch(err) {
 

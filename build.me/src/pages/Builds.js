@@ -43,7 +43,12 @@ const Builds = () => {
         uncardSchema,
     ]);
     const [submitting, setSubmitting] = useState(true);
-    
+    const [initialLoad, setInitialLoad] = useState(true); // initially, this will display the fullscreen spinner when loading this page, appear once only
+    const [selectedCardID, setSelectedCardID] = useState(""); // helps the Builds page figure out which card wants to set its loading state
+    const [addBuildButtonLoad, setAddBuildButtonLoad] = useState(false) // for BuildUnCard
+    const [removeBuildLoad, setRemoveBuildLoad] = useState(false) // for BuildCard
+    const [submittingBuildName, setSubmittingBuildName] = useState(false) // for BuildCard
+
     // GET request ALL CARDS
     const getAllCards = async () => {
         try {
@@ -95,6 +100,11 @@ const Builds = () => {
             }
             setCards(State);
             setSubmitting(false)
+            setAddBuildButtonLoad(false)
+            setRemoveBuildLoad(false)
+            setSubmittingBuildName(false)
+            setInitialLoad(false)
+            setSelectedCardID("")
         }
         if (submitting) {
             updateState();
@@ -150,7 +160,7 @@ const Builds = () => {
     return (
         <>
             {(() => {
-                if (submitting) return (<>
+                if (initialLoad) return (<>
                     <style>{css}</style>
                     <div className="peeek-loading">
                         <ul>
@@ -171,11 +181,16 @@ const Builds = () => {
                     <div className="flex flex-row items-start h-screen p-2 space-x-3 overflow-hidden overflow-x-auto bg-gray-100 scrollbar-thin scrollbar-thumb-trueGray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded scrollbar-track-rounded hover:scrollbar-thumb-blueGray-500">
                     {cards.map((card) => ( card.isUncard ?
 
-                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting}} key={card._id}>
+                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting,
+                            addBuildButtonLoad, setAddBuildButtonLoad,
+                            }} key={card._id}>
                             <BuildUnCard key={card._id}/>
                         </ContextData.Provider> // if render Uncard boolean
                         : 
-                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards}} key={card._id}>
+                        <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards,
+                            removeBuildLoad, setRemoveBuildLoad,
+                            selectedCardID, setSelectedCardID,
+                            submittingBuildName, setSubmittingBuildName,}} key={card._id}>
                             <BuildCard key={card._id}/> 
                         </ContextData.Provider> // render Card boolean
                     ))}
