@@ -16,12 +16,13 @@ const Confirmation = (props) => {
 
             try {
                 const response = await axiosInstance.get(`/users/verify/${MyToken}`)
-                if(response.data === "User Added Successfully") {
+                if(response.data.Success === "User Added Successfully") {
                     try {
                         await axiosInstance.post('/Builder/',{  // add builder
                             "darkmode":false,
                             "CardArray":[]
                         })
+                        localStorage.setItem("username", response.data.Username) // set username for Dashboard to use
                         setLoading(false)
                     } catch(err) {
                         setLoading(err.response.data.Error)

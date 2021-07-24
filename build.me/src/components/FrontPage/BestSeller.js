@@ -9,7 +9,7 @@ const BestSeller = () => {
     const rates = parseFloat(ProductRating.replace(" out of 5 stars", ""));
     
     return (
-        <div className="max-w-sm mx-auto my-8 overflow-hidden rounded shadow-lg">
+        <div className="max-w-sm mx-auto my-8 overflow-hidden shadow-lg rounded-xl">
             <div className="relative w-full h-56 bg-white">
                 <img className="absolute object-cover w-full h-full rounded-lg" src={(() => {
 

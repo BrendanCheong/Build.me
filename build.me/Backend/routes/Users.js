@@ -380,7 +380,10 @@ router.get('/verify/:token', async (req, res) => { // verify token, create user,
             // secure: true,
             // sameSite: "none",
         })
-        .json("User Added Successfully")
+        .json({
+            Success: "User Added Successfully",
+            Username: username,
+        })
 
 
     } catch(err) {
