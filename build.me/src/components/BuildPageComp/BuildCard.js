@@ -1,6 +1,5 @@
 import BuildUnpart from "./BuildUnpart";
 import BuildPart from './BuildPart';
-import LoadingSVG from '../../images/svg/LoadingSVG';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import { ContextData } from '../../pages/Builds';

@@ -13,14 +13,11 @@ const Dashboard = () => {
 
     return (
         <div className="flex flex-col items-center justify-center w-screen h-screen bg-gray-100 lg:p-10">
-            <h1 className="text-black lg:text-5xl md:text-3xl sm:text-2xl font-poppins lg:mt-56">
-                Welcome to Build.me!
-            </h1>
 
             {/* <div className="w-6/12 h-4/6 ml-96 pl-52">
                 <LineChart/>
             </div> */}
-            <div className="lg:pt-10">
+            <div className="w-full h-screen bg-gray-100 lg:pt-10">
                 <div id="tabs buttons" className="inline-flex flex-row w-full mx-auto bg-indigo-500 border-b lg:mr-10 rounded-t-md">
                     <div className="flex overflow-hidden top">
                         <h1 className="p-3 mt-4 text-xl text-white font-roboto">{`Best Sellers for ${monthName}`}</h1>
