@@ -101,16 +101,15 @@ const LoginPage = () => {
               {
                 loadingLogin ?
                   <button
-                    className="flex flex-col items-center justify-center p-2 mt-8 text-lg font-bold text-white duration-200 bg-gray-700 rounded-lg shadow-md"
+                    className="flex flex-col items-center justify-center p-2 mt-8 text-lg font-bold text-white duration-200 bg-gray-700 rounded-lg shadow-md focus:outline-none"
                     type="submit"
                     title= "Log In"
                   >
                     <svg className="transition duration-300 delay-200 w-7 h-7 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    {/* Login */}
                   </button>
                   :
                   <button
-                    className="flex flex-col items-center justify-center p-2 mt-8 text-lg font-bold text-white duration-200 bg-black rounded-lg shadow-md hover:bg-gray-700"
+                    className="flex flex-col items-center justify-center p-2 mt-8 text-lg font-bold text-white duration-200 bg-black rounded-lg shadow-md hover:bg-gray-700 focus:outline-none"
                     type="submit"
                     title= "Log In"
                   >

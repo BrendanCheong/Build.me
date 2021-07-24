@@ -150,7 +150,7 @@ const BuildCard = () => {
                     </div>
                     {
                         submittingBuildName && selectedCardID === card._id ?
-                        <button className="relative flex flex-col items-center justify-center px-5 py-1 mb-2 ml-2 text-white duration-300 rounded-full shadow-md bg-gradient-to-br from-teal-500 to-blue-500 -bottom-1 font-roboto hover:bg-teal-700"
+                        <button className="relative flex flex-col items-center justify-center px-5 py-1 mb-2 ml-2 text-white duration-300 rounded-full shadow-md bg-gradient-to-br from-teal-500 to-blue-500 -bottom-1 font-roboto hover:bg-teal-700 focus:outline-none"
                         >
                             <svg className="w-5 h-5 mx-4 transition duration-300 delay-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         </button>
