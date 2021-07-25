@@ -1,7 +1,7 @@
 {
   "name": "build.me",
   "version": "2.1.0",
-  "homepage": ".",
+  "homepage": "https://build-me.netlify.app",
   "license": "MIT",
   "private": false,
   "dependencies": {

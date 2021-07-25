@@ -8,10 +8,18 @@ const Card = ({ height, type, forceUpdate }) => {
         placeItems: "center",
     };
     const object = JSON.parse(localStorage.getItem(type));
+    let currentPrice = object.itemPrice || "";
+    const storePage = object.itemURL;
 
     const removeItem = (type) => {
         localStorage.removeItem(type)
         forceUpdate();
+    }
+    const MouseOver = (event) => {
+        event.target.textContent = "Store Page"
+    }
+    const MouseExit = (event) => {
+        event.target.textContent = `S$ ${currentPrice}`
     }
     
     return (
@@ -29,7 +37,7 @@ const Card = ({ height, type, forceUpdate }) => {
                                     </span>
                                 </div>
                             <div className="mt-1">
-                                <span className="px-4 py-2 font-semibold text-white rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-teal-500 text-md font-roboto">{`S$ ${object.itemPrice}`}</span>
+                                <a className="px-4 py-2 font-semibold text-white rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-teal-500 text-md hover:from-yellow-500 hover:to-red-500 font-roboto" name="ItemPrice" onMouseOver={MouseOver} onMouseLeave={MouseExit} href={storePage} target="_blank" rel="noreferrer">{`S$ ${currentPrice}`}</a>
                             </div>
                         </div>
                             

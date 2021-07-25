@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { useHistory  } from 'react-router-dom';
 import axiosInstance from '../../AxiosInstance';
 import { SuccessHandlingNotif } from '../Misc/Success';
 import { ErrorHandlingNotif } from '../Misc/BigError';
 
 const Reset = (props) => {
 
+    const history = useHistory();
     const [NewPasswordToggle, setNewPasswordToggle] = useState(false);
     const [ConfirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
     const [loading, setLoading] = useState(false);
     const [newPasswordState, setNewPasswordState] = useState(undefined);
     const [newConfirmPassword, setNewConfirmPassword] = useState(undefined);
+    const [successState, setSuccessState] = useState(false);
     const [ErrorState, setErrorState] = useState('');
 
     const ToggleEye = (event, state) => {
@@ -35,8 +38,8 @@ const Reset = (props) => {
                 passwordVerify: newConfirmPassword,
             })
             SuccessHandlingNotif(response.data)
+            setSuccessState(true)
             setErrorState('')
-            setLoading(false)
         } catch(err) {
             if (typeof err.response.data.Error === 'string') {
                 setErrorState(err.response.data.Error)
@@ -118,15 +121,25 @@ const Reset = (props) => {
                                             else return (<p className="text-sm text-transparent font-roboto">.</p>)
                                         })()}
                                 </div>
-                                <button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-700 hover:to-teal-700 focus:outline-none font-poppins" type='submit'>
-                                    {(() => {
-                                        loading ? 
-                                        <svg className="w-5 h-5 mr-1 transition duration-300 delay-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                                        : 
-                                        <p className="w-5 h-5 mr-1 text-transparent">.</p>
-                                    })()}
-                                        <p>Submit</p>
-                                </button>
+                                {(() => {   
+                                    if (successState) {
+                                        return (
+                                            <button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-700 hover:to-indigo-700 focus:outline-none font-poppins" onClick={() => history.push("/Login")}>
+                                                <p>Login Now</p> 
+                                            </button>
+                                        )
+                                    } else if (loading) {
+                                        return (
+                                            <button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-700 hover:to-teal-700 focus:outline-none font-poppins" type='submit'>
+                                                <svg className="w-5 h-6 mr-1 transition duration-300 delay-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> 
+                                            </button>
+                                        )
+                                    } else {
+                                        <button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-700 hover:to-teal-700 focus:outline-none font-poppins" type='submit'>
+                                            <p>Submit</p> 
+                                        </button>
+                                    }
+                                })()}
                             </form>
                         </div>
                     </div>

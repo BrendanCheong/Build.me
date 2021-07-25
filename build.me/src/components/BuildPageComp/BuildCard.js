@@ -121,6 +121,13 @@ const BuildCard = () => {
         await handleDelete(input)
         return
     }
+    const CheckOutParts = () => {
+        card.partsData.forEach((item) => {
+            if (item.itemID) {
+                window.open(item.itemURL)
+            }
+        })
+    }
 
     useEffect(() => {
         setBuildName(card.CardName)
@@ -173,6 +180,10 @@ const BuildCard = () => {
                 <h1 className="absolute bottom-0 left-0 py-1 pl-4 mb-2 bg-white rounded-lg shadow-md w-52 ml-7 text-md font-roboto">
                 {`Total Price: ${totalPrice}`}
                 </h1>
+                <button className="absolute px-4 py-1 text-white duration-300 bg-teal-500 rounded-lg shadow-md bottom-2 right-40 hover:bg-teal-700 focus:outline-none"
+                name="CheckOutParts" type="button" disabled={submitting} onClick={() => CheckOutParts()}>
+                    Checkout All Parts
+                </button>
                 {(() => {
                     if (removeBuildLoad && selectedCardID === card._id) return (<>
                         <button className="absolute px-5 py-1 text-white duration-300 rounded-lg shadow-md bg-gradient-to-r from-teal-500 to-blue-500 bottom-2 right-6 foucs:outline-none"
