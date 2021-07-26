@@ -22,4 +22,4 @@ https://docs.google.com/document/d/1NZhp3poIqeyPPDnG5--uXLwY8dGaXMEYx15NPJ6KtTw/
 
 
 ## Poster
-![image](https://drive.google.com/uc?export=view&id=1BTTHpN-t_vES68pqBIAQWZ6GKK-w2vZh/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=1BTTHpN-t_vES68pqBIAQWZ6GKK-w2vZh)
