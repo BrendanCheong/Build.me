@@ -3,6 +3,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import { AuthContextFunc } from '../components/Context/AuthContext';
 import {BrowserRouter} from "react-router-dom";
+import "@testing-library/jest-dom";
 
 describe('Authentication Pages functionality',() => {
     

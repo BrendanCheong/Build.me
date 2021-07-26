@@ -135,9 +135,9 @@ const Reset = (props) => {
                                             </button>
                                         )
                                     } else {
-                                        <button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-700 hover:to-teal-700 focus:outline-none font-poppins" type='submit'>
+                                        return (<button className="inline-flex flex-row items-center justify-center px-12 py-2 text-base font-medium text-center text-white duration-300 delay-300 border border-transparent rounded-md shadow-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-700 hover:to-teal-700 focus:outline-none font-poppins" type='submit'>
                                             <p>Submit</p> 
-                                        </button>
+                                        </button>)
                                     }
                                 })()}
                             </form>
