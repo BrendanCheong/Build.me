@@ -163,13 +163,18 @@ app.get("/ShopeeScrapper/:id", async (req, res) => {
 app.get("/Qo10Scrapper/:id", async (req, res) => {
   const input = decodeURIComponent(req.params.id)
   try {
-    
+    const exchangeRateAPI = await axios.get("https://open.er-api.com/v6/latest/USD")
+    const EXrateNum = exchangeRateAPI.data.rates.SGD;
     console.log("Qo10 Request recieved!")
+    
     const response = await qoo10Scrapper.qoo10Scraper(input);
-    const answer = scrappingFilter.itemLimit(scrappingFilter.itemExcludes(response, "itemName",[
+    const filteredItems = scrappingFilter.itemLimit(scrappingFilter.itemExcludes(response, "itemName",[
       "hair", "cable", "panasonic", "ml", "laptop", "sodimm", "kg", "book", "chrome", "dell", "huawei", "lenovo", "acer", "heatsink", "nuc",
     ]),10)
-
+    const answer = filteredItems.map((item) => {
+      item.itemPrice = (item.itemPrice.replace("S$", "") * EXrateNum).toFixed(2)
+      return item;
+    })
     return res
     .status(200)
     .json(answer)

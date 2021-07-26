@@ -10,13 +10,13 @@ const FPSBarChart = ({labels, BarGraphLeft, BarGraphRight, nameLeft, nameRight})
             labels: labels ? labels : ["Avg", "CSGO", "GTAV", "Overwatch", "PUBG", "Fortnite"],
             datasets: [
                 {
-                    label:!nameLeft ? "Left Side Build Not Selected" : nameLeft,
+                    label:!nameLeft ? "Left Side Data Not Found" : nameLeft,
                     backgroundColor: ['#6366F1'],
                     data: BarGraphLeft
 
                 },
                 {   
-                    label:!nameRight ? "Right Side Build Not Selected" : nameRight,
+                    label:!nameRight ? "Right Side Data Not Found" : nameRight,
                     backgroundColor: ['#2DD4BF'],
                     data: BarGraphRight
                     

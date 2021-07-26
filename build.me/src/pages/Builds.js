@@ -48,6 +48,8 @@ const Builds = () => {
     const [addBuildButtonLoad, setAddBuildButtonLoad] = useState(false) // for BuildUnCard
     const [removeBuildLoad, setRemoveBuildLoad] = useState(false) // for BuildCard
     const [submittingBuildName, setSubmittingBuildName] = useState(false) // for BuildCard
+    const [changingPartsLoad, setChangingPartsLoad] = useState(false)// for BuildPart
+    const [selectedPartType, setSelectedPartType] = useState("") // for BuildPart
 
     // GET request ALL CARDS
     const getAllCards = async () => {
@@ -102,9 +104,11 @@ const Builds = () => {
             setSubmitting(false)
             setAddBuildButtonLoad(false)
             setRemoveBuildLoad(false)
+            setChangingPartsLoad(false)
             setSubmittingBuildName(false)
             setInitialLoad(false)
             setSelectedCardID("")
+            setSelectedPartType("")
         }
         if (submitting) {
             updateState();
@@ -190,7 +194,9 @@ const Builds = () => {
                         <ContextData.Provider value={{addCards, handleDelete, changeNewParts, setSubmitting, card, submitting, cards,
                             removeBuildLoad, setRemoveBuildLoad,
                             selectedCardID, setSelectedCardID,
-                            submittingBuildName, setSubmittingBuildName,}} key={card._id}>
+                            submittingBuildName, setSubmittingBuildName,
+                            changingPartsLoad, setChangingPartsLoad,
+                            selectedPartType, setSelectedPartType}} key={card._id}>
                             <BuildCard key={card._id}/> 
                         </ContextData.Provider> // render Card boolean
                     ))}

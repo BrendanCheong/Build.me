@@ -250,15 +250,26 @@ const Tabs = ({ id }) => {
                 onClick={() => Toggler(6)}>
                     Storage
                 </button>
-                <button 
-                className={ toggleTabs === 7 ?
-                    "px-4 py-2 -mb-px font-semibold text-gray-800 bg-trueGray-100 border-t border-l border-r rounded-t focus:outline-none"
+                {
+                    toggleTabs === 7 ?
+                    <button className="px-4 py-2 -mb-px font-semibold text-gray-800 border-t border-l border-r rounded-t bg-trueGray-100 focus:outline-none"
+                    >
+                        Budget
+                    </button>
                     :
-                    "px-4 py-2 font-semibold text-white rounded-t focus:outline-none bg-teal-500"
-                    }
-                onClick={() => Toggler(7)}>
-                    Budget
-                </button>
+                    <span className="relative z-40 inline-flex">
+                        <button className="px-4 py-2 font-semibold text-white bg-teal-500 rounded-t focus:outline-none"
+                        onClick={() => Toggler(7)}>
+                            Budget
+                        </button>
+                        <div className="flex absolute top-0 right-0 -mt-0.5 -mr-1">
+                            <span className="absolute inline-flex animate-ping">
+                                <span className="inline-flex w-3 h-3 bg-teal-200 rounded-full opacity-75"></span>
+                            </span>
+                            <span className="relative inline-flex w-3 h-3 bg-teal-300 rounded-full"></span>
+                        </div>
+                    </span>
+                }
             </div>
 
             {/** Tab Content */}
@@ -374,7 +385,7 @@ const Tabs = ({ id }) => {
                     }
                 onSubmit={SubmitBudget}
                 >
-                {currentPartsData && <BudgetBar id={id} values={values} setValues={setValues}/>}
+                {currentPartsData && <BudgetBar id={id} values={values} setValues={setValues} currentPartsData={currentPartsData}/>}
                 {DonutAppear && <BudgetDonut dataSetArray={dataSetArray} labelArray={labelArray} ColorArray={ColorArray}/>}
                 </form>
             </TabsData.Provider>

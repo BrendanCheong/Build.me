@@ -39,7 +39,7 @@ const BarGraphTab = () => {
                 "Brand": Brand,
                 "Model": CPUstring.substr(CPUstring.indexOf(" ") + 1)
             })
-            console.log(answer.data)
+            
             const response = answer.data
             if (Object.keys(response).length) {
                 
@@ -48,15 +48,17 @@ const BarGraphTab = () => {
             }
             
         } else {
-            const answer = await axiosInstance.post("/UBM/GPU", {
+            const input = {
                 "Model": GPUstring.substr(GPUstring.indexOf(" ") + 1)
-            })
-            console.log(answer.data)
-            const response = answer.data
-            if (Object.keys(response).length) {
-                
-                label(Object.keys(answer.data))
-                func(Object.values(answer.data));
+            }
+            if (input["Model"].length > 0) {
+                const answer = await axiosInstance.post("/UBM/GPU", input)
+                const response = answer.data
+                if (Object.keys(response).length) {
+                    
+                    label(Object.keys(answer.data))
+                    func(Object.values(answer.data));
+                }
             }
         }
     }

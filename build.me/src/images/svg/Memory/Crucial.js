@@ -3,14 +3,14 @@ const Crucial = () => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="200.07mm"
-          height="80.853"
+          height="50.853"
           fillRule="evenodd"
           clipRule="evenodd"
           imageRendering="optimizeQuality"
           shapeRendering="geometricPrecision"
           textRendering="geometricPrecision"
           viewBox="0 0 72266.9 17429.65"
-          className="ml-10"
+          className="mt-5 -ml-56"
         >
           <path
             fill="#0092c8"

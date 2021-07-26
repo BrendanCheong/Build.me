@@ -11,7 +11,7 @@ const BuildPart = ({name, id, card}) => {
     addNewParts: func -> taken from Cards => changes unParts to Parts
     */
 
-    const {changeNewParts} = useContext(ContextData)
+    const {changeNewParts, changingPartsLoad, setChangingPartsLoad, selectedCardID, setSelectedCardID, selectedPartType, setSelectedPartType, submitting, } = useContext(ContextData)
 
     
 
@@ -46,6 +46,13 @@ const BuildPart = ({name, id, card}) => {
         NewItemName = `${card.partsData[index].itemName.slice(0,44)}..`
     }
 
+    const changingParts = () => {
+        setChangingPartsLoad(true)
+        setSelectedPartType(name)
+        setSelectedCardID(id)
+        changeNewParts(name, id, true)
+    }
+
     return (
         <div className="relative flex flex-col h-64 bg-white rounded shadow-md w-52">
             <div className="relative h-32 bg-gray-200 rounded-tl-md rounded-tr-md">
@@ -62,10 +69,19 @@ const BuildPart = ({name, id, card}) => {
                     to={newTo}>
                         CHANGE
                     </Link>
-                    <button className='px-3 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100 hover:shadow-md'
-                    onClick={() => changeNewParts(name, id, true)}>
-                        REMOVE
-                    </button>
+                    {
+                        (changingPartsLoad && selectedCardID === id && selectedPartType === name) ?
+                        <button className='px-5 text-sm font-medium text-indigo-600 duration-300 bg-transparent bg-indigo-100 rounded-full focus:outline-none hover:shadow-md'
+                        >
+                            <svg className="w-5 h-5 transition duration-300 delay-200 animate-spin" fill="none" stroke="#6366F1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        </button>
+                        :
+                        <button className='px-3 text-sm font-medium text-indigo-600 duration-300 bg-transparent rounded-full focus:outline-none hover:bg-indigo-100 hover:shadow-md'
+                        onClick={() => changingParts()}
+                        disabled={submitting}>
+                            REMOVE
+                        </button>
+                    }
             </div>
         </div>
     )
