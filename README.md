@@ -19,3 +19,7 @@ Backend API: https://build-me-api.herokuapp.com/
 
 ## Documentation
 https://docs.google.com/document/d/1NZhp3poIqeyPPDnG5--uXLwY8dGaXMEYx15NPJ6KtTw/edit?usp=sharing
+
+
+## Poster
+https://drive.google.com/uc?export=view&id=1BTTHpN-t_vES68pqBIAQWZ6GKK-w2vZh/view?usp=sharing
