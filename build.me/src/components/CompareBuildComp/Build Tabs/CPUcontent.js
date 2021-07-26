@@ -8,7 +8,7 @@ import moment from "moment";
 import Modal from "../Modal";
 import axios from 'axios';
 
-const CPUcontent = () => {
+const CPUcontent = ({ id }) => {
     /** !!
     NEED to CHECK if there is an Item selected in the Build
      */
@@ -167,8 +167,8 @@ const CPUcontent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('CPUModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"CPU"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`CPUModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"CPU"} itemName={itemName} itemVendor={itemVendor} id={id}/>
             </div>
                 </>)
             }

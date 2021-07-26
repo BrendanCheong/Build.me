@@ -16,7 +16,7 @@ import Modal from "../Modal";
 import axios from "axios";
 
 
-const MemoryContent = () => {
+const MemoryContent = ({ id }) => {
 
     const [RAMSpecs, setRAMSpecs] = useState('');
     const [LineChartData, setLineChartData] = useState({nothing: "nothing"});
@@ -193,8 +193,8 @@ const MemoryContent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('MemoryModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Memory"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`MemoryModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Memory"} itemName={itemName} itemVendor={itemVendor} id={id}/>
                 
             </div>
                 </>)

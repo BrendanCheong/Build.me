@@ -18,7 +18,7 @@ import moment from "moment";
 import Modal from "../Modal";
 import axios from "axios";
 
-const StorageContent = () => {
+const StorageContent = ({ id }) => {
 
     const [StorageSpecs, setStorageSpecs] = useState('');
     const [LineChartData, setLineChartData] = useState({nothing: "nothing"});
@@ -188,8 +188,8 @@ const StorageContent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('StorageModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Storage"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`StorageModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Storage"} itemName={itemName} itemVendor={itemVendor} id={id}/>
                 
             </div>
                 </>)

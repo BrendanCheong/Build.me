@@ -12,7 +12,7 @@ import Modal from "../Modal";
 import axios from "axios"
 
 
-const MotherboardContent = () => {
+const MotherboardContent = ({ id }) => {
     
     /** !!
     NEED to CHECK if there is an Item selected in the Build
@@ -182,8 +182,8 @@ const MotherboardContent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('MotherboardModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Motherboard"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`MotherboardModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"Motherboard"} itemName={itemName} itemVendor={itemVendor} id={id}/>
                 
             </div>
                 </>)

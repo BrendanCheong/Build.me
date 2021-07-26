@@ -16,7 +16,7 @@ import moment from "moment";
 import Modal from "../Modal";
 import axios from "axios";
 
-const PSUcontent = () => {
+const PSUcontent = ({ id }) => {
 
     const [PSUSpecs, setPSUSpecs] = useState('');
     const [LineChartData, setLineChartData] = useState({nothing: "nothing"});
@@ -184,8 +184,8 @@ const PSUcontent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('PSUModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"PSU"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`PSUModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"PSU"} itemName={itemName} itemVendor={itemVendor} id={id}/>
                 
             </div>
                 </>)

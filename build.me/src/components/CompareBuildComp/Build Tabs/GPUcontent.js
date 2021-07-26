@@ -17,7 +17,7 @@ import moment from "moment";
 import Modal from "../Modal";
 import axios from "axios"
 
-const GPUcontent = () => {
+const GPUcontent = ({ id }) => {
 
     const [GPUSpecs, setGPUSpecs] = useState('');
     const [LineChartData, setLineChartData] = useState({nothing: "nothing"});
@@ -197,8 +197,8 @@ const GPUcontent = () => {
                     Store Page
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
-                onClick={() => openModal('GPUModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"GPU"} itemName={itemName} itemVendor={itemVendor}/>
+                onClick={() => openModal(`GPUModal${id}`)}>Price History</button>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"GPU"} itemName={itemName} itemVendor={itemVendor} id={id}/>
         
             </div>
                 </>)
