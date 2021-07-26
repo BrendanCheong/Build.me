@@ -54,7 +54,7 @@ const ModalCard = ({ id, card, Name,
                 Data[i].itemImg = itemImage
                 Data[i].itemRating = ItemRating
                 Data[i].itemURL = itemURLink
-                Data[i].vendorName = VendorName
+                Data[i].vendorName = VendorName === "NA" ? scrapType : VendorName
                 Data[i].itemID = rowOriginal._id
                 Data[i].isUnPart = false
             }

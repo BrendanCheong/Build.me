@@ -1,7 +1,7 @@
 import LineChart from "../Charts/LineChart";
 
 
-const Modal = ({ modalClose, ChartDataLoading, LineChartData, itemName, name}) => {
+const Modal = ({ modalClose, ChartDataLoading, LineChartData, itemName, name,}) => {
 
     const time = LineChartData.time;
     const prices = LineChartData.prices

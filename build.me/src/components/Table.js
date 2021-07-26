@@ -29,7 +29,6 @@ const Table = ({TableColumns, Name, data, propData}) => {
             const AmazonResponse = DataCleaner(response.data)
             setInfoState(AmazonResponse);
             setIsAmazonModalLoading(false);
-
         } catch(err) {
             ErrorHandlingNotif("Amazon Data Error", "Server Timeout, No Data from Amazon Found")
         }
@@ -43,7 +42,6 @@ const Table = ({TableColumns, Name, data, propData}) => {
             const ShopeeResponse = DataCleaner(response.data)
             setShopeeInfo(ShopeeResponse)
             setIsShopeeModalLoading(false);
-            
         } catch(err) {
             console.error(err)
             ErrorHandlingNotif("Shopee Data Error", "Server Timeout, No Data from Shopee Found")
@@ -107,8 +105,8 @@ const Table = ({TableColumns, Name, data, propData}) => {
             openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
             // console.log(ScrapperInput)
-            AmazonScrapper(ScrapperInput)
-            ShopeeScrapper(ScrapperInput)
+            await AmazonScrapper(ScrapperInput)
+            await ShopeeScrapper(ScrapperInput)
             const Qo10Output = await Qo10Scrapper(ScrapperInput)
             
             const Qo10Response = DataCleaner(Qo10Output)

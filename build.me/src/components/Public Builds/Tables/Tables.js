@@ -108,8 +108,8 @@ const Tables = ({TableColumns, Name, data }) => {
             openModal(`${Name} Modal`)
             const ScrapperInput = Evaluate(RowInfo)
             
-            AmazonScrapper(ScrapperInput)
-            ShopeeScrapper(ScrapperInput)
+            await AmazonScrapper(ScrapperInput)
+            await ShopeeScrapper(ScrapperInput)
             const Qo10Output = await Qo10Scrapper(ScrapperInput)
             
             const Qo10Response = DataCleaner(Qo10Output)

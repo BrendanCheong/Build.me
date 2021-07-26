@@ -14,6 +14,7 @@ import GIgabyte from '../../../images/svg/Motherboard/GIgabyte';
 import MSI from '../../../images/svg/Motherboard/MSI';
 import moment from "moment";
 import Modal from "../Modal";
+import axios from "axios";
 
 const PSUcontent = () => {
 
@@ -27,6 +28,7 @@ const PSUcontent = () => {
     const itemImg = PSU.itemImg;
     const itemURL = PSU.itemURL;
     const itemID = PSU.itemID;
+    const itemVendor = PSU.vendorName
 
     async function openModal(key) {
         document.getElementById(key).showModal(); 
@@ -42,6 +44,13 @@ const PSUcontent = () => {
                 const response = await axiosInstance.post("/PriceTrends", {
                     link: itemURL,
                 })
+
+                let ExchangeAPI;
+                if (itemVendor === "Amazon") {
+                    const response = await axios.get("https://open.er-api.com/v6/latest/USD")
+                    ExchangeAPI = response.data.rates.SGD;
+                }
+
                 const ChartDataPayload = {
                     time: response.data.time.map((seconds) => {
                         const date = new Date(0);
@@ -49,7 +58,7 @@ const PSUcontent = () => {
                         const answer = moment(date).format('MMM Do YYYY');
                         return answer;
                     }),
-                    prices: response.data.prices,
+                    prices: response.data.prices.map((item) => (item * ExchangeAPI).toFixed(2)),
                 }
                 setLineChartData(ChartDataPayload);
                 setChartDataLoading(false);
@@ -176,7 +185,7 @@ const PSUcontent = () => {
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 onClick={() => openModal('PSUModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"PSU"} itemName={itemName}/>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"PSU"} itemName={itemName} itemVendor={itemVendor}/>
                 
             </div>
                 </>)

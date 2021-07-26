@@ -6,6 +6,7 @@ import Intel from '../../../images/svg/CPU/Intel'
 import axiosInstance from '../../../AxiosInstance';
 import moment from "moment";
 import Modal from "../Modal";
+import axios from 'axios';
 
 const CPUcontent = () => {
     /** !!
@@ -21,6 +22,7 @@ const CPUcontent = () => {
     const itemImg = CPU.itemImg;
     const itemURL = CPU.itemURL;
     const itemID = CPU.itemID;
+    const itemVendor = CPU.vendorName
 
     async function openModal(key) {
         document.getElementById(key).showModal(); 
@@ -36,6 +38,12 @@ const CPUcontent = () => {
                 const response = await axiosInstance.post("/PriceTrends", {
                     link: itemURL,
                 })
+                let ExchangeAPI;
+                if (itemVendor === "Amazon") {
+                    const response = await axios.get("https://open.er-api.com/v6/latest/USD")
+                    ExchangeAPI = response.data.rates.SGD;
+                }
+                
                 const ChartDataPayload = {
                     time: response.data.time.map((seconds) => {
                         const date = new Date(0);
@@ -43,7 +51,7 @@ const CPUcontent = () => {
                         const answer = moment(date).format('MMM Do YYYY');
                         return answer;
                     }),
-                    prices: response.data.prices,
+                    prices: response.data.prices.map((item) => (item * ExchangeAPI).toFixed(2)),
                 }
                 setLineChartData(ChartDataPayload);
                 setChartDataLoading(false);
@@ -160,7 +168,7 @@ const CPUcontent = () => {
                 </a>
                 <button className="px-5 py-2 text-white duration-300 bg-indigo-500 rounded-full shadow-md hover:bg-indigo-700 font-poppins"
                 onClick={() => openModal('CPUModal')}>Price History</button>
-                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"CPU"} itemName={itemName}/>
+                <Modal modalClose={modalClose} ChartDataLoading={ChartDataLoading} LineChartData={LineChartData} name={"CPU"} itemName={itemName} itemVendor={itemVendor}/>
             </div>
                 </>)
             }
