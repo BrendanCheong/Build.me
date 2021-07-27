@@ -27,7 +27,7 @@ Frontend: https://build-me.netlify.app/
 Backend API: https://build-me-api.herokuapp.com/
 
 
-## Documentation
+## Full Documentation & Report
 https://docs.google.com/document/d/1NZhp3poIqeyPPDnG5--uXLwY8dGaXMEYx15NPJ6KtTw/edit?usp=sharing
 
 
