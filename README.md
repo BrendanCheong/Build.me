@@ -12,6 +12,10 @@ When trying to find PC parts to build a computer, it’s difficult to collate di
 Ultimately, many have become frustrated that finding the best parts for their PC build has become inconvenient and stressful especially since most PC-builders have a tight budget that they need to keep track of. Moreover, most PC-builders have different combinations of PC parts and have difficulties comparing between builds to find the best combination.
 If only there was a web application that could collate all this information and make the PC building process easier.
 
+## Aim
+
+Through our web application “Build.me”, we hope to be able to simplify and streamline the price hunting process of finding PC-parts while also providing the user with analytical tools and data visualisation tools about their PC builds.
+
 ## Tech Stack used
 
 For this project, we used the MERN stack (MongoDB,Express,React and Node) together with complimentary frameworks and libraries like Tailwindcss and Puppeteer.js
